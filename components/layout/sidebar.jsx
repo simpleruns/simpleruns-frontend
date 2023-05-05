@@ -40,7 +40,7 @@ const Sidebar = (props) => {
 	}
 
 	return (
-		<Card className={`fixed h-full px-3 pt-10 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-900 ${sidebarOpen ? "!min-w-[20rem]" : "!min-w-[6rem]"}`}>
+		<Card className={`fixed h-full px-3 pt-10 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-900 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
 			<Link href="/"
 				className={`flex items-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col !py-3"}`}>
 				<Image
@@ -54,7 +54,7 @@ const Sidebar = (props) => {
 					Simpleruns
 				</Typography>
 			</Link>
-			<List className={`space-y-2 mt-10 mb-10 p-0 ${sidebarOpen ? "!min-w-[18.5rem]" : "!min-w-[4.5rem]"}`}>
+			<List className={`space-y-2 mt-10 mb-10 p-0 ${sidebarOpen ? "!min-w-[16.5rem]" : "!min-w-[4.5rem]"}`}>
 				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 					<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 						<BsUiChecksGrid
@@ -88,7 +88,7 @@ const Sidebar = (props) => {
 							})}>
 								Drivers
 							</Typography>
-							<ListItemSuffix className={`${!sidebarOpen ? "ml-0 -mr-4" : ""}`}></ListItemSuffix>
+							<ListItemSuffix className={`${!sidebarOpen ? "ml-0 -mr-4" : ""}`}><span className="hidden">icon</span></ListItemSuffix>
 						</AccordionHeader>
 					</ListItem>
 					<AccordionBody className={classNames({
@@ -161,7 +161,7 @@ const Sidebar = (props) => {
 							})}>
 								Settings
 							</Typography>
-							<ListItemSuffix className={`${!sidebarOpen ? "ml-0 -mr-4" : ""}`}></ListItemSuffix>
+							<ListItemSuffix className={`${!sidebarOpen ? "ml-0 -mr-4" : ""}`}><span className="hidden">icon</span></ListItemSuffix>
 						</AccordionHeader>
 					</ListItem>
 					<AccordionBody className={classNames({

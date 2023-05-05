@@ -15,7 +15,7 @@ const Layout = (props) => {
 	return (
 		<>
 			<div className="flex h-full w-full">
-				<aside id="logo-sidebar" className={`sm:none duration-175 linear relative !z-50 flex min-h-full flex-col bg-white shadow-2xl shadow-white/5 transition-all dark:!bg-navy-900 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 overflow-visible simple-scroller ${sidebarOpen ? "!min-w-[20rem]" : "!min-w-[6rem]"}`} aria-label="Sidebar">
+				<aside id="logo-sidebar" className={`sm:none duration-175 linear relative !z-50 flex min-h-full flex-col bg-white shadow-2xl shadow-white/5 transition-all dark:!bg-navy-900 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 overflow-visible simple-scroller ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`} aria-label="Sidebar">
 					<Sidebar sidebarOpen={sidebarOpen} />
 
 					<div className="absolute flex items-center justify-center text-white w-[30px] h-[30px] top-[50px] right-0 rounded-full bg-blue-900 dark:bg-gray-900 dark:opacity-90 hover:cursor-pointer translate-x-1/2 !z-50 md:!z-50 lg:!z-50 xl:!z-10" onClick={toggleSidebarHandler}>
@@ -27,7 +27,7 @@ const Layout = (props) => {
 					</div>
 				</aside>
 
-				<div className="h-full w-full bg-lightPrimary dark:!bg-navy-900 min-h-screen">
+				<div className="h-full w-full bg-lightPrimary dark:!bg-navy-900 min-h-screen pb-20">
 					<main
 						className={`mx-[20px] h-full flex-none transition-all`}
 					>

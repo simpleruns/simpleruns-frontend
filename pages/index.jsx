@@ -7,6 +7,8 @@ import { IoMdHome } from "react-icons/io";
 import Widget from "components/widget";
 import WeeklyRevenue from "components/charts/weeklyRevenue";
 import TotalSpent from "components/charts/totalSpent";
+import PieChartCard from "components/charts/pieChartCard";
+import DailyTraffic from "components/charts/dailyTraffic";
 
 const HomePage = () => {
   return (
@@ -47,6 +49,11 @@ const HomePage = () => {
       <div className="mt-5 grid grid-cols-1 gap-5 md:grid-cols-2">
         <TotalSpent />
         <WeeklyRevenue />
+      </div>
+
+      <div className="mt-5 grid grid-cols-1 gap-5 rounded-[20px] md:grid-cols-2">
+        <DailyTraffic />
+        <PieChartCard />
       </div>
     </>
   )
