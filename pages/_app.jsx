@@ -1,7 +1,8 @@
 import "../styles/globals.css";
 
-import Layout from "components/layout";
+import { ThemeProvider } from "@material-tailwind/react";
 
+import Layout from "components/layout";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
@@ -26,7 +27,7 @@ function MyApp({ Component, pageProps }) {
 	}, [router]);
 
 	return (
-		<>
+		<ThemeProvider>
 			{
 				layout ? <Component {...pageProps} /> :
 					<Layout>
@@ -34,7 +35,7 @@ function MyApp({ Component, pageProps }) {
 					</Layout>
 			}
 			<SettingColor />
-		</>
+		</ThemeProvider>
 	);
 }
 
