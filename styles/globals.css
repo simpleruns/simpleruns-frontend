@@ -19,5 +19,5 @@ input:checked.defaultCheckbox::before {
 }
 
 .simple-scroller::-webkit-scrollbar {
-    width: 10px;
+    display: none;
 }
