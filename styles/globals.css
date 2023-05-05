@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+input.defaultCheckbox::before {
+    content: url('../public/assets/svg/checked.svg');
+    color: white;
+    opacity: 0;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0px);
+}
+
+input:checked.defaultCheckbox::before {
+    opacity: 1;
+}
+
+.simple-scroller::-webkit-scrollbar {
+    width: 10px;
+}

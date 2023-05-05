@@ -1,0 +1,46 @@
+{
+  "name": "next-daisyui-starter",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.3.0",
+    "@fortawesome/free-regular-svg-icons": "^6.3.0",
+    "@fortawesome/free-solid-svg-icons": "^6.3.0",
+    "@fortawesome/react-fontawesome": "^0.2.0",
+    "@heroicons/react": "^2.0.14",
+    "@hookform/resolvers": "^2.9.11",
+    "axios": "^1.3.4",
+    "classnames": "^2.3.2",
+    "formik": "^2.2.9",
+    "html2pdf.js": "^0.10.1",
+    "jotai": "^2.0.3",
+    "js-cookie": "^3.0.1",
+    "moment": "^2.29.4",
+    "next": "13.0.5",
+    "react": "18.2.0",
+    "react-cookie": "^4.1.1",
+    "react-dom": "18.2.0",
+    "react-hook-form": "^7.43.2",
+    "react-icons": "^4.8.0",
+    "react-modal": "^3.16.1",
+    "usehooks-ts": "2.6.0",
+    "yup": "^1.0.2"
+  },
+  "devDependencies": {
+    "@types/node": "18.11.9",
+    "@types/react": "18.0.25",
+    "@types/react-dom": "18.0.9",
+    "autoprefixer": "^10.4.13",
+    "eslint": "8.28.0",
+    "eslint-config-next": "13.0.5",
+    "postcss": "^8.4.19",
+    "tailwindcss": "^3.2.4",
+    "typescript": "4.9.3"
+  }
+}
