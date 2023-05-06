@@ -3,7 +3,7 @@ import { atom } from 'jotai';
 import Cookies from 'js-cookie';
 
 export function checkIsLoggedIn() {
-    const token = Cookies.get('x-access-token');
+    const token = Cookies.get('rememberMe');
     if (!token) return false;
     return true;
 }

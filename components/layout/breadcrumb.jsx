@@ -15,10 +15,11 @@ const Breadcrumb = () => {
 
     useEffect(() => {
         var title = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
+        title = title.substring(0, title.indexOf('?'));
         title === '/' || title === '' ? setPageTitle('Welcome') : setPageTitle(title);
     }, [router]);
 
-    const pathSegments = router.asPath.split('/').filter((segment) => segment !== '');
+    const pathSegments = router.asPath.substring(0, router.asPath.indexOf('?')).split('/').filter((segment) => segment !== '');
 
     const breadcrumbItems = pathSegments.map((segment, index) => {
         const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
@@ -31,8 +32,8 @@ const Breadcrumb = () => {
     });
 
     return (
-        <div className="bg-cover bg-center h-30 mb-[20px] lg:h-40 flex items-center justify-between rounded-b-md" style={{ backgroundImage: `url('${authImg.src}')` }}>
-            <div className="container mx-auto px-[20px]">
+        <div className="bg-cover bg-center h-28 mb-[20px] lg:h-40 flex items-center justify-between rounded-b-md" style={{ backgroundImage: `url('${authImg.src}')` }}>
+            <div className="container mx-auto px-[20px] max-w-full">
                 <div className="flex items-center justify-between">
                     <Typography variant="h2" className="text-2xl font-bold text-white transition capitalize">{pageTitle}</Typography>
                     <Breadcrumbs className="text-white">

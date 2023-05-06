@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 
@@ -13,10 +13,22 @@ const Layout = (props) => {
 		setSidebarOpen(!sidebarOpen);
 	}
 
+	function checkWindowSize() {
+		window.innerWidth < 991 ? setSidebarOpen(false) : setSidebarOpen(true);
+	}
+
+	useEffect(() => {
+		checkWindowSize();
+		window.addEventListener('resize', checkWindowSize);
+		return () => {
+			window.removeEventListener('resize', checkWindowSize);
+		}
+	}, []);
+
 	return (
 		<>
 			<div className="flex h-full w-full">
-				<aside id="logo-sidebar" className={`sm:none duration-175 linear static !z-50 flex min-h-full flex-col bg-white shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 xl:!z-0 overflow-visible simple-scroller ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`} aria-label="Sidebar">
+				<aside id="logo-sidebar" className={`sm:none duration-175 linear absolute !z-50 flex min-h-full flex-col bg-white shadow-2xl shadow-white/5 transition-all dark:!bg-navy-800 dark:text-white md:!z-50 lg:!z-50 overflow-visible simple-scroller ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`} aria-label="Sidebar">
 					<Sidebar sidebarOpen={sidebarOpen} />
 
 					<div className={`fixed ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
@@ -30,7 +42,7 @@ const Layout = (props) => {
 					</div>
 				</aside>
 
-				<div className="h-full w-full bg-lightPrimary dark:!bg-navy-700 min-h-screen pb-20">
+				<div className={`h-full w-full bg-lightPrimary dark:!bg-navy-700 min-h-screen pb-6 ${sidebarOpen ? "pl-[18rem]" : "pl-[6rem]"}`}>
 					<Breadcrumb />
 
 					<main

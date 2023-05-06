@@ -106,18 +106,14 @@ const Sidebar = (props) => {
 									All Drivers
 								</ListItem>
 							</Link>
-							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
-								</ListItemPrefix>
-								Appproved Drivers
-							</ListItem>
-							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
-								</ListItemPrefix>
-								Pending Drivers
-							</ListItem>
+							<Link className="flex items-center" href="/drivers/create">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									Add New Driver
+								</ListItem>
+							</Link>
 						</List>
 					</AccordionBody>
 				</Accordion>
