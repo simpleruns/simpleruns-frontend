@@ -56,7 +56,7 @@ const Sidebar = (props) => {
 			</Link>
 			<List className={`space-y-2 mt-10 mb-10 p-0 ${sidebarOpen ? "!min-w-[16.5rem]" : "!min-w-[4.5rem]"}`}>
 				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-					<Link className="flex items-center" href="/">
+					<Link className="flex items-center mx-auto" href="/">
 						<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 							<BsUiChecksGrid
 								size={24}

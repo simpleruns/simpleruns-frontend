@@ -1,6 +1,6 @@
 import axios from 'axios';
 export const instance = axios.create({
-    baseURL: 'https://simple-back.vercel.app/api',
+    baseURL: 'https://simpleruns-backend.vercel.app/api',
     timeout: 10000,
     headers: { 'Access-Control-Allow-Origin': '*' }
 });
