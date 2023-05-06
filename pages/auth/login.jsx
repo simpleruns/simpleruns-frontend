@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import Link from "next/link";
 import { useForm } from 'react-hook-form';
@@ -10,14 +10,21 @@ import { useAtom } from 'jotai';
 import { idAtom } from '../../helpers/authorize';
 import { instance } from '../../helpers/axios';
 
-import authImg from "../../public/assets/img/auth/auth-login.jpg";
+import authImg from "public/assets/img/auth/auth-login.jpg";
 
 const Login = () => {
     const router = useRouter();
-    const [cookie, setCookie] = useCookies(["x-access-token"]);
+    const [cookie, setCookie] = useCookies(["rememberMe"]);
     const [user, setUser] = useAtom(idAtom);
-    const [isChecked, setIsChecked] = useState(false);
+    const [rememberMe, setRememberMe] = useState(false);
+
     const [errorStatus, setErrorStatus] = useState(false);
+
+    useEffect(() => {
+        if (cookie.rememberMe === 'true') {
+            setRememberMe(true);
+        }
+    }, []);
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email('Invalid Email').required('email is required'),
@@ -30,16 +37,23 @@ const Login = () => {
     const { register, handleSubmit, setError, formState } = useForm(formOptions);
     const { errors } = formState;
 
+    function handleRememberMeChange(event) {
+        setRememberMe(event.target.checked);
+    }
+
     function onSubmit(data) {
         instance.post('/users/login', data)
             .then((res) => {
                 setUser(res.data.id);
-                if (isChecked)
-                    setCookie("x-access-token", JSON.stringify(res.data.token), {
-                        path: "/",
+                if (rememberMe) {
+                    setCookie("rememberMe", JSON.stringify(res.data.token), {
+                        path: '/',
                         maxAge: 3600, // Expires after 1hr
                         sameSite: true,
                     })
+                } else {
+                    setCookie("rememberMe", false, { path: '/' });
+                }
                 const returnUrl = '/';
                 router.push(returnUrl);
             }).catch(error => {
@@ -80,8 +94,8 @@ const Login = () => {
                                                 <input
                                                     type="checkbox"
                                                     className="defaultCheckbox relative flex h-[20px] min-h-[20px] w-[20px] min-w-[20px] appearance-none items-center justify-center rounded-md border border-gray-300 outline-none transition duration-[0.2s] checked:text-dark hover:cursor-pointer dark:border-white/10 dark:checked:border-none bg-white dark:bg-dark-900"
-                                                    name="rememberMe" checked={isChecked}
-                                                    onChange={(event) => setIsChecked(event.target.checked)}
+                                                    name="rememberMe" checked={rememberMe}
+                                                    onChange={handleRememberMeChange}
                                                 />
 
                                                 <p className="ml-2 text-sm font-medium text-navy-700 dark:text-white">

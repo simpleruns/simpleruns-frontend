@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
 import { instance } from '../../helpers/axios';
-import authImg from "../../public/assets/img/auth/auth-register.jpg";
+import authImg from "public/assets/img/auth/auth-register.jpg";
 
 const Register = () => {
     const validationSchema = Yup.object().shape({

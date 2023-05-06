@@ -3,7 +3,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Link from "next/link";
 
-import authImg from "../../../public/assets/img/auth/auth-reset.jpg";
+import authImg from "public/assets/img/auth/auth-reset.jpg";
 
 export default function ResetPasswordToken() {
     const router = useRouter();

@@ -3,7 +3,7 @@ import * as Yup from 'yup';
 import Link from "next/link";
 
 import { instance } from '../../helpers/axios';
-import authImg from "../../public/assets/img/auth/auth-reset.jpg";
+import authImg from "public/assets/img/auth/auth-reset.jpg";
 
 export default function ForgotPassword() {
     const formik = useFormik({

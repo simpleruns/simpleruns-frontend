@@ -1,7 +1,8 @@
-const Drivers = () => {
+const AllowedDrivers = () => {
     return (
         <div>
         </div>
     );
 }
-export default Drivers;
+
+export default AllowedDrivers;

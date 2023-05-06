@@ -1,6 +1,7 @@
 import "../styles/globals.css";
 
 import { ThemeProvider } from "@material-tailwind/react";
+import { CookiesProvider } from 'react-cookie';
 
 import Layout from "components/layout";
 import { useEffect, useState } from "react";
@@ -27,15 +28,17 @@ function MyApp({ Component, pageProps }) {
 	}, [router]);
 
 	return (
-		<ThemeProvider>
-			{
-				layout ? <Component {...pageProps} /> :
-					<Layout>
-						<Component {...pageProps} />
-					</Layout>
-			}
-			<SettingColor />
-		</ThemeProvider>
+		<CookiesProvider>
+			<ThemeProvider>
+				{
+					layout ? <Component {...pageProps} /> :
+						<Layout>
+							<Component {...pageProps} />
+						</Layout>
+				}
+				<SettingColor />
+			</ThemeProvider>
+		</CookiesProvider>
 	);
 }
 

@@ -40,9 +40,9 @@ const Sidebar = (props) => {
 	}
 
 	return (
-		<Card className={`fixed h-full px-3 pt-10 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-900 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
+		<Card className={`fixed h-full px-3 pt-10 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-800 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
 			<Link href="/"
-				className={`flex items-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col !py-3"}`}>
+				className={`flex items-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
 				<Image
 					src="/assets/img/logo.png"
 					width={1366}
@@ -56,13 +56,15 @@ const Sidebar = (props) => {
 			</Link>
 			<List className={`space-y-2 mt-10 mb-10 p-0 ${sidebarOpen ? "!min-w-[16.5rem]" : "!min-w-[4.5rem]"}`}>
 				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-					<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-						<BsUiChecksGrid
-							size={24}
-							className={`${!sidebarOpen ? "mx-auto my-3" : ""}`}
-						/>
-					</ListItemPrefix>
-					<span className={`flex-1 text-left whitespace-nowrap ${!sidebarOpen ? 'hidden' : ''}`}>Dashboard</span>
+					<Link className="flex items-center" href="/">
+						<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+							<BsUiChecksGrid
+								size={24}
+								className={`${!sidebarOpen ? "mx-auto my-3" : ""}`}
+							/>
+						</ListItemPrefix>
+						<span className={`flex-1 text-left whitespace-nowrap ${!sidebarOpen ? 'hidden' : ''}`}>Dashboard</span>
+					</Link>
 				</ListItem>
 
 				<Accordion
@@ -96,19 +98,21 @@ const Sidebar = (props) => {
 						"py-2 space-y-2 transition-all duration-300": true,
 					})}>
 						<List className="p-0">
-							<ListItem>
-								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
-								</ListItemPrefix>
-								All Drivers
-							</ListItem>
-							<ListItem>
+							<Link className="flex items-center" href="/drivers">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									All Drivers
+								</ListItem>
+							</Link>
+							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
 								</ListItemPrefix>
 								Appproved Drivers
 							</ListItem>
-							<ListItem>
+							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
 								</ListItemPrefix>
@@ -169,19 +173,19 @@ const Sidebar = (props) => {
 						"py-2 space-y-2 transition-all duration-300": true,
 					})}>
 						<List className="p-0">
-							<ListItem>
+							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
 								</ListItemPrefix>
 								Positions
 							</ListItem>
-							<ListItem>
+							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
 								</ListItemPrefix>
 								Tolls Table
 							</ListItem>
-							<ListItem>
+							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
 								</ListItemPrefix>
