@@ -8,7 +8,7 @@ import * as Yup from 'yup';
 import { useCookies } from "react-cookie"
 import { useAtom } from 'jotai';
 import { idAtom } from '../../helpers/authorize';
-import { instance } from '../../helpers/axios';
+import { instance } from 'helpers/axios';
 
 import authImg from "public/assets/img/auth/auth-login.jpg";
 
@@ -28,7 +28,7 @@ const Login = () => {
 
     const validationSchema = Yup.object().shape({
         email: Yup.string().email('Invalid Email').required('email is required'),
-        password: Yup.string().required('Password is required')
+        password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
     });
 
     const formOptions = { resolver: yupResolver(validationSchema) };
@@ -48,7 +48,7 @@ const Login = () => {
                 if (rememberMe) {
                     setCookie("rememberMe", JSON.stringify(res.data.token), {
                         path: '/',
-                        maxAge: 3600, // Expires after 1hr
+                        maxAge: 3600 * 24, // Expires after 1hr
                         sameSite: true,
                     })
                 } else {

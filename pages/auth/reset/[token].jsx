@@ -14,7 +14,9 @@ export default function ResetPasswordToken() {
             password: '',
         },
         validationSchema: Yup.object({
-            password: Yup.string().required('Password is required'),
+            password: Yup.string()
+                .min(6, 'Password must be at least 6 characters')
+                .required('Password is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             try {

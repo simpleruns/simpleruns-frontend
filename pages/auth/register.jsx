@@ -5,7 +5,7 @@ import Link from "next/link";
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 
-import { instance } from '../../helpers/axios';
+import { instance } from 'helpers/axios';
 import authImg from "public/assets/img/auth/auth-register.jpg";
 
 const Register = () => {
@@ -13,9 +13,9 @@ const Register = () => {
         firstname: Yup.string().required('First Name is required'),
         lastname: Yup.string().required('Last Name is required'),
         email: Yup.string().email('Invalid Email').required('email is required'),
-        phone: Yup.string().matches(/^\d{10}$/, 'Phone number must be 10 digits').required('phone number is required'),
-        password: Yup.string().required('Password is required'),
-        confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords must match').required('Password is required')
+        phone: Yup.string().matches(/^\+?[1-9]\d{1,14}$/, 'Please enter a valid phone number').required('Phone number is required'),
+        password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
+        confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords does not match').required('Password is required')
     });
 
     const router = useRouter();
@@ -49,25 +49,25 @@ const Register = () => {
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="mt-4">
                                                 <label className="block text-sm text-navy-700 dark:text-white font-medium" htmlFor="First Name">First Name*</label>
-                                                <input type="text" placeholder="First Name..." {...register('firstname')}
+                                                <input type="text" placeholder="John" {...register('firstname')}
                                                     name="firstname" className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" />
                                                 {errors.firstname && <p className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{errors.firstname.message}</p>}
                                             </div>
                                             <div className="mt-4">
                                                 <label className="block text-sm text-navy-700 dark:text-white font-medium" htmlFor="Last Name">Last Name*</label>
-                                                <input type="text" placeholder="Last Name..." {...register('lastname')}
+                                                <input type="text" placeholder="Doe" {...register('lastname')}
                                                     name="lastname" className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" />
                                                 {errors.lastname && <p className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{errors.lastname.message}</p>}
                                             </div>
                                             <div className="mt-4">
                                                 <label className="block text-sm text-navy-700 dark:text-white font-medium" htmlFor="email">Email*</label>
-                                                <input type="text" placeholder="Email..." {...register('email')}
+                                                <input type="text" placeholder="your@email.com" {...register('email')}
                                                     name="email" className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" />
                                                 {errors.email && <p className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{errors.email.message}</p>}
                                             </div>
                                             <div className="mt-4">
                                                 <label className="block text-sm text-navy-700 dark:text-white font-medium" htmlFor="phone">Phone*</label>
-                                                <input type="tel" placeholder="Phone..." {...register('phone')}
+                                                <input type="tel" placeholder="+61123456789" {...register('phone')}
                                                     name="phone" className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600" />
                                                 {errors.phone && <p className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{errors.phone.message}</p>}
                                             </div>

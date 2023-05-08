@@ -2,7 +2,7 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Link from "next/link";
 
-import { instance } from '../../helpers/axios';
+import { instance } from 'helpers/axios';
 import authImg from "public/assets/img/auth/auth-reset.jpg";
 
 export default function ForgotPassword() {
@@ -54,6 +54,7 @@ export default function ForgotPassword() {
                                             type="email"
                                             id="email"
                                             name="email"
+                                            placeholder="your@email.com"
                                             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}

@@ -14,12 +14,13 @@ const Breadcrumb = () => {
     const router = useRouter();
 
     useEffect(() => {
-        var title = window.location.href.substring(window.location.href.lastIndexOf('/') + 1);
-        title = title.substring(0, title.indexOf('?'));
-        title === '/' || title === '' ? setPageTitle('Welcome') : setPageTitle(title);
+        var title = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
+        title === '/' || title === '' ? setPageTitle('Welcome') : window.location.pathname.includes('drivers/single') ? setPageTitle('Driver Detail') : window.location.pathname.includes('drivers/edit') ? setPageTitle('Edit Driver Detail') : setPageTitle(title);
     }, [router]);
 
-    const pathSegments = router.asPath.substring(0, router.asPath.indexOf('?')).split('/').filter((segment) => segment !== '');
+    const pathSegments = window.location.pathname
+        .split('/')
+        .filter((segment) => segment !== '');
 
     const breadcrumbItems = pathSegments.map((segment, index) => {
         const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
