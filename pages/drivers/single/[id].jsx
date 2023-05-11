@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { Typography, avatar } from "@material-tailwind/react";
 import Link from "next/link";
 
 import { instance } from 'helpers/axios';
@@ -16,12 +17,24 @@ const SingleDriverDetail = () => {
         id && instance.get(`/admin/drivers/${id}`)
             .then((res) => {
                 setData({
+                    avatar: res.data.avatar,
+                    licensePhoto: res.data.licensePhoto,
                     firstname: res.data.firstname,
                     lastname: res.data.lastname,
                     email: res.data.email,
                     phone: res.data.phone,
+                    birthDate: res.data.birthDate,
+                    role: res.data.role,
                     password: res.data.password,
-                    confirm: res.data.password,
+                    licenseNumber: res.data.licenseNumber,
+                    cardNumber: res.data.cardNumber,
+                    publishedDate: res.data.publishedDate,
+                    expireDate: res.data.expireDate,
+                    licenseClass: res.data.licenseClass,
+                    licenseState: res.data.licenseState,
+                    insurances: res.data.insurances,
+                    workCompensation: res.data.workCompensation,
+                    truckRegistration: res.data.truckRegistration,
                     year: res.data.year,
                     numberPlate: res.data.numberPlate,
                     VIN: res.data.VIN,
@@ -31,13 +44,12 @@ const SingleDriverDetail = () => {
             }).catch(error => {
                 console.log(error.message);
             });
-    }, [router]);
+    }, [router, id]);
 
     const setStatusHandler = () => {
         instance.put(`/admin/drivers/approve/${id}`)
             .then((res) => {
                 setStatus(!status);
-                console.log(res.data);
             }).catch(error => {
                 console.log(error.message);
             });
@@ -45,7 +57,7 @@ const SingleDriverDetail = () => {
 
     return (
         <section className="bg-white dark:bg-gray-900">
-            <div className="max-w-[75%] px-4 py-8 mx-auto lg:py-16">
+            <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
                 <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Driver Detail</h2>
 
                 {
@@ -53,7 +65,7 @@ const SingleDriverDetail = () => {
                         <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                             <div className="sm:col-span-2">
                                 <div className="flex items-center w-full">
-                                    <img className="mb-0 mr-4 w-[8rem] h-[8rem] rounded-full" src="https://flowbite.s3.amazonaws.com/blocks/marketing-ui/avatars/helene-engels.png" alt="Helene avatar" />
+                                    <img className="mr-4 mb-4 w-[20rem] object-cover" width={130} height={130} src={data.avatar.url} alt="Driver User Image" />
                                 </div>
                             </div>
 
@@ -65,6 +77,51 @@ const SingleDriverDetail = () => {
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Phone" content={data.phone} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Date of Birth" content={data.birthDate} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Role" content={data.role} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="License Number" content={data.licenseNumber} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Card Number" content={data.cardNumber} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Published Date" content={data.publishedDate} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Expiration Date" content={data.expireDate} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="License Class" content={data.licenseClass} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="License State" content={data.licenseState} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Insurances" content={data.insurances} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Work Compensation" content={data.workCompensation} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Truck Registration" content={data.truckRegistration} />
+                            </div>
+                            <div className="sm:col-span-2">
+                                <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
+                                    <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">License Photo</Typography>
+                                    <div className="flex item-center flex-wrap">
+                                        {
+                                            data.licensePhoto.map((item, index) => (
+                                                <img key={"Driver License Image " + index} className={`inline-block mb-4 w-[calc(33%-10px)] object-cover ${data.licensePhoto.length == index + 1 ? '' : 'mr-4'}`} width={130} height={130} src={item.url} alt="Driver License Image" />
+                                            ))
+                                        }
+                                    </div>
+                                </div>
                             </div>
 
                             <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">Vehicle Info</h2>

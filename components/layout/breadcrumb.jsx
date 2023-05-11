@@ -23,12 +23,12 @@ const Breadcrumb = () => {
         .filter((segment) => segment !== '');
 
     const breadcrumbItems = pathSegments.map((segment, index) => {
-        const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
+        // const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
 
         return (
-            <Link href={href} key={segment} className="text-white transition">
+            <span key={segment} className="text-white transition">
                 {segment}
-            </Link>
+            </span>
         );
     });
 

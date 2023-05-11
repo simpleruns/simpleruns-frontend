@@ -7,6 +7,7 @@ module.exports = withMT({
     "./app/**/*.{js,ts,jsx,tsx}",
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/tailwind-datepicker-react/dist/**/*.js",
   ],
   theme: {
     extend: {
@@ -218,5 +219,5 @@ module.exports = withMT({
         500: "rgba(112, 144, 176, 0.08)",
       },
     })
-  },
+  }
 });

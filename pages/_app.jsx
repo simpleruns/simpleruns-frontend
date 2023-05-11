@@ -1,10 +1,10 @@
-import "../styles/globals.css";
+import "styles/globals.css";
 
+import { useEffect, useState } from "react";
 import { ThemeProvider } from "@material-tailwind/react";
 import { CookiesProvider } from 'react-cookie';
 
 import Layout from "components/layout";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 
@@ -21,7 +21,7 @@ function MyApp({ Component, pageProps }) {
 		if (!authorized && !router.pathname.includes('auth')) {
 			router.push('/auth/login');
 		}
-	}, []);
+	});
 
 	useEffect(() => {
 		setLayout(router.pathname.includes('auth'));

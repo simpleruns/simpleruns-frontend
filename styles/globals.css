@@ -2,6 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
+body {
+    font-family: poppins;
+}
+
 input.defaultCheckbox::before {
     content: url('../public/assets/svg/checked.svg');
     color: white;

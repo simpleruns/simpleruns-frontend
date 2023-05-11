@@ -20,12 +20,6 @@ const Login = () => {
 
     const [errorStatus, setErrorStatus] = useState(false);
 
-    useEffect(() => {
-        if (cookie.rememberMe === 'true') {
-            setRememberMe(true);
-        }
-    }, []);
-
     const validationSchema = Yup.object().shape({
         email: Yup.string().email('Invalid Email').required('email is required'),
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
@@ -37,25 +31,28 @@ const Login = () => {
     const { register, handleSubmit, setError, formState } = useForm(formOptions);
     const { errors } = formState;
 
-    function handleRememberMeChange(event) {
-        setRememberMe(event.target.checked);
-    }
-
     function onSubmit(data) {
         instance.post('/users/login', data)
             .then((res) => {
                 setUser(res.data.id);
+                setCookie("token", JSON.stringify(res.data.token), {
+                    path: '/',
+                    maxAge: 3600 * 24,
+                    sameSite: true,
+                })
                 if (rememberMe) {
-                    setCookie("rememberMe", JSON.stringify(res.data.token), {
+                    setCookie("rememberMe", true, {
                         path: '/',
-                        maxAge: 3600 * 24, // Expires after 1hr
+                        maxAge: 3600 * 24 * 7,
                         sameSite: true,
                     })
                 } else {
                     setCookie("rememberMe", false, { path: '/' });
                 }
-                const returnUrl = '/';
-                router.push(returnUrl);
+                setTimeout(() => {
+                    const returnUrl = '/';
+                    router.push(returnUrl);
+                }, 500);
             }).catch(error => {
                 setErrorStatus(true);
                 setError('apiError', { message: error });
@@ -95,7 +92,7 @@ const Login = () => {
                                                     type="checkbox"
                                                     className="defaultCheckbox relative flex h-[20px] min-h-[20px] w-[20px] min-w-[20px] appearance-none items-center justify-center rounded-md border border-gray-300 outline-none transition duration-[0.2s] checked:text-dark hover:cursor-pointer dark:border-white/10 dark:checked:border-none bg-white dark:bg-dark-900"
                                                     name="rememberMe" checked={rememberMe}
-                                                    onChange={handleRememberMeChange}
+                                                    onChange={() => setRememberMe(!rememberMe)}
                                                 />
 
                                                 <p className="ml-2 text-sm font-medium text-navy-700 dark:text-white">

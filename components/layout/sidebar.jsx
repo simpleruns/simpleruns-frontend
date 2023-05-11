@@ -1,9 +1,10 @@
 import React, { useState } from "react";
 import classNames from "classnames";
 import Link from "next/link";
-import Image from 'next/image';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+
+import logo from "public/assets/img/logo.png";
 
 import {
 	Card,
@@ -43,8 +44,8 @@ const Sidebar = (props) => {
 		<Card className={`fixed h-full px-3 pt-10 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-800 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
 			<Link href="/"
 				className={`flex items-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
-				<Image
-					src="/assets/img/logo.png"
+				<img
+					src={logo.src}
 					width={1366}
 					height={768}
 					style={{ width: 'auto' }}

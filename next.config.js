@@ -1,5 +1,6 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  basePath: '/frontend',
   reactStrictMode: true,
   swcMinify: true,
   images: {

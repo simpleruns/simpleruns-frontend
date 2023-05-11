@@ -14,12 +14,24 @@ const SingleDriverEdit = () => {
         id && instance.get(`/admin/drivers/${id}`)
             .then((res) => {
                 setData({
+                    avatar: res.data.avatar,
+                    licensePhoto: res.data.licensePhoto,
                     firstname: res.data.firstname,
                     lastname: res.data.lastname,
                     email: res.data.email,
                     phone: res.data.phone,
+                    birthDate: res.data.birthDate,
+                    role: res.data.role,
                     password: res.data.password,
-                    confirm: res.data.password,
+                    licenseNumber: res.data.licenseNumber,
+                    cardNumber: res.data.cardNumber,
+                    publishedDate: res.data.publishedDate,
+                    expireDate: res.data.expireDate,
+                    licenseClass: res.data.licenseClass,
+                    licenseState: res.data.licenseState,
+                    insurances: res.data.insurances,
+                    workCompensation: res.data.workCompensation,
+                    truckRegistration: res.data.truckRegistration,
                     year: res.data.year,
                     numberPlate: res.data.numberPlate,
                     VIN: res.data.VIN,
@@ -28,15 +40,15 @@ const SingleDriverEdit = () => {
             }).catch(error => {
                 console.log(error.message);
             });
-    }, [router]);
+    }, [router, id]);
 
     return (
         <section className="bg-white dark:bg-gray-900">
-            <div className="max-w-[75%] px-4 py-8 mx-auto lg:py-16">
+            <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
                 <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Edit Driver</h2>
 
                 {
-                    data ?
+                    (id && data) ?
                         <SingleDriverForm data={data} id={id} /> : <div>Loading...</div>
                 }
             </div>

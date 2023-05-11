@@ -25,6 +25,7 @@ import {
 import { useRouter } from "next/router";
 
 import { instance } from 'helpers/axios';
+import moment from "moment";
 
 const TABS = [
     {
@@ -42,15 +43,26 @@ const TABS = [
 ];
 
 const headers = [
-    // { text: 'Image', key: 'image' },
-    { text: 'Name', key: 'name' },
+    { text: 'Image', key: 'image' },
+    { text: 'Name', key: 'firstname' },
     // { text: 'Documents', key: 'documents' },
     { text: 'Email', key: 'email' },
     { text: 'Phone', key: 'phone' },
+    { text: 'Date of Birth', key: 'birthDate' },
+    { text: 'Role', key: 'role' },
+    { text: 'License Number', key: 'licenseNumber' },
+    { text: 'Card Number', key: 'cardNumber' },
+    { text: 'Published Date', key: 'publishedDate' },
+    { text: 'Expire Date', key: 'expireDate' },
+    { text: 'License Class', key: 'licenseClass' },
+    { text: "License State", key: 'licenseState' },
+    { text: 'Insurances', key: 'insurances' },
+    { text: 'Work Compensation', key: 'workCompensation' },
+    { text: 'Truck Registration', key: 'truckRegistration' },
     { text: 'Year', key: 'year' },
-    { text: 'Number Plate', key: 'np' },
-    { text: 'VIN', key: 'vin' },
-    { text: 'Status', key: 'status' },
+    { text: 'Number Plate', key: 'numberPlate' },
+    { text: 'VIN', key: 'VIN' },
+    { text: 'Status', key: 'approved' },
     { text: 'Actions', key: 'actions' }
 ];
 
@@ -76,7 +88,6 @@ export default function Drivers() {
     const handleToggleClick = (index, itemId) => {
         instance.put(`/admin/drivers/approve/${itemId}`)
             .then((res) => {
-                console.log(res.data);
                 setCheckedItems({
                     ...checkedItems,
                     [index]: !checkedItems[index],
@@ -119,17 +130,7 @@ export default function Drivers() {
     }, [router]);
 
     useEffect(() => {
-        var tempCheckData = driverData;
-        tempCheckData.map((item, index) => {
-            tempCheckData = {
-                ...tempCheckData,
-                [index]: item.approved
-            }
-        })
-        setCheckedItems(tempCheckData);
-    }, [driverData]);
-
-    useEffect(() => {
+        // console.log(driverData, sortKey, sortOrder)
         if (sortKey) {
             setSortedData(driverData.sort((a, b) => {
                 const aValue = a[sortKey];
@@ -144,6 +145,15 @@ export default function Drivers() {
         } else {
             setSortedData(driverData);
         }
+
+        var tempCheckData = sortedData;
+        tempCheckData.map((item, index) => {
+            tempCheckData = {
+                ...tempCheckData,
+                [index]: item.approved
+            }
+        })
+        setCheckedItems(tempCheckData);
     }, [driverData, sortKey, sortOrder]);
 
     return (
@@ -211,11 +221,11 @@ export default function Drivers() {
 
                                 return (
                                     <tr key={row._id}>
-                                        {/* <td className={classes}>
+                                        <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={row.image} alt="image" size="sm" />
+                                                <Avatar src={row.avatar.url} alt="image" size="sm" />
                                             </div>
-                                        </td> */}
+                                        </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
                                                 {row.firstname + ' ' + row.lastname}
@@ -232,6 +242,61 @@ export default function Drivers() {
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
                                                 {row.phone}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {moment(row.birthDate).format('YYYY-MM-DD')}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.role}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.licenseNumber}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.cardNumber}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {moment(row.publishedDate).format('YYYY-MM-DD')}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {moment(row.expireDate).format('YYYY-MM-DD')}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.licenseClass}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.licenseState}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.insurances}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.workCompensation}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.truckRegistration}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
