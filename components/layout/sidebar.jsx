@@ -19,8 +19,9 @@ import {
 } from "@material-tailwind/react";
 
 // define a NavItem prop
-import { BsUiChecksGrid, BsTruck, BsPeople } from "react-icons/bs";
+import { BsUiChecksGrid, BsPeople } from "react-icons/bs";
 import { SlBriefcase, SlLogout, SlArrowDown, SlMap, SlSettings, SlArrowRight } from "react-icons/sl";
+import { FaRegMoneyBillAlt } from "react-icons/fa";
 
 // add NavItem prop to component prop
 
@@ -173,12 +174,12 @@ const Sidebar = (props) => {
 
 				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 					<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-						<BsTruck
+						<FaRegMoneyBillAlt
 							size={26}
 							className={`${!sidebarOpen ? "mx-auto my-3" : ""}`}
 						/>
 					</ListItemPrefix>
-					<span className={`flex-1 text-left whitespace-nowrap ${!sidebarOpen ? 'hidden' : ''}`}>Vehicles</span>
+					<span className={`flex-1 text-left whitespace-nowrap ${!sidebarOpen ? 'hidden' : ''}`}>Invoices</span>
 				</ListItem>
 
 				<Accordion

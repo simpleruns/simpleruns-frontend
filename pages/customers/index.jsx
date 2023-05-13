@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
@@ -9,23 +9,18 @@ import { BsPen } from 'react-icons/bs';
 import {
     Card,
     CardHeader,
-    Input,
     Typography,
     Button,
     CardBody,
-    Chip,
     CardFooter,
     Tabs,
     TabsHeader,
     Tab,
-    Avatar,
-    IconButton,
-    Tooltip,
+    Avatar
 } from "@material-tailwind/react";
 import { useRouter } from "next/router";
 
 import { instance } from 'helpers/axios';
-import moment from "moment";
 
 const TABS = [
     {
@@ -49,6 +44,7 @@ const headers = [
     { text: 'Email', key: 'email' },
     { text: 'Phone', key: 'phone' },
     { text: 'Rate Type', key: 'rateType' },
+    { text: 'Load Rate', key: 'loadRate' },
     { text: 'Fuel Rate', key: 'fuelRate' },
     { text: 'Local Rate', key: 'localRate' },
     { text: 'Country Rate', key: 'countryRate' },
@@ -128,11 +124,8 @@ export default function Customers() {
     }, [approve, router]);
 
     useEffect(() => {
-        setPage(router.query.page ? router.query.page : 1);
-    }, [router]);
-
-    useEffect(() => {
         // console.log(customerData, sortKey, sortOrder)
+        setSortedData(customerData);
         if (sortKey) {
             setSortedData(customerData.sort((a, b) => {
                 const aValue = a[sortKey];
@@ -144,8 +137,6 @@ export default function Customers() {
                     return aValue > bValue ? -1 : 1;
                 }
             }))
-        } else {
-            setSortedData(customerData);
         }
 
         var tempCheckData = sortedData;
@@ -156,7 +147,7 @@ export default function Customers() {
             }
         })
         setCheckedItems(tempCheckData);
-    }, [customerData, sortKey, sortOrder]);
+    }, [customerData, sortKey, sortOrder, sortedData]);
 
     return (
         <Card className="h-full w-full bg-white dark:bg-navy-800 text-gray-900 dark:text-white">
@@ -253,6 +244,11 @@ export default function Customers() {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.loadRate}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
                                                 {row.fuelRate}
                                             </Typography>
                                         </td>
@@ -304,12 +300,12 @@ export default function Customers() {
                     Page {page} of {totalPage}
                 </Typography>
                 <div className="flex gap-2">
-                    <Button variant="outlined" color="blue-gray" size="sm" disabled={`${page == 1 ? 'disabled' : ''}`} className="p-0" onClick={prevHandler}>
+                    <Button variant="outlined" color="blue-gray" size="sm" className="p-0" disabled={`${page == 1 ? 'disabled' : ''}`} onClick={prevHandler}>
                         <Link href={`/customers?page=${page - 1}`} className="w-full h-full py-2 px-4 flex">
                             Previous
                         </Link>
                     </Button>
-                    <Button variant="outlined" color="blue-gray" size="sm" disabled={totalPage == page ? 'disabled' : ''} className="p-0" onClick={nextHandler}>
+                    <Button variant="outlined" color="blue-gray" size="sm" className="p-0" disabled={totalPage == page ? 'disabled' : ''} onClick={nextHandler}>
                         <Link href={`/customers?page=${parseInt(page) + 1}`} className="w-full h-full py-2 px-4 flex">
                             Next
                         </Link>

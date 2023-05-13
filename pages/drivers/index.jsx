@@ -62,6 +62,8 @@ const headers = [
     { text: 'Year', key: 'year' },
     { text: 'Number Plate', key: 'numberPlate' },
     { text: 'VIN', key: 'VIN' },
+    { text: 'Make', key: 'make' },
+    { text: 'Model', key: 'model' },
     { text: 'Status', key: 'approved' },
     { text: 'Actions', key: 'actions' }
 ];
@@ -137,11 +139,8 @@ export default function Drivers() {
     }, [approve, router]);
 
     useEffect(() => {
-        setPage(router.query.page ? router.query.page : 1);
-    }, [router]);
-
-    useEffect(() => {
         // console.log(driverData, sortKey, sortOrder)
+        setSortedData(driverData);
         if (sortKey) {
             setSortedData(driverData.sort((a, b) => {
                 const aValue = a[sortKey];
@@ -153,8 +152,6 @@ export default function Drivers() {
                     return aValue > bValue ? -1 : 1;
                 }
             }))
-        } else {
-            setSortedData(driverData);
         }
 
         var tempCheckData = sortedData;
@@ -165,7 +162,7 @@ export default function Drivers() {
             }
         })
         setCheckedItems(tempCheckData);
-    }, [driverData, sortKey, sortOrder]);
+    }, [driverData, sortKey, sortOrder, sortedData]);
 
     return (
         <Card className="h-full w-full bg-white dark:bg-navy-800 text-gray-900 dark:text-white">
@@ -323,6 +320,16 @@ export default function Drivers() {
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
                                                 {row.VIN}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.make}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.model}
                                             </Typography>
                                         </td>
                                         <td className={classes}>

@@ -60,7 +60,7 @@ const SingleDriverDetail = () => {
     return (
         <section className="bg-white dark:bg-gray-900">
             <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
-                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Driver Detail</h2>
+                <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Driver Detail</h2>
 
                 {
                     data ?

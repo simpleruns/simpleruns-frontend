@@ -208,7 +208,7 @@ const DriverCreate = () => {
     return (
         <section className="bg-white dark:bg-gray-900">
             <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
-                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Register New Driver</h2>
+                <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Register New Driver</h2>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                         <div className="sm:col-span-2">

@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Typography } from "@material-tailwind/react";
 import Link from "next/link";
 
 import { instance } from 'helpers/axios';
@@ -23,6 +22,7 @@ const CustomerDetail = () => {
                     email: res.data.email,
                     phone: res.data.phone,
                     rateType: res.data.rateType,
+                    loadRate: res.data.loadRate,
                     fuelRate: res.data.fuelRate,
                     localRate: res.data.localRate,
                     countryRate: res.data.countryRate,
@@ -47,7 +47,7 @@ const CustomerDetail = () => {
     return (
         <section className="bg-white dark:bg-gray-900">
             <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
-                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Customer Detail</h2>
+                <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Customer Detail</h2>
 
                 {
                     data ?
@@ -69,6 +69,9 @@ const CustomerDetail = () => {
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Rate Type" content={data.rateType} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="Fuel Rate" content={data.loadRate} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Fuel Rate" content={data.fuelRate} />

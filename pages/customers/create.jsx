@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
 import { useFormik } from 'formik';
-import Image from "next/image";
 
 import * as Yup from 'yup';
 
@@ -23,7 +22,8 @@ const CustomerCreate = () => {
             rateType: "hourly",
             localRate: 115,
             countryRate: 140,
-            fuelRate: 15
+            fuelRate: 15,
+            loadRate: 20
         },
         validationSchema: Yup.object({
             firstname: Yup.string().required('First Name is required'),
@@ -37,6 +37,7 @@ const CustomerCreate = () => {
             localRate: Yup.number().required('Local Rate is required'),
             countryRate: Yup.number().required('Country Rate is required'),
             fuelRate: Yup.number().required('Fuel Rate is required'),
+            loadRate: Yup.number().required('Load Rate is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();
@@ -52,6 +53,7 @@ const CustomerCreate = () => {
                 formData.append('localRate', values.localRate);
                 formData.append('countryRate', values.countryRate);
                 formData.append('fuelRate', values.fuelRate);
+                formData.append('loadRate', values.loadRate);
                 formData.append('approved', checked);
                 photo && formData.append('photo', photo, photo.name);
 
@@ -98,7 +100,7 @@ const CustomerCreate = () => {
     return (
         <section className="bg-white dark:bg-gray-900">
             <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
-                <h2 className="mb-4 text-xl font-bold text-gray-900 dark:text-white">Register New Customer</h2>
+                <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Register New Customer</h2>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                         <div className="sm:col-span-2">
@@ -230,22 +232,40 @@ const CustomerCreate = () => {
                                         ) : null}
                                     </div>
                                 </> :
-                                <div className="sm:col-span-2">
-                                    <label htmlFor="fuelRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Rate</label>
-                                    <input
-                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                        type="number"
-                                        name="fuelRate"
-                                        id="fuelRate"
-                                        value={formik.values.fuelRate}
-                                        placeholder={formik.values.fuelRate}
-                                        onChange={formik.handleChange}
-                                        onBlur={formik.handleBlur}
-                                    />
-                                    {formik.touched.fuelRate && formik.errors.fuelRate ? (
-                                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelRate}</div>
-                                    ) : null}
-                                </div>
+                                <>
+                                    <div className="w-full">
+                                        <label htmlFor="loadRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Load Rate</label>
+                                        <input
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            type="number"
+                                            name="loadRate"
+                                            id="loadRate"
+                                            value={formik.values.loadRate}
+                                            placeholder={formik.values.loadRate}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                        {formik.touched.loadRate && formik.errors.loadRate ? (
+                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.loadRate}</div>
+                                        ) : null}
+                                    </div>
+                                    <div className="w-full">
+                                        <label htmlFor="fuelRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Rate</label>
+                                        <input
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            type="number"
+                                            name="fuelRate"
+                                            id="fuelRate"
+                                            value={formik.values.fuelRate}
+                                            placeholder={formik.values.fuelRate}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                        />
+                                        {formik.touched.fuelRate && formik.errors.fuelRate ? (
+                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelRate}</div>
+                                        ) : null}
+                                    </div>
+                                </>
                         }
                         <div className="sm:col-span-2">
                             <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
