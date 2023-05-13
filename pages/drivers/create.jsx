@@ -100,7 +100,7 @@ const DriverCreate = () => {
             VIN: Yup.string()
                 .matches(/^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/, 'Invalid VIN')
                 .required('VIN is required'),
-            make: Yup.string().required('Please select an option'),
+            make: Yup.string().required('Please select an Make'),
             model: Yup.string().required('Model is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
@@ -132,9 +132,9 @@ const DriverCreate = () => {
                 formData.append('truckRegistration', values.truckRegistration);
                 formData.append('year', values.year);
                 formData.append('numberPlate', values.numberPlate);
-                formData.append('VIN', values.make);
-                formData.append('make', values.model);
-                formData.append('model', values.VIN);
+                formData.append('VIN', values.VIN);
+                formData.append('make', values.make);
+                formData.append('model', values.model);
                 formData.append('approved', checked);
 
                 try {

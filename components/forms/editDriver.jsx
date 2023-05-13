@@ -168,8 +168,8 @@ const SingleDriverForm = (props) => {
                     formData.append('year', values.year);
                     formData.append('numberPlate', values.numberPlate);
                     formData.append('VIN', values.VIN);
-                    formData.append('make', values.model);
-                    formData.append('model', values.VIN);
+                    formData.append('make', values.make);
+                    formData.append('model', values.model);
                     formData.append('approved', checked);
                     formData.append('resetPassword', resetPassword);
 
