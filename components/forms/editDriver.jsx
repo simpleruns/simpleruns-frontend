@@ -137,7 +137,6 @@ const SingleDriverForm = (props) => {
             model: Yup.string().required('Model is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
-
             const formData = new FormData();
             if (avatar == null)
                 alert("You didn'nt uploaded driver user image.");

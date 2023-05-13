@@ -34,6 +34,8 @@ const SingleDriverEdit = () => {
                     truckRegistration: res.data.truckRegistration,
                     year: res.data.year,
                     numberPlate: res.data.numberPlate,
+                    make: res.data.make,
+                    model: res.data.model,
                     VIN: res.data.VIN,
                     approved: res.data.approved
                 });
