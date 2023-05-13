@@ -1,0 +1,40 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: poppins;
+}
+
+input.defaultCheckbox::before {
+    content: url('../public/assets/svg/checked.svg');
+    color: white;
+    opacity: 0;
+    height: 16px;
+    width: 16px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0px);
+}
+
+input:checked.defaultCheckbox::before {
+    opacity: 1;
+}
+
+.simple-scroller::-webkit-scrollbar {
+    display: none;
+}
+
+.custom-scroller::-webkit-scrollbar {
+    height: 5px;
+}
+
+.custom-scroller::-webkit-scrollbar-thumb {
+    background: #072750;
+    border-radius: 5px;
+}
+
+#file_input input#file-upload-button {
+    background-color: #000 !important;
+}
