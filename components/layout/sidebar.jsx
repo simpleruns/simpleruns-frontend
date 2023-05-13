@@ -126,7 +126,7 @@ const Sidebar = (props) => {
 					icon={
 						<SlArrowDown
 							fontSize={10}
-							className={`mx-auto h-4 w-4 transition-transform ${open === 1 ? "rotate-180" : ""} ${!sidebarOpen ? " hidden" : ""}`}
+							className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""} ${!sidebarOpen ? " hidden" : ""}`}
 						/>
 					}
 				>

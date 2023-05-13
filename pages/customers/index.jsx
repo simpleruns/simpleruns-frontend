@@ -154,7 +154,7 @@ export default function Customers() {
             <CardHeader floated={false} shadow={false} className="rounded-none bg-white dark:bg-navy-800">
                 <div className="my-8 flex items-center justify-between gap-8">
                     <div>
-                        <Typography variant="h5" className="text-gray-900 dark:text-white">
+                        <Typography variant="h5" className="text-gray-900 dark:text-white text-2xl">
                             Customers list
                         </Typography>
                         <Typography color="gray" className="mt-1 font-normal text-gray-900 dark:text-white">
