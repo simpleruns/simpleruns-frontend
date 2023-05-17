@@ -36,7 +36,7 @@ const Breadcrumb = () => {
         <div className="bg-cover bg-center h-28 mb-[20px] lg:h-40 flex items-center justify-between rounded-b-md" style={{ backgroundImage: `url('${authImg.src}')` }}>
             <div className="container mx-auto px-[20px] max-w-full">
                 <div className="flex items-center justify-between">
-                    <Typography variant="h2" className="text-2xl font-bold text-white transition capitalize">{pageTitle}</Typography>
+                    <Typography variant="h2" className="text-3xl font-bold text-white transition capitalize">{pageTitle}</Typography>
                     <Breadcrumbs className="text-white">
                         <Link href="/" className="opacity-60 text-white hover:opacity-100 transition">
                             Home

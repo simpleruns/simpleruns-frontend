@@ -33,7 +33,7 @@ export default function ResetPasswordToken() {
     });
 
     const verifyResetPasswordToken = async (data) => {
-        instance.post('/users/reset/token', data)
+        instance.post('/users/verify', data)
             .then((res) => {
             }).catch(error => {
                 console.log(error.message);
@@ -41,7 +41,7 @@ export default function ResetPasswordToken() {
     };
 
     const resetPassword = async (data) => {
-        instance.post('/users/reset', data)
+        instance.post('/users/update_password', data)
             .then((res) => {
             }).catch(error => {
                 console.log(error.message);

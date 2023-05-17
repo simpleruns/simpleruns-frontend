@@ -1,5 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
+import { useAtom } from "jotai";
+import moment from "moment";
 
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { UserPlusIcon } from "@heroicons/react/24/solid";
@@ -25,7 +27,7 @@ import {
 import { useRouter } from "next/router";
 
 import { instance } from 'helpers/axios';
-import moment from "moment";
+import { idAtom } from "helpers/authorize";
 
 const TABS = [
     {
@@ -69,6 +71,7 @@ const headers = [
 ];
 
 export default function Drivers() {
+    const [user, __] = useAtom(idAtom);
     const [approve, setApprove] = useState('all');
     const [sortKey, setSortKey] = useState(null);
     const [sortOrder, setSortOrder] = useState('asc');
@@ -129,7 +132,7 @@ export default function Drivers() {
 
     useEffect(() => {
         var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
-        instance.get(`/admin/drivers${url}`)
+        instance.get(`/admin/drivers${url}`, { params: { user: user } })
             .then((res) => {
                 setDriverData(res.data.drivers);
                 setTotalPage(Math.floor((res.data.totalCount - 1) / countPerPage) + 1);

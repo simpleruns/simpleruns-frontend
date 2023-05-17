@@ -5,43 +5,15 @@ import { useAtom } from "jotai";
 import Image from "next/image";
 import * as Yup from 'yup';
 import Datepicker from "tailwind-datepicker-react"
-import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 
 import { instance } from 'helpers/axios';
 
 import Dropzone from 'components/forms/dropZone';
 import { idAtom } from "helpers/authorize";
 
-const options = {
-    todayBtn: false,
-    maxDate: new Date("2030-01-01"),
-    minDate: new Date("1950-01-01"),
-    theme: {
-        background: "bg-white dark:bg-navy-800 dark:hover:bg-nav-700",
-        icons: "dark:bg-navy-900 dark:hover:bg-navy-700 transition",
-        text: "dark:hover:bg-navy-700",
-        disabledText: "bg-gray-50 dark:bg-navy-900",
-        input: "bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500",
-        inputIcon: "hidden",
-    },
-    icons: {
-        prev: () => <SlArrowLeft />,
-        next: () => <SlArrowRight />,
-    },
-    datepickerClassNames: "top-10",
-    defaultDate: new Date()
-}
-
-const DriverCreate = () => {
+const Settings = () => {
     const [user, __] = useAtom(idAtom);
-    const [checked, setChecked] = useState(true);
-    const [birthDate, setBirthDate] = useState('1990-01-01');
-    const [publishedDate, setPublishedDate] = useState('1990-01-01');
-    const [expireDate, setExpireDate] = useState('2050-01-01');
     const [licensePhoto, setLicensePhoto] = useState(null);
-    const [birthShow, setBirthShow] = useState(false);
-    const [publishShow, setPublishShow] = useState(false);
-    const [expireShow, setExpireShow] = useState(false);
     const [avatar, setAvatar] = useState(null);
     const [imageDataUrl, setImageDataUrl] = useState(null);
     const router = useRouter();
@@ -137,7 +109,7 @@ const DriverCreate = () => {
                 formData.append('make', values.make);
                 formData.append('model', values.model);
                 formData.append('approved', checked);
-                formData.append('userId', user);
+                formData.append('userId', user._id);
 
                 try {
                     await createDriver(formData);
@@ -178,34 +150,6 @@ const DriverCreate = () => {
         };
         reader.readAsDataURL(file);
     };
-
-    const handleDrop = (licensePhoto) => {
-        setLicensePhoto(licensePhoto);
-    };
-
-    const handleBirthChange = (birthDate) => {
-        setBirthDate(birthDate);
-    }
-
-    const handleBirthClose = (state) => {
-        setBirthShow(state)
-    }
-
-    const handlePublishChange = (publishedDate) => {
-        setPublishedDate(publishedDate);
-    }
-
-    const handlePublishClose = (state) => {
-        setPublishShow(state)
-    }
-
-    const handleExpireChange = (expireDate) => {
-        setExpireDate(expireDate);
-    }
-
-    const handleExpireClose = (state) => {
-        setExpireShow(state)
-    }
 
     return (
         <section className="bg-white dark:bg-gray-900">
@@ -609,4 +553,4 @@ const DriverCreate = () => {
     );
 }
 
-export default DriverCreate;
+export default Settings;

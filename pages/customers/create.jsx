@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
 import { useFormik } from 'formik';
-
 import * as Yup from 'yup';
 
 import { instance } from 'helpers/axios';
+import { idAtom } from "helpers/authorize";
 
 const CustomerCreate = () => {
+    const [user, __] = useAtom(idAtom);
     const [checked, setChecked] = useState(true);
     const [photo, setPhoto] = useState(null);
     const [imageDataUrl, setImageDataUrl] = useState(null);
@@ -44,6 +46,7 @@ const CustomerCreate = () => {
             if (photo == null)
                 alert("You didn'nt uploaded customer user image.");
             else {
+                formData.append('userId', user);
                 formData.append('firstname', values.firstname);
                 formData.append('lastname', values.lastname);
                 formData.append('email', values.email);
@@ -100,7 +103,7 @@ const CustomerCreate = () => {
     return (
         <section className="bg-white dark:bg-gray-900">
             <div className="max-w-100 md:max-w-[75%] px-4 py-8 mx-auto lg:py-16">
-                <h2 className="mb-4 text-2xl font-bold text-gray-900 dark:text-white">Register New Customer</h2>
+                <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">Register New Customer</h2>
                 <form onSubmit={formik.handleSubmit}>
                     <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                         <div className="sm:col-span-2">

@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
+import { useAtom } from "jotai";
 import Link from "next/link";
 
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { UserPlusIcon } from "@heroicons/react/24/solid";
 import { SlDocs, SlEye, SlTrash } from 'react-icons/sl';
 import { BsPen } from 'react-icons/bs';
+
+import { idAtom } from "helpers/authorize";
 
 import {
     Card,
@@ -65,6 +68,8 @@ export default function Customers() {
     const router = useRouter();
     const countPerPage = 10;
 
+    const [user, __] = useAtom(idAtom);
+
     const handleSort = (key) => {
         if (key === sortKey) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
@@ -114,7 +119,7 @@ export default function Customers() {
 
     useEffect(() => {
         var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
-        instance.get(`/admin/customers${url}`)
+        instance.get(`/admin/customers${url}`, { params: { user: user } })
             .then((res) => {
                 setCustomerData(res.data.customers);
                 setTotalPage(Math.floor((res.data.totalCount - 1) / countPerPage) + 1);
@@ -154,7 +159,7 @@ export default function Customers() {
             <CardHeader floated={false} shadow={false} className="rounded-none bg-white dark:bg-navy-800">
                 <div className="my-8 flex items-center justify-between gap-8">
                     <div>
-                        <Typography variant="h5" className="text-gray-900 dark:text-white text-2xl">
+                        <Typography variant="h5" className="text-gray-900 dark:text-white text-3xl">
                             Customers list
                         </Typography>
                         <Typography color="gray" className="mt-1 font-normal text-gray-900 dark:text-white">

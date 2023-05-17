@@ -1,5 +1,5 @@
-
 import { atom } from 'jotai';
+import { atomWithStorage } from 'jotai/utils'
 import Cookies from 'js-cookie';
 
 export function checkIsLoggedIn() {
@@ -10,5 +10,5 @@ export function checkIsLoggedIn() {
     return true;
 }
 export const authorizationAtom = atom(checkIsLoggedIn());
-export const idAtom = atom('');
+export const idAtom = atomWithStorage('');
 

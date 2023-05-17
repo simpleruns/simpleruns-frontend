@@ -213,24 +213,30 @@ const Sidebar = (props) => {
 						"py-2 space-y-2 transition-all duration-300": true,
 					})}>
 						<List className="p-0">
-							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
-								</ListItemPrefix>
-								Positions
-							</ListItem>
-							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
-								</ListItemPrefix>
-								Tolls Table
-							</ListItem>
-							<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-								<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-									<SlArrowRight strokeWidth={3} className="h-3 w-5" />
-								</ListItemPrefix>
-								System Settings
-							</ListItem>
+							<Link className="flex items-center" href="/settings/positions">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									Positions
+								</ListItem>
+							</Link>
+							{/* <Link className="flex items-center" href="/settings/tolls">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									Tolls Table
+								</ListItem>
+							</Link> */}
+							<Link className="flex items-center" href="/settings">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									System Settings
+								</ListItem>
+							</Link>
 						</List>
 					</AccordionBody>
 				</Accordion>

@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import { useCookies } from "react-cookie"
 import { useAtom } from 'jotai';
-import { idAtom } from '../../helpers/authorize';
+import { idAtom } from 'helpers/authorize';
 import { instance } from 'helpers/axios';
 
 import authImg from "public/assets/img/auth/auth-login.jpg";

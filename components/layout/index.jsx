@@ -42,7 +42,7 @@ const Layout = (props) => {
 					</div>
 				</aside>
 
-				<div className={`h-full w-full bg-lightPrimary dark:!bg-navy-700 min-h-screen pb-6 pl-[6rem] ${sidebarOpen ? "pl-[18rem] lg:pl-[18rem]" : ""}`}>
+				<div className={`h-full w-full bg-lightPrimary dark:!bg-navy-700 min-h-screen pb-6 ${sidebarOpen ? "pl-[6rem] lg:pl-[18rem]" : "pl-[6rem]"}`}>
 					<Breadcrumb />
 
 					<main
