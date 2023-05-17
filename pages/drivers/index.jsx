@@ -373,7 +373,7 @@ export default function Drivers() {
                             Previous
                         </Link>
                     </Button>
-                    <Button variant="outlined" color="blue-gray" size="sm" disabled={totalPage == page ? 'disabled' : ''} className="p-0" onClick={nextHandler}>
+                    <Button variant="outlined" color="blue-gray" size="sm" disabled={totalPage <= page ? 'disabled' : ''} className="p-0" onClick={nextHandler}>
                         <Link href={`/drivers?page=${parseInt(page) + 1}`} className="w-full h-full py-2 px-4 flex">
                             Next
                         </Link>

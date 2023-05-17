@@ -310,7 +310,7 @@ export default function Customers() {
                             Previous
                         </Link>
                     </Button>
-                    <Button variant="outlined" color="blue-gray" size="sm" className="p-0" disabled={totalPage == page ? 'disabled' : ''} onClick={nextHandler}>
+                    <Button variant="outlined" color="blue-gray" size="sm" className="p-0" disabled={totalPage <= page ? 'disabled' : ''} onClick={nextHandler}>
                         <Link href={`/customers?page=${parseInt(page) + 1}`} className="w-full h-full py-2 px-4 flex">
                             Next
                         </Link>

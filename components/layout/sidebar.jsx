@@ -172,27 +172,60 @@ const Sidebar = (props) => {
 					</AccordionBody>
 				</Accordion>
 
-				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
-					<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
-						<FaRegMoneyBillAlt
-							size={26}
-							className={`${!sidebarOpen ? "mx-auto my-3" : ""}`}
-						/>
-					</ListItemPrefix>
-					<span className={`flex-1 text-left whitespace-nowrap ${!sidebarOpen ? 'hidden' : ''}`}>Invoices</span>
-				</ListItem>
-
 				<Accordion
 					open={open === 3}
 					icon={
 						<SlArrowDown
 							fontSize={10}
-							className={`mx-auto h-4 w-4 transition-transform ${open === 2 ? "rotate-180" : ""} ${!sidebarOpen ? " hidden" : ""}`}
+							className={`mx-auto h-4 w-4 transition-transform ${open === 3 ? "rotate-180" : ""} ${!sidebarOpen ? " hidden" : ""}`}
 						/>
 					}
 				>
 					<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 						<AccordionHeader onClick={() => handleOpen(3)} className="border-b-0 py-0 transition-all">
+							<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+								<FaRegMoneyBillAlt
+									size={26}
+									className={`${!sidebarOpen ? "mx-auto my-3" : ""}`}
+								/>
+							</ListItemPrefix>
+							<Typography color="blue-gray" className={classNames({
+								" hidden": !sidebarOpen,
+								"flex-1 text-left whitespace-nowrap": true,
+							})}>
+								Invoices
+							</Typography>
+							<ListItemSuffix className={`${!sidebarOpen ? "ml-0 -mr-4" : ""}`}><span className="hidden">icon</span></ListItemSuffix>
+						</AccordionHeader>
+					</ListItem>
+					<AccordionBody className={classNames({
+						" hidden": !sidebarOpen,
+						"py-2 space-y-2 transition-all duration-300": true,
+					})}>
+						<List className="p-0">
+							<Link className="flex items-center" href="/invoices">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									All Invoices
+								</ListItem>
+							</Link>
+						</List>
+					</AccordionBody>
+				</Accordion>
+
+				<Accordion
+					open={open === 4}
+					icon={
+						<SlArrowDown
+							fontSize={10}
+							className={`mx-auto h-4 w-4 transition-transform ${open === 4 ? "rotate-180" : ""} ${!sidebarOpen ? " hidden" : ""}`}
+						/>
+					}
+				>
+					<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+						<AccordionHeader onClick={() => handleOpen(4)} className="border-b-0 py-0 transition-all">
 							<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 								<SlSettings
 									size={26}
@@ -241,7 +274,7 @@ const Sidebar = (props) => {
 					</AccordionBody>
 				</Accordion>
 
-				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+				{/* <ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 					<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
 						<SlMap
 							size={26}
@@ -249,7 +282,7 @@ const Sidebar = (props) => {
 						/>
 					</ListItemPrefix>
 					<span className={`flex-1 text-left whitespace-nowrap ${!sidebarOpen ? 'hidden' : ''}`}>Map</span>
-				</ListItem>
+				</ListItem> */}
 
 				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100" onClick={logoutHandler}>
 					<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
