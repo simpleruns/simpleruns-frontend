@@ -33,36 +33,40 @@ const generateInvoice = (invoice) => {
                 columns: [
                     {
                         columns: [
-                            {
-                                image: "/assets/img/logo.png",
-                                fit: [100, 100],
-                                aspectRatio: 1,
-                                width: "auto",
-                                height: "auto",
-                                margin: [0, 0, 0, 10],
-                            },
+                            // {
+                            //     image: "public/assets/img/logo.png",
+                            //     fit: [100, 100],
+                            //     aspectRatio: 1,
+                            //     width: "auto",
+                            //     height: "auto",
+                            //     margin: [0, 0, 0, 10],
+                            // },
                             {
                                 text: `ABN: ${invoice.abn}`,
                                 style: "header",
                                 margin: [0, 10, 0, 0],
+                                width: "50%",
                             },
                             {
                                 text: invoice.adminAddress,
                                 style: "header",
                                 margin: [0, 10, 0, 0],
+                                width: "50%",
                             },
                             {
                                 text: `Phone: ${invoice.adminPhone}`,
                                 style: "header",
                                 margin: [0, 10, 0, 0],
+                                width: "50%",
                             },
                             {
                                 text: `Email: ${invoice.adminEmail}`,
                                 style: "header",
                                 margin: [0, 10, 0, 0],
+                                width: "50%",
                             },
                         ],
-                        width: "auto",
+                        width: "66%",
                     },
                     {
                         columns: [
@@ -102,14 +106,14 @@ const generateInvoice = (invoice) => {
                                 margin: [0, 10, 0, 0],
                             },
                         ],
-                        width: "auto",
+                        width: "33%",
                     },
                 ],
             },
             {
                 table: {
                     headerRows: 1,
-                    widths: ["auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
+                    widths: ["*", "*", "auto", "*", "*", "*", "*", "*", "*", "*"],
                     body: [
                         [
                             {
@@ -305,8 +309,7 @@ const generateInvoice = (invoice) => {
         ],
         styles: {
             header: {
-                fontSize: 10,
-                bold: true,
+                fontSize: 8,
                 color: "#000",
             },
             subHeader: {
@@ -341,7 +344,9 @@ const generateInvoice = (invoice) => {
         },
     }
 
-    return pdfMake.createPdf(docDefinition);
+    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+
+    return pdfDocGenerator;
 };
 
 const Invoice = () => {
@@ -351,7 +356,7 @@ const Invoice = () => {
         customerPhone: '02 9756 5631',
         invoiceNumber: '5024',
         abn: '22609607954',
-        adminAddress: '600 Cowpature rd <br/>Hoxton Park, NSW 2171',
+        adminAddress: '600 Cowpature rd Hoxton Park, NSW 2171',
         adminPhone: '0466865383',
         adminEmail: 'james@spinningwheels.com.au',
         adminBank: 'ANZ',
@@ -398,7 +403,6 @@ const Invoice = () => {
 
                 <div className='sm:col-span-1'>
                     <h2 className="block text-4xl font-medium dark:font-medium text-gray-900 dark:text-white mt-2 uppercase text-right">Tax Invoice</h2>
-
 
                     <div className='grid grid-cols-4'>
                         <div className='col-span-1'>
@@ -466,7 +470,7 @@ const Invoice = () => {
                                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
 
                                 return (
-                                    <tr key={row._id}>
+                                    <tr key={"delivery" + index}>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
                                                 {row.date}
@@ -537,10 +541,10 @@ const Invoice = () => {
                     <p>All invoices are payable within 14 days to {invoice.adminCompany}.</p>
                     <p>If you have any questions concerning this invoice please contact.</p>
                     <p>{invoice.adminName} - {invoice.adminPhone}</p>
-                    <p class=" mb-10">Email:{invoice.adminEmail}</p>
+                    <p className=" mb-10">Email:{invoice.adminEmail}</p>
                     <div className='grid grid-cols-12 items-center text-left'>
                         <div className='col-span-3 '>
-                            <p class=" ml-2">Direct<br />Deposit</p>
+                            <p className=" ml-2">Direct<br />Deposit</p>
                         </div>
                         <div className='col-span-9'>
                             <p>Bank:{invoice.adminBank}</p>
@@ -569,7 +573,7 @@ const Invoice = () => {
                 </div>
             </div>
 
-            {/* <button type="submit" className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6 mx-auto flex" onClick={downloadInvoice(pdf)}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button> */}
+            <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6 mx-auto flex" onClick={() => downloadInvoice(pdf)}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
         </div >
     );
 };
