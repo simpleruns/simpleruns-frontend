@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 import { BsArrowRightShort, BsArrowLeftShort } from "react-icons/bs";
 
@@ -7,6 +8,7 @@ import Breadcrumb from "./breadcrumb";
 
 const Layout = (props) => {
 	const [sidebarOpen, setSidebarOpen] = useState(true);
+	const router = useRouter();
 
 	function toggleSidebarHandler(e) {
 		e.preventDefault();
@@ -42,7 +44,7 @@ const Layout = (props) => {
 					</div>
 				</aside>
 
-				<div className={`h-full w-full bg-lightPrimary dark:!bg-navy-700 min-h-screen pb-6 ${sidebarOpen ? "pl-[6rem] lg:pl-[18rem]" : "pl-[6rem]"}`}>
+				<div className={`h-full w-full bg-lightPrimary dark:bg-navy-700 min-h-screen pb-6 ${sidebarOpen ? "pl-[6rem] lg:pl-[18rem]" : "pl-[6rem]"} ${router.pathname.includes('invoices/single') ? "!bg-lightPrimary" : ""}`}>
 					<Breadcrumb />
 
 					<main

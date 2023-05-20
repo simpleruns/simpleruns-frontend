@@ -27,6 +27,7 @@ const CustomerDetail = () => {
                     localRate: res.data.localRate,
                     countryRate: res.data.countryRate,
                     address: res.data.address,
+                    abn: res.data.abn,
                     approved: res.data.approved
                 });
                 setStatus(res.data.approved);
@@ -66,6 +67,9 @@ const CustomerDetail = () => {
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Phone" content={data.phone} />
+                            </div>
+                            <div className="w-full">
+                                <InfoBoxCard title="ABN" content={data.abn} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Rate Type" content={data.rateType} />

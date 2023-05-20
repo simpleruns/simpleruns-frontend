@@ -48,10 +48,10 @@ const Sidebar = (props) => {
 				className={`flex items-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
 				<img
 					src={logo.src}
-					width={1366}
-					height={768}
+					width={80}
+					height={80}
 					style={{ width: 'auto' }}
-					className="h-[40px]" alt="Simpleruns Logo"
+					className="h-[80px]" alt="Simpleruns Logo"
 				/>
 				<Typography variant="h5" className={`self-center text-lg font-semibold whitespace-nowrap dark:text-white text-blue-800 transition ${sidebarOpen ? "" : "!text-xs"}`}>
 					Simpleruns

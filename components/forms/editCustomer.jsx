@@ -44,7 +44,8 @@ const SingleCustomerForm = (props) => {
             localRate: data.localRate,
             countryRate: data.countryRate,
             loadRate: data.loadRate,
-            fuelRate: data.fuelRate
+            fuelRate: data.fuelRate,
+            abn: data.abn
         },
         validationSchema: Yup.object({
             firstname: Yup.string().required('First Name is required'),
@@ -59,6 +60,20 @@ const SingleCustomerForm = (props) => {
             countryRate: Yup.number().required('Country Rate is required'),
             fuelRate: Yup.number().required('Fuel Rate is required'),
             loadRate: Yup.number().required('Load Rate is required'),
+            abn: Yup.string()
+                .matches(/^\d{11}$/, 'ABN must be 11 digits')
+                .test('valid-abn', 'Invalid ABN', (value) => {
+                    if (!value) {
+                        return true;
+                    }
+                    const weights = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
+                    const abn = value.replace(/\D/g, '');
+                    const sum = weights.reduce((acc, weight, index) => {
+                        const digit = parseInt(abn.charAt(index), 10);
+                        return acc + (digit * weight);
+                    }, 0);
+                    return sum % 89 === 0;
+                }),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
 
@@ -78,6 +93,7 @@ const SingleCustomerForm = (props) => {
                     formData.append('fuelRate', values.fuelRate);
                     formData.append('loadRate', values.loadRate);
                     formData.append('approved', checked);
+                    formData.append('abn', values.abn);
                     photo && formData.append('photo', photo, photo.name);
 
                     var changedData = `name: ${values.firstname + ' ' + values.lastname}, email: ${values.email}, phone: ${values.phone}${values.resetPassword ? ', password: ' : ''}${values.resetPassword ? values.password : ''}, year: ${values.year}, numberPlate: ${values.numberPlate}, VIN: ${values.VIN}, approved: ${checked}`
@@ -285,7 +301,7 @@ const SingleCustomerForm = (props) => {
                             </div>
                         </>
                 }
-                <div className="sm:col-span-2">
+                <div className="w-full">
                     <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -299,6 +315,23 @@ const SingleCustomerForm = (props) => {
                     />
                     {formik.touched.address && formik.errors.address ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.address}</div>
+                    ) : null}
+                </div>
+
+                <div className="w-full">
+                    <label htmlFor="abn" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ABN</label>
+                    <input
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="number"
+                        name="abn"
+                        id="abn"
+                        value={formik.values.abn}
+                        placeholder={formik.values.abn}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.abn && formik.errors.abn ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.abn}</div>
                     ) : null}
                 </div>
 

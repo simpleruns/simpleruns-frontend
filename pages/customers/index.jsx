@@ -46,6 +46,7 @@ const headers = [
     // { text: 'Documents', key: 'documents' },
     { text: 'Email', key: 'email' },
     { text: 'Phone', key: 'phone' },
+    { text: 'ABN', key: 'abn' },
     { text: 'Rate Type', key: 'rateType' },
     { text: 'Load Rate', key: 'loadRate' },
     { text: 'Fuel Rate', key: 'fuelRate' },
@@ -240,6 +241,11 @@ export default function Customers() {
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
                                                 {row.phone}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-normal">
+                                                {row.abn}
                                             </Typography>
                                         </td>
                                         <td className={classes}>

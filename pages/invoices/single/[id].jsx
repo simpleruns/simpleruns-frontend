@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
-import { Typography, Button } from '@material-tailwind/react';
+import { Typography } from '@material-tailwind/react';
 import { ArrowDownIcon } from "@heroicons/react/24/solid";
+
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 const headers = [
@@ -19,6 +20,8 @@ const headers = [
 ];
 
 const generateInvoice = (invoice) => {
+    var base64Image;
+
     const subTotal = () => {
         var value = 0;
         invoice.invoiceData.forEach((item) => {
@@ -27,84 +30,134 @@ const generateInvoice = (invoice) => {
         return value;
     }
 
+    const logo = () => {
+        base64Image = document && getBase64Image(document.getElementById("imageid"));
+        return {
+            image: `${base64Image}`,
+            margin: [0, 0, 0, 0],
+            fit: ['auto', 50],
+        }
+    }
+
+    function getBase64Image(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL.replace(/^data:image\/(png|jpg);base64Image,/, "");
+    }
+
     const docDefinition = {
         content: [
             {
                 columns: [
                     {
-                        columns: [
-                            // {
-                            //     image: "public/assets/img/logo.png",
-                            //     fit: [100, 100],
-                            //     aspectRatio: 1,
-                            //     width: "auto",
-                            //     height: "auto",
-                            //     margin: [0, 0, 0, 10],
-                            // },
-                            {
-                                text: `ABN: ${invoice.abn}`,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                                width: "50%",
-                            },
-                            {
-                                text: invoice.adminAddress,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                                width: "50%",
-                            },
-                            {
-                                text: `Phone: ${invoice.adminPhone}`,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                                width: "50%",
-                            },
-                            {
-                                text: `Email: ${invoice.adminEmail}`,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                                width: "50%",
-                            },
-                        ],
                         width: "66%",
+                        stack: [
+                            logo(),
+                            {
+                                text: [
+                                    {
+                                        text: `ABN: ${invoice.abn}\n`,
+                                        style: "subHeader",
+                                    },
+                                    {
+                                        text: `${invoice.adminAddress}\n`,
+                                        style: "subHeader",
+                                    },
+                                    {
+                                        text: `Phone: ${invoice.adminPhone}\n`,
+                                        style: "subHeader",
+                                    },
+                                    {
+                                        text: `Email: ${invoice.adminEmail}\n`,
+                                        style: "subHeader",
+                                    },
+                                ]
+                            }
+                        ],
                     },
                     {
-                        columns: [
+                        stack: [
                             {
-                                text: "Tax Invoice",
-                                style: "header",
-                                margin: [0, 10, 0, 0],
+                                text: [
+                                    {
+                                        text: `Tax Invoice`,
+                                        style: "header",
+                                        bold: true,
+                                    },
+                                ],
                             },
                             {
-                                text: `Date: ${invoice.date}`,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                            },
-                            {
-                                text: `Invoice #: ${invoice.invoiceNumber}`,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                            },
-                            {
-                                text: "For:\nTransport Services Provided\nTransport Division",
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                            },
-                            {
-                                text: `${invoice.customerName}\nTransport Division`,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                            },
-                            {
-                                text: invoice.customerAddress,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                            },
-                            {
-                                text: invoice.customerPhone,
-                                style: "header",
-                                margin: [0, 10, 0, 0],
-                            },
+                                columns: [
+                                    {
+                                        width: '25%',
+                                        text: [
+                                            {
+                                                text: `Date: \n`,
+                                                style: "subHeader",
+                                                bold: true,
+                                            },
+                                            {
+                                                text: `Invoice #: \n`,
+                                                style: "subHeader",
+                                                bold: true,
+                                            },
+                                            {
+                                                text: "For: \n\n",
+                                                style: "subHeader",
+                                                bold: true,
+                                            },
+                                            {
+                                                text: `Bill To: \n\n`,
+                                                style: "subHeader",
+                                                bold: true,
+                                            },
+                                            {
+                                                text: `Address: \n\n`,
+                                                style: "subHeader",
+                                                bold: true,
+                                            },
+                                            {
+                                                text: `Phone: \n`,
+                                                style: "subHeader",
+                                                bold: true,
+                                            },
+                                        ]
+                                    },
+                                    {
+                                        width: '75%',
+                                        text: [
+                                            {
+                                                text: `${invoice.date}\n`,
+                                                style: "subHeader",
+                                            },
+                                            {
+                                                text: `${invoice.invoiceNumber}\n`,
+                                                style: "subHeader",
+                                            },
+                                            {
+                                                text: "Transport Services Provided\nTransport Division\n",
+                                                style: "subHeader",
+                                            },
+                                            {
+                                                text: `${invoice.customerName}\nTransport Division\n`,
+                                                style: "subHeader",
+                                            },
+                                            {
+                                                text: `${invoice.customerAddress}\n`,
+                                                style: "subHeader",
+                                            },
+                                            {
+                                                text: `${invoice.customerPhone}\n`,
+                                                style: "subHeader",
+                                            },
+                                        ]
+                                    }
+                                ],
+                            }
                         ],
                         width: "33%",
                     },
@@ -113,7 +166,7 @@ const generateInvoice = (invoice) => {
             {
                 table: {
                     headerRows: 1,
-                    widths: ["*", "*", "auto", "*", "*", "*", "*", "*", "*", "*"],
+                    widths: ["auto", "auto", "*", "auto", "auto", "auto", "auto", "auto", "auto", "auto"],
                     body: [
                         [
                             {
@@ -178,7 +231,7 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.tolls,
+                                        text: `$${row.tolls}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -188,27 +241,27 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.rate,
+                                        text: `$${row.rate}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.fuel,
+                                        text: `$${row.fuel}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.subTotal,
+                                        text: `$${row.subTotal}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.gst,
+                                        text: `$${row.gst}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.total,
+                                        text: `$${row.total}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -231,115 +284,143 @@ const generateInvoice = (invoice) => {
             {
                 columns: [
                     {
-                        text: `All invoices are payable within 14 days to ${invoice.adminCompany}.`,
-                        style: "subHeader",
-                        margin: [0, 10, 0, 0],
+                        stack: [
+                            {
+                                text: [
+                                    {
+                                        text: `All invoices are payable within 14 days to ${invoice.adminCompany}.\n`,
+                                        style: "subHeader",
+                                        alignment: 'center',
+                                        margin: [0, 10, 0, 10],
+                                    },
+                                    {
+                                        text: `${invoice.adminName} - ${invoice.adminPhone}\nEmail: ${invoice.adminEmail}\n`,
+                                        style: "subHeader",
+                                        alignment: 'center',
+                                        margin: [0, 10, 0, 10],
+                                    },
+                                ]
+                            },
+                            {
+                                columns: [
+                                    {
+                                        text: "Direct\nDeposit\n",
+                                        style: "subHeader",
+                                        margin: [5, 5, 5, 5],
+                                        width: "50%",
+                                        alignment: "right",
+                                    },
+                                    {
+                                        text: `Bank: ${invoice.adminBank}\nAccountName: ${invoice.adminName}\nBSB: ${invoice.adminBSB}\nAccount No: ${invoice.adminAccountNo}\n`,
+                                        style: "subHeader",
+                                        margin: [5, 5, 5, 5],
+                                        width: "50%",
+                                        alignment: "left",
+                                    },
+                                ]
+                            }
+                        ],
+                        width: "60%",
+                        margin: [0, 0, 0, 0],
                     },
                     {
-                        text: `${invoice.adminName} - ${invoice.adminPhone}\nEmail: ${invoice.adminEmail}`
-                        ,
-                        style: "subHeader",
-                        margin: [0, 10, 0, 0],
-                    },
-                ],
-                margin: [0, 10, 0, 10],
-            },
-            {
-                columns: [
-                    {
-                        text: "Direct\nDeposit",
-                        style: "subHeader",
-                        margin: [0, 10, 0, 0],
+                        columns: [
+                        ],
+                        width: "15%",
+                        margin: [0, 0, 0, 0],
                     },
                     {
-                        text: `Bank: ${invoice.adminBank}\nAccountName: ${invoice.adminName}\nBSB: ${invoice.adminBSB} Account No: ${invoice.adminAccountNo}`,
-                        style: "subHeader",
-                        margin: [0, 10, 0, 0],
+                        table: {
+                            widths: ["*", "auto"],
+                            body: [
+                                [
+                                    {
+                                        text: "SUBTOTAL",
+                                        style: "tableFooter",
+                                    },
+                                    {
+                                        text: `$${subTotal()}`,
+                                        style: "tableFooter",
+                                    },
+                                ],
+                                [
+                                    {
+                                        text: "GST",
+                                        style: "tableFooter",
+                                    },
+                                    {
+                                        text: `$${(subTotal() * 0.1).toFixed(2)}`,
+                                        style: "tableFooter",
+                                    },
+                                ],
+                                [
+                                    {
+                                        text: "TOTAL",
+                                        style: "tableFooterBold",
+                                    },
+                                    {
+                                        text: `$${(subTotal() * 1.1).toFixed(2)}`,
+                                        style: "tableFooterBold",
+                                    },
+                                ],
+                                [
+                                    {
+                                        text: "The Total price includes GST",
+                                        style: "subHeader",
+                                        colSpan: 2,
+                                        margin: [0, 10, 0, 0],
+                                    },
+                                    {},
+                                ],
+                            ],
+                        },
+                        width: "25%",
+                        alignment: "right",
+                        margin: [0, 0, 0, 0],
                     },
-                ],
-                margin: [0, 10, 0, 10],
-            },
-            {
-                table: {
-                    widths: ["auto", "auto"],
-                    body: [
-                        [
-                            {
-                                text: "SUBTOTAL",
-                                style: "tableFooter",
-                            },
-                            {
-                                text: `$${subTotal()}`,
-                                style: "tableFooter",
-                            },
-                        ],
-                        [
-                            {
-                                text: "GST",
-                                style: "tableFooter",
-                            },
-                            {
-                                text: `$${(subTotal() * 0.1).toFixed(2)}`,
-                                style: "tableFooter",
-                            },
-                        ],
-                        [
-                            {
-                                text: "TOTAL",
-                                style: "tableFooterBold",
-                            },
-                            {
-                                text: `$${(subTotal() * 1.1).toFixed(2)}`,
-                                style: "tableFooterBold",
-                            },
-                        ],
-                        [
-                            {
-                                text: "The Total price includes GST",
-                                style: "subHeader",
-                                colSpan: 2,
-                                margin: [0, 10, 0, 0],
-                            },
-                            {},
-                        ],
-                    ],
-                },
-                margin: [0, 10, 0, 10],
-            },
+                ]
+            }
         ],
         styles: {
             header: {
-                fontSize: 8,
+                fontSize: 20,
                 color: "#000",
+                bold: true,
+                margin: [10, 10, 10, 10],
             },
             subHeader: {
                 fontSize: 8,
                 color: "#000",
+                margin: [20, 10, 20, 10],
             },
             tableHeader: {
                 fontSize: 8,
                 bold: true,
                 color: "#000",
                 fillColor: "#f2f2f2",
-                margin: [0, 5, 0, 5],
+                margin: [5, 5, 5, 5],
+                alignment: 'center',
             },
             tableRow: {
                 fontSize: 8,
                 color: "#000",
-                margin: [0, 5, 0, 5],
+                margin: [5, 5, 5, 5],
+                alignment: 'center',
             },
             tableFooter: {
                 fontSize: 8,
                 bold: true,
                 color: "#000",
-                margin: [0, 5, 0, 5],
+                margin: [5, 5, 5, 5],
+                alignment: 'center',
             },
             tableFooterBold: {
                 fontSize: 8,
                 bold: true,
                 color: "#000",
                 fillColor: "#f2f2f2",
-                margin: [0, 5, 0, 5],
+                margin: [5, 5, 5, 5],
+                alignment: 'center',
             },
         },
     }
@@ -381,82 +462,81 @@ const Invoice = () => {
         return value;
     }
 
-    const pdf = generateInvoice(invoice);
-
-    const downloadInvoice = pdf => {
+    const downloadInvoice = () => {
+        const pdf = generateInvoice(invoice);
         pdf.download();
     };
 
     return (
-        <div className='font-sans text-gray-900 dark:text-white font-medium dark:font-medium'>
+        <div className='font-sans text-gray-900 font-medium'>
             <div className="grid grid-cols-3 gap-2">
                 <div className='sm:col-span-2'>
-                    <img className="aspect-video h-[8rem]" src="/assets/img/logo.png" alt='logo' height={100} width="auto" />
-                    <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
+                    <img className="h-[8rem]" id="imageid" src="/assets/img/logo.png" alt='logo' height={80} width="auto" />
+                    <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
 
-                    <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2" dangerouslySetInnerHTML={{ __html: invoice.adminAddress }}></h4>
-                    <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Phone: {invoice.adminPhone
+                    <h4 className="block text-sm font-medium text-gray-900 mt-2" dangerouslySetInnerHTML={{ __html: invoice.adminAddress }}></h4>
+                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone: {invoice.adminPhone
                     }</h4>
-                    <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Email: {invoice.adminEmail
+                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Email: {invoice.adminEmail
                     }</h4>
                 </div>
 
                 <div className='sm:col-span-1'>
-                    <h2 className="block text-4xl font-medium dark:font-medium text-gray-900 dark:text-white mt-2 uppercase text-right">Tax Invoice</h2>
+                    <h2 className="block text-4xl font-medium text-gray-900 mt-2 uppercase text-right">Tax Invoice</h2>
 
                     <div className='grid grid-cols-4'>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Date:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Date:</h4>
                         </div>
                         <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2 text-right">{invoice.date
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2 text-right">{invoice.date
                             }</h4>
                         </div>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Invoice #:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Invoice #:</h4>
                         </div>
                         <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">{invoice.invoiceNumber}</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.invoiceNumber}</h4>
                         </div>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">For:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">For:</h4>
                         </div>
                         <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Transport Services Provided<br />Transport Division</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Transport Services Provided<br />Transport Division</h4>
                         </div>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Bill To:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Bill To:</h4>
                         </div>
                         <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">{invoice.customerName}<br />Transport Division</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerName}<br />Transport Division</h4>
                         </div>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Address:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Address:</h4>
                         </div>
                         <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">{invoice.customerAddress}</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerAddress}</h4>
                         </div>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">Phone:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone:</h4>
                         </div>
                         <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium dark:font-medium text-gray-900 dark:text-white mt-2">{invoice.customerPhone}</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerPhone}</h4>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div className="overflow-x-scroll custom-scroller px-0 border-b-2 border-solid border-gray-800 dark:border-white mt-4">
+            <div className="overflow-x-scroll custom-scroller px-0 border-b-2 border-solid border-gray-800 mt-4">
                 <table className="mt-4 w-full min-w-max table-auto text-left mb-40">
                     <thead>
-                        <tr className='border-gray-700 dark:border-white border-solid border-y-2 px-0'>
+                        <tr className='border-dark border-solid border-y-2 px-0'>
                             {headers.map((head) => (
                                 <th
                                     key={head.key}
                                     className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
                                 >
                                     <h3
-                                        className="flex items-center justify-between gap-2 text-sm font-semibold dark:font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity"
+                                        className="flex items-center justify-between gap-2 text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity"
                                         dangerouslySetInnerHTML={{ __html: head.text }}
                                     ></h3>
                                 </th>
@@ -472,52 +552,52 @@ const Invoice = () => {
                                 return (
                                     <tr key={"delivery" + index}>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.date}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.ref}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.description}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.tolls}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.hours}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.rate}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.fuel}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.subTotal}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.gst}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium dark:font-medium">
+                                            <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.total}
                                             </Typography>
                                         </td>
@@ -526,7 +606,7 @@ const Invoice = () => {
                             }) :
                                 <tr>
                                     <td>
-                                        <Typography variant="small" color="blue-gray" className="font-semibold dark:font-medium py-10 px-4">
+                                        <Typography variant="small" color="blue-gray" className="font-semibold py-10 px-4">
                                             No Invoices to show...
                                         </Typography>
                                     </td>
@@ -537,7 +617,7 @@ const Invoice = () => {
             </div>
 
             <div className='grid grid-cols-12 mt-4'>
-                <div className='col-span-7 text-center font-medium dark:font-medium'>
+                <div className='col-span-7 text-center font-medium'>
                     <p>All invoices are payable within 14 days to {invoice.adminCompany}.</p>
                     <p>If you have any questions concerning this invoice please contact.</p>
                     <p>{invoice.adminName} - {invoice.adminPhone}</p>
@@ -555,25 +635,25 @@ const Invoice = () => {
                 </div>
                 <div className='col-span-2'></div>
                 <div className='col-span-3'>
-                    <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800 dark:border-white'>
+                    <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
                         <span>SUBTOTAL</span>
                         <span>${subTotal()}</span>
                     </div>
-                    <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800 dark:border-white'>
+                    <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
                         <span>GST</span>
                         <span>${(subTotal() * 0.1).toFixed(2)}</span>
                     </div>
-                    <div className=' flex justify-between px-2 py-2 bg-gray-200  dark:bg-gray-900  border-b border-solid border-gray-800 dark:border-white '>
-                        <span className='font-semibold dark:font-medium'>TOTAL</span>
-                        <span className='font-semibold dark:font-medium'>${(subTotal() * 1.1).toFixed(2)}</span>
+                    <div className=' flex justify-between px-2 py-2 bg-gray-200 border-b border-solid border-gray-800 '>
+                        <span className='font-semibold'>TOTAL</span>
+                        <span className='font-semibold'>${(subTotal() * 1.1).toFixed(2)}</span>
                     </div>
                     <div className=' flex justify-center px-2 py-2 '>
-                        <span className=' font-semibold dark:font-medium'>The Total price includes GST</span>
+                        <span className=' font-semibold'>The Total price includes GST</span>
                     </div>
                 </div>
             </div>
 
-            <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6 mx-auto flex" onClick={() => downloadInvoice(pdf)}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
+            <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6 mx-auto flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
         </div >
     );
 };
