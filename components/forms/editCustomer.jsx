@@ -52,7 +52,7 @@ const SingleCustomerForm = (props) => {
             lastname: Yup.string().required('Last Name is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
             phone: Yup.string()
-                .matches(/^(\+61|0)[2-4785]\d{8}$/, 'Invalid phone number')
+                .matches(/^(\+61|0)[2-478]\d{8}$/, 'Invalid phone number')
                 .required('Phone number is required'),
             address: Yup.string().required('Address is required'),
             rateType: Yup.string().required('Please select an option'),
