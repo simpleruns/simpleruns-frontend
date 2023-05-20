@@ -17,8 +17,7 @@ const CustomerDetail = () => {
             .then((res) => {
                 setData({
                     photo: res.data.photo,
-                    firstname: res.data.firstname,
-                    lastname: res.data.lastname,
+                    companyName: res.data.companyName,
                     email: res.data.email,
                     phone: res.data.phone,
                     rateType: res.data.rateType,
@@ -59,17 +58,17 @@ const CustomerDetail = () => {
                                 </div>
                             </div>
 
-                            <div className="w-full">
-                                <InfoBoxCard title="Name" content={data.firstname + ' ' + data.lastname} />
+                            <div className="sm:col-span-2">
+                                <InfoBoxCard title="Company Name" content={data.companyName} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="Email" content={data.email} />
+                                <InfoBoxCard title="Company Email" content={data.email} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="Phone" content={data.phone} />
+                                <InfoBoxCard title="Company Phone" content={data.phone} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="ABN" content={data.abn} />
+                                <InfoBoxCard title="Company ABN" content={data.abn} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Rate Type" content={data.rateType} />
@@ -87,7 +86,7 @@ const CustomerDetail = () => {
                                 <InfoBoxCard title="Country Rate" content={data.countryRate} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="Address" content={data.address} />
+                                <InfoBoxCard title="Company Address" content={data.address} />
                             </div>
                             <div className="sm:col-span-2">
                                 {

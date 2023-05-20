@@ -43,21 +43,21 @@ const Sidebar = (props) => {
 	}
 
 	return (
-		<Card className={`fixed h-full px-3 pt-10 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-800 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
+		<Card className={`fixed h-full px-3 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-800 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
 			<Link href="/"
-				className={`flex items-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
+				className={`flex items-center justify-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
 				<img
 					src={logo.src}
-					width={80}
-					height={80}
+					width={200}
+					height={200}
 					style={{ width: 'auto' }}
-					className="h-[80px]" alt="Simpleruns Logo"
+					className={sidebarOpen ? 'h-[200px]' : 'h-[80px]'} alt="Simpleruns Logo"
 				/>
-				<Typography variant="h5" className={`self-center text-lg font-semibold whitespace-nowrap dark:text-white text-blue-800 transition ${sidebarOpen ? "" : "!text-xs"}`}>
+				{/* <Typography variant="h5" className={`self-center text-lg font-semibold whitespace-nowrap dark:text-white text-blue-800 transition ${sidebarOpen ? "" : "!text-xs"}`}>
 					Simpleruns
-				</Typography>
+				</Typography> */}
 			</Link>
-			<List className={`space-y-2 mt-10 mb-10 p-0 ${sidebarOpen ? "!min-w-[16.5rem]" : "!min-w-[4.5rem]"}`}>
+			<List className={`space-y-2 mb-10 p-0 ${sidebarOpen ? "!min-w-[16.5rem]" : "!min-w-[4.5rem]"}`}>
 				<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 					<Link className={`flex items-center ${!sidebarOpen ? "mx-auto" : ""}`} href="/">
 						<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>

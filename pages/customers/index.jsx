@@ -42,17 +42,17 @@ const TABS = [
 
 const headers = [
     { text: 'Image', key: 'image' },
-    { text: 'Name', key: 'firstname' },
+    { text: 'Company Name', key: 'companyName' },
     // { text: 'Documents', key: 'documents' },
-    { text: 'Email', key: 'email' },
-    { text: 'Phone', key: 'phone' },
-    { text: 'ABN', key: 'abn' },
+    { text: 'Company Email', key: 'email' },
+    { text: 'Company Phone', key: 'phone' },
+    { text: 'Company ABN', key: 'abn' },
     { text: 'Rate Type', key: 'rateType' },
     { text: 'Load Rate', key: 'loadRate' },
     { text: 'Fuel Rate', key: 'fuelRate' },
     { text: 'Local Rate', key: 'localRate' },
     { text: 'Country Rate', key: 'countryRate' },
-    { text: 'Address', key: 'address' },
+    { text: 'Company Address', key: 'address' },
     { text: 'Status', key: 'approved' },
     { text: 'Actions', key: 'actions' }
 ];
@@ -227,7 +227,7 @@ export default function Customers() {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-normal">
-                                                {row.firstname + ' ' + row.lastname}
+                                                {row.companyName}
                                             </Typography>
                                         </td>
                                         {/* <td className={classes}>

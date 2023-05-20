@@ -15,8 +15,7 @@ const CustomerEdit = () => {
             .then((res) => {
                 setData({
                     photo: res.data.photo,
-                    firstname: res.data.firstname,
-                    lastname: res.data.lastname,
+                    companyName: res.data.companyName,
                     email: res.data.email,
                     phone: res.data.phone,
                     address: res.data.address,

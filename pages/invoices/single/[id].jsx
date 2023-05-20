@@ -35,7 +35,7 @@ const generateInvoice = (invoice) => {
         return {
             image: `${base64Image}`,
             margin: [0, 0, 0, 0],
-            fit: ['auto', 50],
+            fit: ['auto', 100],
         }
     }
 
@@ -471,7 +471,7 @@ const Invoice = () => {
         <div className='font-sans text-gray-900 font-medium'>
             <div className="grid grid-cols-3 gap-2">
                 <div className='sm:col-span-2'>
-                    <img className="h-[8rem]" id="imageid" src="/assets/img/logo.png" alt='logo' height={80} width="auto" />
+                    <img className="h-[10rem]" id="imageid" src="/assets/img/logo.png" alt='logo' height={100} width="auto" />
                     <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
 
                     <h4 className="block text-sm font-medium text-gray-900 mt-2" dangerouslySetInnerHTML={{ __html: invoice.adminAddress }}></h4>

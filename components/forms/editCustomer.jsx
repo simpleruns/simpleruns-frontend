@@ -34,7 +34,7 @@ const SingleCustomerForm = (props) => {
 
     const formik = useFormik({
         initialValues: {
-            firstname: data.firstname,
+            companyName: data.companyName,
             lastname: data.lastname,
             email: data.email,
             phone: data.phone,
@@ -48,7 +48,7 @@ const SingleCustomerForm = (props) => {
             abn: data.abn
         },
         validationSchema: Yup.object({
-            firstname: Yup.string().required('First Name is required'),
+            companyName: Yup.string().required('First Name is required'),
             lastname: Yup.string().required('Last Name is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
             phone: Yup.string()
@@ -82,8 +82,7 @@ const SingleCustomerForm = (props) => {
                 alert("You didn'nt uploaded customer user image.");
             else {
                 try {
-                    formData.append('firstname', values.firstname);
-                    formData.append('lastname', values.lastname);
+                    formData.append('companyName', values.companyName);
                     formData.append('email', values.email);
                     formData.append('phone', values.phone);
                     formData.append('address', values.address);
@@ -96,7 +95,7 @@ const SingleCustomerForm = (props) => {
                     formData.append('abn', values.abn);
                     photo && formData.append('photo', photo, photo.name);
 
-                    var changedData = `name: ${values.firstname + ' ' + values.lastname}, email: ${values.email}, phone: ${values.phone}${values.resetPassword ? ', password: ' : ''}${values.resetPassword ? values.password : ''}, year: ${values.year}, numberPlate: ${values.numberPlate}, VIN: ${values.VIN}, approved: ${checked}`
+                    var changedData = `name: ${values.companyName}, email: ${values.email}, phone: ${values.phone}${values.resetPassword ? ', password: ' : ''}${values.resetPassword ? values.password : ''}, year: ${values.year}, numberPlate: ${values.numberPlate}, VIN: ${values.VIN}, approved: ${checked}`
                     alert(`You changed customer detail as ${changedData}`)
                     await saveEditedCustomer(formData);
                     setSuccess(true);
@@ -156,38 +155,23 @@ const SingleCustomerForm = (props) => {
                     </div>
                 </div>
 
-                <div className="w-full">
-                    <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+                <div className="sm:col-span-2">
+                    <label htmlFor="companyName" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
-                        name="firstname"
-                        id="firstname"
-                        value={formik.values.firstname}
-                        placeholder={formik.values.firstname}
+                        name="companyName"
+                        id="companyName"
+                        value={formik.values.companyName}
+                        placeholder={formik.values.companyName}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur} />
-                    {formik.touched.firstname && formik.errors.firstname ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.firstname}</div>
+                    {formik.touched.companyName && formik.errors.companyName ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.companyName}</div>
                     ) : null}
                 </div>
                 <div className="w-full">
-                    <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                    <input
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        type="text"
-                        name="lastname"
-                        id="lastname"
-                        value={formik.values.lastname}
-                        placeholder={formik.values.lastname}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur} />
-                    {formik.touched.lastname && formik.errors.lastname ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.lastname}</div>
-                    ) : null}
-                </div>
-                <div className="w-full">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Email</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
@@ -203,7 +187,7 @@ const SingleCustomerForm = (props) => {
                     ) : null}
                 </div>
                 <div className="w-full">
-                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
+                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Phone</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
@@ -302,7 +286,7 @@ const SingleCustomerForm = (props) => {
                         </>
                 }
                 <div className="w-full">
-                    <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                    <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
@@ -319,7 +303,7 @@ const SingleCustomerForm = (props) => {
                 </div>
 
                 <div className="w-full">
-                    <label htmlFor="abn" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">ABN</label>
+                    <label htmlFor="abn" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company ABN</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="number"
