@@ -11,6 +11,7 @@ import { useAtom } from "jotai";
 import { authorizationAtom } from "helpers/authorize";
 
 import SettingColor from "../components/settingColor";
+import PageOverlay from 'components/layout/overlay';
 
 function MyApp({ Component, pageProps }) {
 	const [authorized, _] = useAtom(authorizationAtom);
@@ -30,6 +31,7 @@ function MyApp({ Component, pageProps }) {
 	return (
 		<CookiesProvider>
 			<ThemeProvider>
+				<PageOverlay />
 				{
 					layout ? <Component {...pageProps} /> :
 						<Layout>
