@@ -34,17 +34,20 @@ const generateInvoice = (invoice) => {
         base64Image = document && getBase64Image(document.getElementById("imageid"));
         return {
             image: `${base64Image}`,
-            margin: [0, 0, 0, 0],
-            fit: ['auto', 100],
+            margin: [0, 0, 0, 40],
+            height: 30,
+            fit: ['auto', 30],
         }
     }
 
     function getBase64Image(img) {
         var canvas = document.createElement("canvas");
-        canvas.width = img.width;
-        canvas.height = img.height;
+        // canvas.width = img.width;
+        // canvas.height = img.height;
+        canvas.width = (img.width * 40) / img.height;
+        canvas.height = 40;
         var ctx = canvas.getContext("2d");
-        ctx.drawImage(img, 0, 0);
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
         var dataURL = canvas.toDataURL("image/png");
         return dataURL.replace(/^data:image\/(png|jpg);base64Image,/, "");
     }
@@ -464,14 +467,14 @@ const Invoice = () => {
 
     const downloadInvoice = () => {
         const pdf = generateInvoice(invoice);
-        pdf.download();
+        pdf.download(`Invoice-${invoice.invoiceNumber}.pdf`);
     };
 
     return (
         <div className='font-sans text-gray-900 font-medium'>
             <div className="grid grid-cols-3 gap-2">
                 <div className='sm:col-span-2'>
-                    <img className="h-[10rem]" id="imageid" src="/assets/img/logo.png" alt='logo' height={100} width="auto" />
+                    <img className="h-[3rem] my-[3rem]" id="imageid" src="/assets/img/invoice.png" alt='logo' height={100} width="auto" />
                     <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
 
                     <h4 className="block text-sm font-medium text-gray-900 mt-2" dangerouslySetInnerHTML={{ __html: invoice.adminAddress }}></h4>
@@ -493,7 +496,7 @@ const Invoice = () => {
                             }</h4>
                         </div>
                         <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Invoice #:</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Invoice-#:</h4>
                         </div>
                         <div className='col-span-3'>
                             <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.invoiceNumber}</h4>

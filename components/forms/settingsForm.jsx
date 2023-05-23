@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useFormik } from 'formik';
 import Link from "next/link";
@@ -7,23 +7,23 @@ import * as Yup from 'yup';
 
 import { instance } from 'helpers/axios';
 
-import { useEffect } from "react";
+import invoiceImage from "public/assets/img/invoice.png";
 
 const settingsForm = (props) => {
-    const { data, id } = props;
-    const [logo, setlogo] = useState(null);
-    const [imageDataUrl, setImageDataUrl] = useState(data.logo.url);
-
+    const { data, user } = props;
     const router = useRouter();
+    const [logo, setlogo] = useState(null);
+    const [imageDataUrl, setImageDataUrl] = useState(data.logo == undefined ? null : data.logo.url);
 
     useEffect(() => {
         handleLogoSelect(data.logo);
     }, []);
 
     async function handleLogoSelect(data) {
-        const blob = data.url ? await loadFile(data.url) : await loadFile('public/assets/img/logo.png');
-        const newFile = new File([blob], 'Avatar', { type: data.type });
+        const blob = data ? await loadFile(data.url) : await loadFile(invoiceImage.src);
+        const newFile = new File([blob], 'logo.png', { type: data ? data.type : 'image/png' });
         setlogo(newFile);
+        !data || data.logo ? setImageDataUrl(invoiceImage.src) : '';
     }
 
     async function loadFile(filePath) {
@@ -34,22 +34,26 @@ const settingsForm = (props) => {
 
     const formik = useFormik({
         initialValues: {
-            logo: data.logo,
             bank: data.bank,
             address: data.address,
             bsb: data.bsb,
             accountNo: data.accountNo,
             company: data.company,
+            api: data.api,
         },
         validationSchema: Yup.object({
             bank: Yup.string().required('Bank Name is required'),
             address: Yup.string().required('Address is required'),
-            bsb: Yup.string().matches(/^\d{3}-\d{3}$/)
+            bsb: Yup.string().matches(/^\d{3}-\d{3}$/, 'Invalid BSB')
                 .required('BSB is required'),
-            accountNo: Yup.string().matches(/^\d{6}$/)
+            accountNo: Yup.string().matches(/^\d{9}$/, 'Invalid account number')
                 .required('Account number is required'),
             company: Yup.string()
                 .required('Company Name is required'),
+            api: Yup.string().min(39, 'API key must be at least 39 characters long').test('is-api-key', 'Invalid API key', (value) => {
+                const apiKeyRegex = /^[A-Za-z0-9-_]{39}$/;
+                return apiKeyRegex.test(value);
+            })
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();
@@ -61,8 +65,9 @@ const settingsForm = (props) => {
                     formData.append('bank', values.bank);
                     formData.append('address', values.address);
                     formData.append('bsb', values.bsb);
-                    formData.append('accountNo', accountNo);
+                    formData.append('accountNo', values.accountNo);
                     formData.append('company', values.company);
+                    formData.append('api', values.api);
 
                     await saveEditedSettings(formData);
                     setSuccess(true);
@@ -76,9 +81,8 @@ const settingsForm = (props) => {
     });
 
     const saveEditedSettings = async (data) => {
-        instance.put(`/settings/user`, data)
+        instance.put(`/settings/user/${user}`, data)
             .then((res) => {
-                console.log(res.data);
                 res.status == 200 && router.push('/settings');
             }).catch(error => {
                 console.log(error.message);
@@ -108,7 +112,7 @@ const settingsForm = (props) => {
 
                     <div className="flex items-center w-full flex-wrap">
                         {
-                            imageDataUrl && <img className="mr-4 rounded-full w-[10rem] object-cover mb-2" src={imageDataUrl} width={80} height={80} alt="Driver logo" />
+                            imageDataUrl && <img className="mr-4 h-[3rem] object-cover mb-2" src={imageDataUrl} width="auto" height={80} alt="Driver logo" />
                         }
                         <div className="mb-2">
                             <label className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 w-full dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500 cursor-pointer flex items-center">
@@ -202,11 +206,27 @@ const settingsForm = (props) => {
                     ) : null}
                 </div>
 
+                <div className="w-full">
+                    <label htmlFor="api" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Google Map API key</label>
+                    <input
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="text"
+                        name="api"
+                        id="api"
+                        value={formik.values.api}
+                        placeholder={formik.values.api}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.api && formik.errors.api ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.api}</div>
+                    ) : null}
+                </div>
             </div>
 
             <button type="submit" className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" disabled={logo ? false : true}>Save</button>
 
-            <Link href="/drivers">
+            <Link href="/">
                 <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 opacity-90">Back</button>
             </Link>
         </form>

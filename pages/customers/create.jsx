@@ -18,7 +18,7 @@ const CustomerCreate = () => {
         initialValues: {
             companyName: "Advanced Precast",
             email: "your@email.com",
-            phone: "+61123456789",
+            phone: "+61234567890",
             address: "",
             rateType: "hourly",
             localRate: 115,
@@ -31,7 +31,7 @@ const CustomerCreate = () => {
             companyName: Yup.string().required('Company Name is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
             phone: Yup.string()
-                .matches(/^(\+61|0)[2-478]\d{8}$/, 'Invalid phone number')
+                .matches(/^(?:\+61|0)[2-478](?:[ -]?[0-9]){8}$/, 'Invalid phone number')
                 .required('Phone number is required'),
             address: Yup.string().required('Address is required'),
             rateType: Yup.string().required('Please select an option'),
@@ -39,24 +39,12 @@ const CustomerCreate = () => {
             countryRate: Yup.number().required('Country Rate is required'),
             fuelRate: Yup.number().required('Fuel Rate is required'),
             loadRate: Yup.number().required('Load Rate is required'),
-            abn: Yup.string()
-                .matches(/^\d{11}$/, 'ABN must be 11 digits')
-                .test('valid-abn', 'Invalid ABN', (value) => {
-                    if (!value) {
-                        return true;
-                    }
-                    const weights = [10, 1, 3, 5, 7, 9, 11, 13, 15, 17, 19];
-                    const abn = value.replace(/\D/g, '');
-                    const sum = weights.reduce((acc, weight, index) => {
-                        const digit = parseInt(abn.charAt(index), 10);
-                        return acc + (digit * weight);
-                    }, 0);
-                    return sum % 89 === 0;
-                }),
+            abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/)
+                .required('Phone number is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();
-            if (photo == null)
+            if (photo == null || photo == undefined)
                 alert("You didn'nt uploaded customer user image.");
             else {
                 formData.append('userId', user);

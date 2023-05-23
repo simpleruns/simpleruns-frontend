@@ -1,30 +1,31 @@
 import { useState, useEffect } from "react";
-import { useRouter } from "next/router";
-
-import { instance } from 'helpers/axios';
+import { useAtom } from "jotai";
 
 import SettingsForm from "components/forms/settingsForm";
 
+import { instance } from 'helpers/axios';
+import { idAtom } from "helpers/authorize";
+
 const Settings = () => {
+    const [user, __] = useAtom(idAtom);
     const [data, setData] = useState(null);
-    const router = useRouter();
-    const { id } = router.query;
 
     useEffect(() => {
-        id && instance.get(`/settings/user/${id}`)
+        user && instance.get(`/settings/user/${user}`)
             .then((res) => {
                 setData({
                     logo: res.data.logo,
                     bank: res.data.bank,
                     address: res.data.address,
-                    BSB: res.data.bsb,
+                    bsb: res.data.bsb,
                     accountNo: res.data.accountNo,
                     company: res.data.company,
+                    api: res.data.api
                 });
             }).catch(error => {
                 console.log(error.message);
             });
-    }, [router, id]);
+    }, []);
 
     return (
         <section className="bg-white dark:bg-gray-900">
@@ -32,8 +33,8 @@ const Settings = () => {
                 <h2 className="mb-4 text-3xl font-bold text-gray-900 dark:text-white">Edit Settings</h2>
 
                 {
-                    (id && data) ?
-                        <SettingsForm data={data} id={id} /> : <div>Loading...</div>
+                    (user && data) ?
+                        <SettingsForm data={data} user={user} /> : <div>Loading...</div>
                 }
             </div>
         </section>

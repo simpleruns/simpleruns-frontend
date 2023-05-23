@@ -51,7 +51,7 @@ const DriverCreate = () => {
             firstname: "John",
             lastname: "Doe",
             email: "your@email.com",
-            phone: "+61123456789",
+            phone: "+61423456789",
             role: "",
             password: "",
             confirm: "",
@@ -73,7 +73,7 @@ const DriverCreate = () => {
             lastname: Yup.string().required('Last Name is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
             phone: Yup.string()
-                .matches(/^\+?[1-9]\d{1,14}$/, 'Please enter a valid phone number')
+                .matches(/^(?:\+61|0)4(?:[ -]?[0-9]){8}$/, 'Please enter a valid phone number')
                 .required('Phone number is required'),
             role: Yup.string().required('Please select an option'),
             password: Yup.string()
