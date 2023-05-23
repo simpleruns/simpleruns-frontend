@@ -9,7 +9,7 @@ import { instance } from 'helpers/axios';
 
 import invoiceImage from "public/assets/img/invoice.png";
 
-const settingsForm = (props) => {
+const SettingsForm = (props) => {
     const { data, user } = props;
     const router = useRouter();
     const [logo, setlogo] = useState(null);
@@ -233,4 +233,4 @@ const settingsForm = (props) => {
     );
 }
 
-export default settingsForm;
+export default SettingsForm;
