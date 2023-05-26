@@ -1,20 +1,59 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useFormik } from 'formik';
-
+import GoogleMapReact from 'google-map-react';
 import * as Yup from 'yup';
 
 import { instance } from 'helpers/axios';
-
-import { useEffect } from "react";
 
 const SingleCustomerForm = (props) => {
     const { data, id } = props;
     const [checked, setChecked] = useState(data.approved);
     const [photo, setPhoto] = useState(null);
     const [imageDataUrl, setImageDataUrl] = useState(data.photo.url);
+    const [address, setAddress] = useState('');
+    const [predictions, setPredictions] = useState([]);
+    const [isValidAddress, setIsValidAddress] = useState(true);
 
+    const GOOGLE_MAPS_API_KEY = "AIzaSyDYfWq15nHdy2eJOpBQZnhOV5RfWP4o0iA";
     const router = useRouter();
+
+    useEffect(() => {
+        const existingScript = document.getElementById('googleMaps');
+        if (!existingScript) {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+            script.id = 'googleMaps'
+            script.async = true;
+            document.body.appendChild(script);
+
+            script.addEventListener('load', () => {
+                // The Google Maps API is now loaded and ready to use
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address }, (results, status) => {
+                    if (status === 'OK') {
+                        setIsValidAddress(true);
+                    } else {
+                        setIsValidAddress(false);
+                    }
+                });
+            });
+        }
+    }, [address]);
+
+    const handleAddressAutoComplete = (value) => {
+        const service = new google.maps.places.AutocompleteService();
+        service.getPlacePredictions({ input: value }, (predictions, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                setPredictions(predictions);
+            }
+        });
+    };
+
+    const handlePredictionClick = (prediction) => {
+        setAddress(prediction.description);
+        setPredictions([]);
+    };
 
     useEffect(() => {
         handleAvatarSelect(data.photo);
@@ -38,7 +77,6 @@ const SingleCustomerForm = (props) => {
             lastname: data.lastname,
             email: data.email,
             phone: data.phone,
-            address: data.address,
             role: data.role,
             rateType: data.rateType,
             localRate: data.localRate,
@@ -53,13 +91,12 @@ const SingleCustomerForm = (props) => {
             phone: Yup.string()
                 .matches(/^(?:\+61|0)[2-478](?:[ -]?[0-9]){8}$/, 'Invalid phone number')
                 .required('Phone number is required'),
-            address: Yup.string().required('Address is required'),
             rateType: Yup.string().required('Please select an option'),
             localRate: Yup.number().required('Local Rate is required'),
             countryRate: Yup.number().required('Country Rate is required'),
             fuelRate: Yup.number().required('Fuel Rate is required'),
             loadRate: Yup.number().required('Load Rate is required'),
-            abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/)
+            abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/, 'Invalid ABN')
                 .required('Phone number is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
@@ -71,7 +108,7 @@ const SingleCustomerForm = (props) => {
                     formData.append('companyName', values.companyName);
                     formData.append('email', values.email);
                     formData.append('phone', values.phone);
-                    formData.append('address', values.address);
+                    formData.append('address', address);
                     formData.append('rateType', values.rateType);
                     formData.append('localRate', values.localRate);
                     formData.append('countryRate', values.countryRate);
@@ -271,20 +308,38 @@ const SingleCustomerForm = (props) => {
                             </div>
                         </>
                 }
+
                 <div className="w-full">
                     <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>
                     <input
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
                         name="address"
                         id="address"
-                        value={formik.values.address}
-                        placeholder={formik.values.address}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        value={address}
+                        placeholder={address}
+                        onChange={(e) => {
+                            setAddress(e.target.value);
+                            handleAddressAutoComplete(e.target.value);
+                            e.target.value == null || e.target.value == '' ? setPredictions([]) : '';
+                        }}
                     />
-                    {formik.touched.address && formik.errors.address ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.address}</div>
+                    {predictions.length > 0 && (
+                        <div className="mt-1 flex flex-col absolute z-30 bg-white max-w-[300px] shadow-md py-2">
+                            {predictions.map((prediction) => (
+                                <div
+                                    className="py-2 px-4 bg-white border-x-shadow-500 hover:opacity-80 overflow-hidden text-ellipsis whitespace-nowrap"
+                                    key={prediction.place_id}
+                                    onClick={() => handlePredictionClick(prediction)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {prediction.description}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {!isValidAddress ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">Invalid Address</div>
                     ) : null}
                 </div>
 

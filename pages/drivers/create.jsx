@@ -4,7 +4,7 @@ import { useFormik } from 'formik';
 import { useAtom } from "jotai";
 import Image from "next/image";
 import * as Yup from 'yup';
-import Datepicker from "tailwind-datepicker-react"
+import Datepicker from "tailwind-datepicker-react";
 import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 
 import { instance } from 'helpers/axios';
@@ -96,7 +96,6 @@ const DriverCreate = () => {
                 .max(new Date().getFullYear(), 'Year must be less than or equal to the current year')
                 .required('Year is required'),
             numberPlate: Yup.string()
-                .matches(/^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/, 'Invalid number plate')
                 .required('Number plate is required'),
             VIN: Yup.string()
                 .matches(/^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/, 'Invalid VIN')

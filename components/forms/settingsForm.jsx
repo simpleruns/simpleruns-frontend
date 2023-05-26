@@ -83,7 +83,7 @@ const SettingsForm = (props) => {
     const saveEditedSettings = async (data) => {
         instance.put(`/settings/user/${user}`, data)
             .then((res) => {
-                res.status == 200 && router.push('/settings');
+                res.status == 200 && router.push('/');
             }).catch(error => {
                 console.log(error.message);
             });

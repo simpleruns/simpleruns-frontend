@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import Link from "next/link";
 
@@ -21,7 +22,6 @@ import {
     Tab,
     Avatar
 } from "@material-tailwind/react";
-import { useRouter } from "next/router";
 
 import { instance } from 'helpers/axios';
 
@@ -120,7 +120,7 @@ export default function Customers() {
 
     useEffect(() => {
         var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
-        instance.get(`/admin/customers${url}`, { params: { user: user } })
+        user && instance.get(`/admin/customers${url}`, { params: { user: user } })
             .then((res) => {
                 setCustomerData(res.data.customers);
                 setTotalPage(Math.floor((res.data.totalCount - 1) / countPerPage) + 1);

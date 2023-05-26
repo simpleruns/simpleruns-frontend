@@ -1,8 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import pdfMake from 'pdfmake/build/pdfmake';
 import pdfFonts from 'pdfmake/build/vfs_fonts';
+import moment from 'moment';
+import { useAtom } from "jotai";
 import { Typography } from '@material-tailwind/react';
 import { ArrowDownIcon } from "@heroicons/react/24/solid";
+import { useRouter } from 'next/router';
+
+import { idAtom } from "helpers/authorize";
+import { instance } from 'helpers/axios';
+
+import invoiceImage from "public/assets/img/invoice.png";
 
 pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
@@ -24,7 +32,7 @@ const generateInvoice = (invoice) => {
 
     const subTotal = () => {
         var value = 0;
-        invoice.invoiceData.forEach((item) => {
+        invoice.deliveries.forEach((item) => {
             value += item.subTotal;
         });
         return value;
@@ -67,7 +75,7 @@ const generateInvoice = (invoice) => {
                                         style: "subHeader",
                                     },
                                     {
-                                        text: `${invoice.adminAddress}\n`,
+                                        text: `Address: ${invoice.adminAddress}\n`,
                                         style: "subHeader",
                                     },
                                     {
@@ -119,12 +127,12 @@ const generateInvoice = (invoice) => {
                                                 bold: true,
                                             },
                                             {
-                                                text: `Address: \n\n`,
+                                                text: `Phone: \n`,
                                                 style: "subHeader",
                                                 bold: true,
                                             },
                                             {
-                                                text: `Phone: \n`,
+                                                text: `Address: \n\n`,
                                                 style: "subHeader",
                                                 bold: true,
                                             },
@@ -150,11 +158,11 @@ const generateInvoice = (invoice) => {
                                                 style: "subHeader",
                                             },
                                             {
-                                                text: `${invoice.customerAddress}\n`,
+                                                text: `${invoice.customerPhone}\n`,
                                                 style: "subHeader",
                                             },
                                             {
-                                                text: `${invoice.customerPhone}\n`,
+                                                text: `${invoice.customerAddress}\n`,
                                                 style: "subHeader",
                                             },
                                         ]
@@ -213,13 +221,13 @@ const generateInvoice = (invoice) => {
                                 style: "tableHeader",
                             },
                         ],
-                        ...(invoice.invoiceData.length
-                            ? invoice.invoiceData.map((row, index) => {
-                                const isLast = index === invoice.invoiceData.length - 1;
+                        ...(invoice.deliveries
+                            ? invoice.deliveries.map((row, index) => {
+                                const isLast = index === invoice.deliveries.length - 1;
                                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
                                 return [
                                     {
-                                        text: row.date,
+                                        text: moment(row.endTime).format('YYYY-MM-DD'),
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -229,42 +237,49 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.description,
+                                        text: row.description.split(' ').map(word => {
+                                            const suffixes = ['st', 'rd', 'nd', 'th'];
+                                            if (suffixes.includes(word.toLowerCase().slice(-2))) {
+                                                return word.slice(0, -2);
+                                            } else {
+                                                return word[0];
+                                            }
+                                        }).filter(word => word !== '').join(''),
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.tolls}`,
+                                        text: `$${row.tolls.toFixed(2)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.hours,
+                                        text: row.totalHour.toFixed(2),
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.rate}`,
+                                        text: `$${row.hourlyRate}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.fuel}`,
+                                        text: `$${row.fuelLevy.toFixed(2)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.subTotal}`,
+                                        text: `$${row.subTotal.toFixed(2)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.gst}`,
+                                        text: `$${row.GST.toFixed(2)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.total}`,
+                                        text: `$${(row.subTotal + row.GST).toFixed(2)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -342,7 +357,7 @@ const generateInvoice = (invoice) => {
                                         style: "tableFooter",
                                     },
                                     {
-                                        text: `$${subTotal()}`,
+                                        text: `$${subTotal().toFixed(2)}`,
                                         style: "tableFooter",
                                     },
                                 ],
@@ -434,32 +449,23 @@ const generateInvoice = (invoice) => {
 };
 
 const Invoice = () => {
-    const invoice = {
-        customerName: 'Advanced Precast',
-        customerAddress: '499-501 Victoria St Wetherill Park, NSW 2164',
-        customerPhone: '02 9756 5631',
-        invoiceNumber: '5024',
-        abn: '22609607954',
-        adminAddress: '600 Cowpature rd Hoxton Park, NSW 2171',
-        adminPhone: '0466865383',
-        adminEmail: 'james@spinningwheels.com.au',
-        adminBank: 'ANZ',
-        adminName: 'James Daniel',
-        adminBSB: '012-292',
-        adminAccountNo: '297279624',
-        adminCompany: 'Spinning Wheels Transport',
-        date: '23/10/2022',
-        invoiceData: [
-            { date: '17.10.22', ref: 'AA3344', description: 'PM FT - ADV ST MARYS -> ADV WP', tolls: 25.83, hours: 4.75, rate: 115, fuel: 81.94, subTotal: 654.02, gst: 65.40, total: 719.42 },
-            { date: '17.10.22', ref: 'AA3344', description: 'PM FT - ADV ST MARYS -> ADV WP', tolls: 25.83, hours: 4.75, rate: 115, fuel: 81.94, subTotal: 654.02, gst: 65.40, total: 719.42 },
-            { date: '17.10.22', ref: 'AA3344', description: 'PM FT - ADV ST MARYS -> ADV WP', tolls: 25.83, hours: 4.75, rate: 115, fuel: 81.94, subTotal: 654.02, gst: 65.40, total: 719.42 },
-            { date: '17.10.22', ref: 'AA3344', description: 'PM FT - ADV ST MARYS -> ADV WP', tolls: 25.83, hours: 4.75, rate: 115, fuel: 81.94, subTotal: 654.02, gst: 65.40, total: 719.42 },
-        ]
-    };
+    const [user, __] = useAtom(idAtom);
+    const [invoice, setInvoice] = useState({});
+    const router = useRouter();
+    const { id, start, end } = router.query;
+
+    useEffect(() => {
+        (user && id && start && end) && instance.get(`/invoices/single/${id}?start=${start}&end=${end}&user=${user}`)
+            .then((res) => {
+                setInvoice(res.data);
+            }).catch(error => {
+                console.log(error.message);
+            });
+    }, [router, id]);
 
     const subTotal = () => {
         var value = 0;
-        invoice.invoiceData.forEach((item) => {
+        invoice.deliveries && invoice.deliveries.forEach((item) => {
             value += item.subTotal;
         });
         return value;
@@ -471,13 +477,13 @@ const Invoice = () => {
     };
 
     return (
-        <div className='font-sans text-gray-900 font-medium'>
+        invoice && <div className='font-sans text-gray-900 font-medium'>
             <div className="grid grid-cols-3 gap-2">
                 <div className='sm:col-span-2'>
-                    <img className="h-[3rem] my-[3rem]" id="imageid" src="/assets/img/invoice.png" alt='logo' height={100} width="auto" />
+                    <img className="h-[3rem] my-[3rem]" id="imageid" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
                     <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
 
-                    <h4 className="block text-sm font-medium text-gray-900 mt-2" dangerouslySetInnerHTML={{ __html: invoice.adminAddress }}></h4>
+                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Address: {invoice.adminAddress}</h4>
                     <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone: {invoice.adminPhone
                     }</h4>
                     <h4 className="block text-sm font-medium text-gray-900 mt-2">Email: {invoice.adminEmail
@@ -548,15 +554,15 @@ const Invoice = () => {
                     </thead>
                     <tbody>
                         {
-                            invoice.invoiceData.length ? invoice.invoiceData.map((row, index) => {
-                                const isLast = index === invoice.invoiceData.length - 1;
+                            invoice.deliveries ? invoice.deliveries.map((row, index) => {
+                                const isLast = index === invoice.deliveries.length - 1;
                                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
 
                                 return (
                                     <tr key={"delivery" + index}>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.date}
+                                                {moment(row.endTime).format('YYYY-MM-DD')}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -566,42 +572,51 @@ const Invoice = () => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.description}
+                                                {
+                                                    row.description.split(' ').map(word => {
+                                                        const suffixes = ['st', 'rd', 'nd', 'th'];
+                                                        if (suffixes.includes(word.toLowerCase().slice(-2))) {
+                                                            return word.slice(0, -2);
+                                                        } else {
+                                                            return word[0];
+                                                        }
+                                                    }).filter(word => word !== '').join('')
+                                                }
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.tolls}
+                                                {row.tolls.toFixed(2)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.hours}
+                                                {row.totalHour.toFixed(2)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.rate}
+                                                {row.hourlyRate}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.fuel}
+                                                {row.fuelLevy.toFixed(2)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.subTotal}
+                                                {row.subTotal.toFixed(2)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.gst}
+                                                {row.GST.toFixed(2)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.total}
+                                                {(row.subTotal + row.GST).toFixed(2)}
                                             </Typography>
                                         </td>
                                     </tr>
@@ -640,7 +655,7 @@ const Invoice = () => {
                 <div className='col-span-3'>
                     <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
                         <span>SUBTOTAL</span>
-                        <span>${subTotal()}</span>
+                        <span>${subTotal().toFixed(2)}</span>
                     </div>
                     <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
                         <span>GST</span>

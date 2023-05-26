@@ -15,7 +15,7 @@ const Breadcrumb = () => {
 
     useEffect(() => {
         var title = window.location.pathname.substring(window.location.pathname.lastIndexOf('/') + 1);
-        title === '/' || title === '' ? setPageTitle('Welcome') : window.location.pathname.includes('drivers/single') ? setPageTitle('Driver Detail') : window.location.pathname.includes('drivers/edit') ? setPageTitle('Edit Driver Detail') : window.location.pathname.includes('customers/single') ? setPageTitle('Customer Detail') : window.location.pathname.includes('customers/edit') ? setPageTitle('Edit Customer Detail') : setPageTitle(title);
+        title === '/' || title === '' ? setPageTitle('Welcome') : window.location.pathname.includes('drivers/single') ? setPageTitle('Driver Detail') : window.location.pathname.includes('drivers/edit') ? setPageTitle('Edit Driver Detail') : window.location.pathname.includes('customers/single') ? setPageTitle('Customer Detail') : window.location.pathname.includes('customers/edit') ? setPageTitle('Edit Customer Detail') : window.location.pathname.includes('invoices/single') ? setPageTitle('Invoice Detail') : setPageTitle(title);
     }, [router]);
 
     const pathSegments = window.location.pathname
@@ -23,8 +23,6 @@ const Breadcrumb = () => {
         .filter((segment) => segment !== '');
 
     const breadcrumbItems = pathSegments.map((segment, index) => {
-        // const href = `/${pathSegments.slice(0, index + 1).join('/')}`;
-
         return (
             <span key={segment} className="text-white transition">
                 {segment}

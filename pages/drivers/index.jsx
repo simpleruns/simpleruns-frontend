@@ -132,7 +132,7 @@ export default function Drivers() {
 
     useEffect(() => {
         var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
-        instance.get(`/admin/drivers${url}`, { params: { user: user } })
+        user && instance.get(`/admin/drivers${url}`, { params: { user: user } })
             .then((res) => {
                 setDriverData(res.data.drivers);
                 setTotalPage(Math.floor((res.data.totalCount - 1) / countPerPage) + 1);

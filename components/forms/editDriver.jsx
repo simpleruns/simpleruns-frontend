@@ -128,7 +128,6 @@ const SingleDriverForm = (props) => {
                 .max(new Date().getFullYear(), 'Year must be less than or equal to the current year')
                 .required('Year is required'),
             numberPlate: Yup.string()
-                .matches(/^[A-Z]{2}\d{2}[A-Z]{2}\d{4}$/, 'Invalid number plate')
                 .required('Number plate is required'),
             VIN: Yup.string()
                 .matches(/^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/, 'Invalid VIN')

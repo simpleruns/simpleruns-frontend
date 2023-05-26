@@ -7,23 +7,25 @@ const PageOverlay = () => {
 
     const router = useRouter();
 
-    useEffect(() => {
-        router.events.on('routeChangeStart', () => {
-            setShow(true);
-        });
+    const handleRouteChangeStart = () => {
+        setShow(true);
+    };
 
-        router.events.on('routeChangeComplete', () => {
-            setTimeout(() => {
-                setShow(false);
-            }, 300);
-        });
+    const handleRouteChangeComplete = () => {
+        setTimeout(() => {
+            setShow(false);
+        }, 300);
+    };
+
+    useEffect(() => {
+        router.events.on('routeChangeStart', handleRouteChangeStart);
+        router.events.on('routeChangeComplete', handleRouteChangeComplete);
+        window.addEventListener('load', handleRouteChangeStart);
 
         return () => {
-            router.events.off('routeChangeStart', () => {
-            });
-
-            router.events.off('routeChangeComplete', () => {
-            });
+            router.events.off('routeChangeStart', handleRouteChangeStart);
+            router.events.off('routeChangeComplete', handleRouteChangeComplete);
+            window.removeEventListener('load', handleRouteChangeStart);
         }
     }, [router.events]);
 
