@@ -118,6 +118,10 @@ export default function Invoices() {
         }
     }, [invoicesData, sortKey, sortOrder]);
 
+    const setSelectedDayHandler = (selectedDay) => {
+        setSelectedDay(selectedDay);
+    }
+
     return (
         <Card className="h-full w-full bg-white dark:bg-navy-800 text-gray-900 dark:text-white">
             <CardHeader floated={false} shadow={false} className="rounded-none bg-white dark:bg-navy-800 overflow-visible">
@@ -136,7 +140,7 @@ export default function Invoices() {
                             <Datepicker
                                 key="selectedDay"
                                 options={options}
-                                onChange={(e) => setSelectedDay(e.target.value)}
+                                onChange={setSelectedDayHandler}
                                 value={selectedDay}
                                 show={invoiceShow}
                                 format="dd/MM/yyyy"
