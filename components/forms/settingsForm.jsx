@@ -14,9 +14,56 @@ const SettingsForm = (props) => {
     const router = useRouter();
     const [logo, setlogo] = useState(null);
     const [imageDataUrl, setImageDataUrl] = useState(data.logo == undefined ? null : data.logo.url);
+    const [address, setAddress] = useState(data.address);
+    const [predictions, setPredictions] = useState([]);
+    const [isValidAddress, setIsValidAddress] = useState(true);
+    const [api, setApi] = useState('');
+
+    useEffect(() => {
+        const existingScript = document.getElementById('googleMaps');
+        if (!existingScript && api !== '') {
+            const script = document.createElement('script');
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${api}&libraries=places`;
+            script.id = 'googleMaps'
+            script.async = true;
+            document.body.appendChild(script);
+
+            script.addEventListener('load', () => {
+                // The Google Maps API is now loaded and ready to use
+                const geocoder = new google.maps.Geocoder();
+                geocoder.geocode({ address }, (results, status) => {
+                    if (status === 'OK') {
+                        setIsValidAddress(true);
+                    } else {
+                        setIsValidAddress(false);
+                    }
+                });
+            });
+        }
+    }, [address, api]);
+
+    const handleAddressAutoComplete = (value) => {
+        const service = new google.maps.places.AutocompleteService();
+        service.getPlacePredictions({ input: value }, (predictions, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                setPredictions(predictions);
+            }
+        });
+    };
+
+    const handlePredictionClick = (prediction) => {
+        setAddress(prediction.description);
+        setPredictions([]);
+    };
 
     useEffect(() => {
         handleLogoSelect(data.logo);
+        user && instance.get(`/settings/googleapi/${user}`)
+            .then((res) => {
+                setApi(res.data);
+            }).catch(error => {
+                console.log(error.message);
+            });
     }, []);
 
     async function handleLogoSelect(data) {
@@ -35,21 +82,32 @@ const SettingsForm = (props) => {
     const formik = useFormik({
         initialValues: {
             bank: data.bank,
-            address: data.address,
             bsb: data.bsb,
             accountNo: data.accountNo,
             company: data.company,
+            abn: data.abn,
             api: data.api,
+            firstname: data.firstname,
+            lastname: data.lastname,
+            email: data.email,
+            phone: data.phone
         },
         validationSchema: Yup.object({
+            firstname: Yup.string().required('First Name is required'),
+            lastname: Yup.string().required('Last Name is required'),
             bank: Yup.string().required('Bank Name is required'),
-            address: Yup.string().required('Address is required'),
             bsb: Yup.string().matches(/^\d{3}-\d{3}$/, 'Invalid BSB')
                 .required('BSB is required'),
             accountNo: Yup.string().matches(/^\d{9}$/, 'Invalid account number')
                 .required('Account number is required'),
             company: Yup.string()
                 .required('Company Name is required'),
+            abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/, 'Invalid ABN')
+                .required('ABN is required'),
+            email: Yup.string().email('Invalid Email').required('Email is required'),
+            phone: Yup.string()
+                .matches(/^(?:\+61|0)[2-478](?:[ -]?[0-9]){8}$/, 'Invalid phone number')
+                .required('Phone number is required'),
             api: Yup.string().min(39, 'API key must be at least 39 characters long').test('is-api-key', 'Invalid API key', (value) => {
                 const apiKeyRegex = /^[A-Za-z0-9-_]{39}$/;
                 return apiKeyRegex.test(value);
@@ -63,11 +121,16 @@ const SettingsForm = (props) => {
                 try {
                     formData.append('logo', logo, logo.name);
                     formData.append('bank', values.bank);
-                    formData.append('address', values.address);
+                    formData.append('address', address);
                     formData.append('bsb', values.bsb);
                     formData.append('accountNo', values.accountNo);
                     formData.append('company', values.company);
+                    formData.append('abn', values.abn);
                     formData.append('api', values.api);
+                    formData.append('firstname', values.firstname);
+                    formData.append('lastname', values.lastname);
+                    formData.append('email', values.email);
+                    formData.append('phone', values.phone);
 
                     await saveEditedSettings(formData);
                     setSuccess(true);
@@ -108,7 +171,7 @@ const SettingsForm = (props) => {
         <form onSubmit={formik.handleSubmit}>
             <div className="grid gap-4 mb-4 sm:grid-cols-2 sm:gap-6 sm:mb-5">
                 <div className="sm:col-span-2">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="file_input">Upload logo</label>
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor="logo">Upload logo</label>
 
                     <div className="flex items-center w-full flex-wrap">
                         {
@@ -127,7 +190,24 @@ const SettingsForm = (props) => {
                 </div>
 
                 <div className="w-full">
-                    <label htmlFor="bank" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Bank</label>
+                    <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Admin Company Name</label>
+                    <input
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="text"
+                        name="company"
+                        id="company"
+                        value={formik.values.company}
+                        placeholder={formik.values.company}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.company && formik.errors.company ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.company}</div>
+                    ) : null}
+                </div>
+
+                <div className="w-full">
+                    <label htmlFor="bank" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Admin Bank</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
@@ -141,21 +221,91 @@ const SettingsForm = (props) => {
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.bank}</div>
                     ) : null}
                 </div>
+
                 <div className="w-full">
-                    <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Address</label>
+                    <label htmlFor="abn" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Admin Company ABN</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
-                        name="address"
-                        id="address"
-                        value={formik.values.address}
-                        placeholder={formik.values.address}
+                        name="abn"
+                        id="abn"
+                        value={formik.values.abn}
+                        placeholder={formik.values.abn}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur} />
-                    {formik.touched.address && formik.errors.address ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.address}</div>
+                    {formik.touched.abn && formik.errors.abn ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.abn}</div>
                     ) : null}
                 </div>
+
+                <div className="grid gap-4 grid-cols-2 sm:gap-6">
+                    <div className="w-full">
+                        <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
+                        <input
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            type="text"
+                            name="firstname"
+                            id="firstname"
+                            value={formik.values.firstname}
+                            placeholder={formik.values.firstname}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur} />
+                        {formik.touched.firstname && formik.errors.firstname ? (
+                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.firstname}</div>
+                        ) : null}
+                    </div>
+
+                    <div className="w-full">
+                        <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
+                        <input
+                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                            type="text"
+                            name="lastname"
+                            id="lastname"
+                            value={formik.values.lastname}
+                            placeholder={formik.values.lastname}
+                            onChange={formik.handleChange}
+                            onBlur={formik.handleBlur} />
+                        {formik.touched.lastname && formik.errors.lastname ? (
+                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.lastname}</div>
+                        ) : null}
+                    </div>
+                </div>
+
+                <div className="w-full">
+                    <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>
+                    <input
+                        type="text"
+                        name="address"
+                        id="address"
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        value={address}
+                        placeholder={address}
+                        onChange={(e) => {
+                            setAddress(e.target.value);
+                            handleAddressAutoComplete(e.target.value);
+                            e.target.value == null || e.target.value == '' ? setPredictions([]) : '';
+                        }}
+                    />
+                    {predictions.length > 0 && (
+                        <div className="mt-1 flex flex-col absolute z-30 bg-white max-w-[300px] shadow-md py-2">
+                            {predictions.map((prediction) => (
+                                <div
+                                    className="py-2 px-4 bg-white border-x-shadow-500 hover:opacity-80 overflow-hidden text-ellipsis whitespace-nowrap"
+                                    key={prediction.place_id}
+                                    onClick={() => handlePredictionClick(prediction)}
+                                    style={{ cursor: 'pointer' }}
+                                >
+                                    {prediction.description}
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                    {!isValidAddress ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">Invalid Address</div>
+                    ) : null}
+                </div>
+
                 <div className="w-full">
                     <label htmlFor="bsb" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">BSB</label>
                     <input
@@ -172,6 +322,24 @@ const SettingsForm = (props) => {
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.bsb}</div>
                     ) : null}
                 </div>
+
+                <div className="w-full">
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
+                    <input
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="text"
+                        name="email"
+                        id="email"
+                        value={formik.values.email}
+                        placeholder={formik.values.email}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.email && formik.errors.email ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.email}</div>
+                    ) : null}
+                </div>
+
                 <div className="w-full">
                     <label htmlFor="accountNo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Account Number</label>
                     <input
@@ -190,19 +358,19 @@ const SettingsForm = (props) => {
                 </div>
 
                 <div className="w-full">
-                    <label htmlFor="company" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Name</label>
+                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
-                        name="company"
-                        id="company"
-                        value={formik.values.company}
-                        placeholder={formik.values.company}
+                        name="phone"
+                        id="phone"
+                        value={formik.values.phone}
+                        placeholder={formik.values.phone}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                     />
-                    {formik.touched.company && formik.errors.company ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.company}</div>
+                    {formik.touched.phone && formik.errors.phone ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.phone}</div>
                     ) : null}
                 </div>
 

@@ -20,7 +20,12 @@ const Settings = () => {
                     bsb: res.data.bsb,
                     accountNo: res.data.accountNo,
                     company: res.data.company,
-                    api: res.data.api
+                    api: res.data.api,
+                    abn: res.data.abn,
+                    firstname: res.data.firstname,
+                    lastname: res.data.lastname,
+                    email: res.data.email,
+                    phone: res.data.phone
                 });
             }).catch(error => {
                 console.log(error.message);

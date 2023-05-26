@@ -16,13 +16,13 @@ const CustomerCreate = () => {
     const [predictions, setPredictions] = useState([]);
     const [isValidAddress, setIsValidAddress] = useState(true);
     const router = useRouter();
-    const GOOGLE_MAPS_API_KEY = "AIzaSyDYfWq15nHdy2eJOpBQZnhOV5RfWP4o0iA";
+    const [api, setApi] = useState('');
 
     useEffect(() => {
         const existingScript = document.getElementById('googleMaps');
-        if (!existingScript) {
+        if (!existingScript && api !== '') {
             const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`;
+            script.src = `https://maps.googleapis.com/maps/api/js?key=${api}&libraries=places`;
             script.id = 'googleMaps'
             script.async = true;
             document.body.appendChild(script);
@@ -39,7 +39,16 @@ const CustomerCreate = () => {
                 });
             });
         }
-    }, [address]);
+    }, [address, api]);
+
+    useEffect(() => {
+        user && instance.get(`/settings/googleapi/${user}`)
+            .then((res) => {
+                setApi(res.data);
+            }).catch(error => {
+                console.log(error.message);
+            });
+    }, []);
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
@@ -79,7 +88,7 @@ const CustomerCreate = () => {
             fuelRate: Yup.number().required('Fuel Rate is required'),
             loadRate: Yup.number().required('Load Rate is required'),
             abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/, 'Invalid ABN')
-                .required('Phone number is required'),
+                .required('ABN is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();

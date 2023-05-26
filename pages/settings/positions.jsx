@@ -28,9 +28,10 @@ const headers = [
 const Map = () => {
     const [user, __] = useAtom(idAtom);
     const [addresses, setAddresses] = useState([]);
+    const GOOGLE_MAPS_API_KEY = "AIzaSyDYfWq15nHdy2eJOpBQZnhOV5RfWP4o0iA";
 
     useEffect(() => {
-        instance.get('/settings/positions', { params: { user: user } })
+        user && instance.get('/settings/positions', { params: { user: user } })
             .then((res) => {
                 var arr = [];
                 res.data.positions.map(position => {
@@ -52,7 +53,7 @@ const Map = () => {
         validationSchema,
         onSubmit: async (values, { resetForm }) => {
             try {
-                Geocode.setApiKey("AIzaSyDYfWq15nHdy2eJOpBQZnhOV5RfWP4o0iA");
+                Geocode.setApiKey(GOOGLE_MAPS_API_KEY);
                 const response = await Geocode.fromAddress(values.address);
                 const addressName = response.results[0].formatted_address;
                 const { lat, lng } = response.results[0].geometry.location;
@@ -136,7 +137,7 @@ const Map = () => {
                 <div className="w-full mt-4">
                     <div style={{ height: '500px', width: '100%' }}>
                         <GoogleMapReact
-                            bootstrapURLKeys={{ key: "AIzaSyDYfWq15nHdy2eJOpBQZnhOV5RfWP4o0iA" }}
+                            bootstrapURLKeys={{ key: GOOGLE_MAPS_API_KEY }}
                             defaultCenter={{ lat: -33.8425806, lng: 150.9682045 }}
                             defaultZoom={10}
                         >

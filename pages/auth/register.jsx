@@ -13,7 +13,9 @@ const Register = () => {
         firstname: Yup.string().required('First Name is required'),
         lastname: Yup.string().required('Last Name is required'),
         email: Yup.string().email('Invalid Email').required('Email is required'),
-        phone: Yup.string().matches(/^\+?[1-9]\d{1,14}$/, 'Please enter a valid phone number').required('Phone number is required'),
+        phone: Yup.string()
+            .matches(/^(?:\+61|0)[2-478](?:[ -]?[0-9]){8}$/, 'Invalid phone number')
+            .required('Phone number is required'),
         password: Yup.string().min(6, 'Password must be at least 6 characters').required('Password is required'),
         confirm: Yup.string().oneOf([Yup.ref('password'), null], 'Passwords does not match').required('Password is required')
     });

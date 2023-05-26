@@ -20,12 +20,12 @@ const PageOverlay = () => {
     useEffect(() => {
         router.events.on('routeChangeStart', handleRouteChangeStart);
         router.events.on('routeChangeComplete', handleRouteChangeComplete);
-        window.addEventListener('load', handleRouteChangeStart);
+        // window.addEventListener('load', handleRouteChangeStart);
 
         return () => {
             router.events.off('routeChangeStart', handleRouteChangeStart);
             router.events.off('routeChangeComplete', handleRouteChangeComplete);
-            window.removeEventListener('load', handleRouteChangeStart);
+            // window.removeEventListener('load', handleRouteChangeStart);
         }
     }, [router.events]);
 
