@@ -1,8 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import moment from 'moment';
 import { useAtom } from "jotai";
 import { Typography } from '@material-tailwind/react';
 import { useRouter } from 'next/router';
+import Link from "next/link";
 
 import { idAtom } from "helpers/authorize";
 import { instance } from 'helpers/axios';
@@ -41,6 +42,7 @@ const Invoice = ({ data: invoiceData }) => {
         user && instance.post(`/invoices/edit/${id}`, { params: { user: user, data: invoice.deliveries } })
             .then((res) => {
                 console.log(res.data);
+                res.status == 200 && router.push('/invoices');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -393,7 +395,11 @@ const Invoice = ({ data: invoiceData }) => {
                 </div>
             </div>
 
-            <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6 mx-auto flex" onClick={saveInvoiceHandler}>Save</button>
+            <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-20 mr-4" onClick={saveInvoiceHandler}>Save</button>
+
+            <Link href="/invoices">
+                <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90 mt-20">Back</button>
+            </Link>
         </div >
     );
 };

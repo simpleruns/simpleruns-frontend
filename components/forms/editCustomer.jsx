@@ -1,13 +1,15 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useAtom } from "jotai";
 import { useFormik } from 'formik';
-import GoogleMapReact from 'google-map-react';
 import * as Yup from 'yup';
 
 import { instance } from 'helpers/axios';
+import { idAtom } from "helpers/authorize";
 
 const SingleCustomerForm = (props) => {
     const { data, id } = props;
+    const [user, __] = useAtom(idAtom);
     const [checked, setChecked] = useState(data.approved);
     const [photo, setPhoto] = useState(null);
     const [imageDataUrl, setImageDataUrl] = useState(data.photo.url);
@@ -140,7 +142,7 @@ const SingleCustomerForm = (props) => {
     });
 
     const saveEditedCustomer = async (data) => {
-        instance.put(`/admin/customers/${id}`, data)
+        user && instance.put(`/admin/customers/${id}`, data)
             .then((res) => {
                 console.log(res.data);
                 res.status == 200 && router.push('/customers');
