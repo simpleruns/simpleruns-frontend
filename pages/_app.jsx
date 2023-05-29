@@ -10,7 +10,7 @@ import { useAtom } from "jotai";
 
 import { authorizationAtom } from "helpers/authorize";
 
-import SettingColor from "../components/settingColor";
+import SettingColor from "components/settingColor";
 import PageOverlay from 'components/layout/overlay';
 
 function MyApp({ Component, pageProps }) {

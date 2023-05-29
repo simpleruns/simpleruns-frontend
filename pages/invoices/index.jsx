@@ -7,7 +7,7 @@ import moment from "moment";
 
 import { ChevronUpDownIcon } from "@heroicons/react/24/outline";
 import { SlArrowLeft, SlArrowRight, SlEye } from 'react-icons/sl';
-// import { BsPen } from 'react-icons/bs';
+import { BsPen } from 'react-icons/bs';
 
 import { idAtom } from "helpers/authorize";
 
@@ -212,7 +212,7 @@ export default function Invoices() {
                                         <td className={classes}>
                                             <div className="flex items-center">
                                                 <Link href={`/invoices/single/${row._id}?start=${moment(startDay).valueOf()}&end=${moment(endDay).valueOf()}`} className="text-indigo-600 hover:text-indigo-900"><SlEye /></Link>
-                                                {/* <Link href={`/invoices/edit/${row._id}`} className="text-green-600 hover:text-green-900 ml-4"><BsPen /></Link> */}
+                                                <Link href={`/invoices/edit/${row._id}?start=${moment(startDay).valueOf()}&end=${moment(endDay).valueOf()}`} className="text-green-600 hover:text-green-900 ml-4"><BsPen /></Link>
                                             </div>
                                         </td>
                                     </tr>

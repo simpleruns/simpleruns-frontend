@@ -3,7 +3,6 @@ import React, { useEffect, useState } from "react";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 
 export default function SettingColor(props) {
-    const { ...rest } = props;
     const [darkmode, setDarkmode] = useState(false);
 
     function changeThemeHandler() {
@@ -12,6 +11,11 @@ export default function SettingColor(props) {
 
     useEffect(() => {
         document.body.classList.toggle('dark');
+        if (darkmode) {
+            !document.body.classList.contains('dark') && document.body.classList.add('dark');
+        } else {
+            document.body.classList.contains('dark') && document.body.classList.remove('dark');
+        }
     }, [darkmode]);
 
     return (
