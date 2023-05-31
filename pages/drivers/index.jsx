@@ -334,8 +334,8 @@ export default function Drivers() {
                                             <td className={classes}>
                                                 <Typography variant="large" title="insurances" color="blue-gray" className="font-normal flex">
                                                     {
-                                                        row.insuranceFile.map(item => {
-                                                            return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                                        row.insuranceFile.map((item, index) => {
+                                                            return <Link href={item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
                                                         })
                                                     }
                                                 </Typography>
@@ -343,8 +343,8 @@ export default function Drivers() {
                                             <td className={classes}>
                                                 <Typography variant="large" title="workers compensation" color="blue-gray" className="font-normal flex">
                                                     {
-                                                        row.workCompensationFile.map(item => {
-                                                            return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                                        row.workCompensationFile.map((item, index) => {
+                                                            return <Link href={item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
                                                         })
                                                     }
                                                 </Typography>
@@ -352,8 +352,8 @@ export default function Drivers() {
                                             <td className={classes}>
                                                 <Typography variant="large" title="truck registration" color="blue-gray" className="font-normal flex">
                                                     {
-                                                        row.truckRegistrationFile.map(item => {
-                                                            return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                                        row.truckRegistrationFile.map((item, index) => {
+                                                            return <Link href={item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
                                                         })
                                                     }
                                                 </Typography>

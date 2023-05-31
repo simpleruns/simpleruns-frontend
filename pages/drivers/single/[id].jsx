@@ -147,8 +147,8 @@ const SingleDriverDetail = () => {
                                     <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Insurances</Typography>
                                     <Typography variant="large" title="insurances" className="font-normal text-gray-700 dark:text-gray-400 flex">
                                         {
-                                            data.insuranceFile.map(item => {
-                                                return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                            data.insuranceFile.map((item, index) => {
+                                                return <Link href={item.url} target="_blank" key={"insuranceDoc" + index} className="mr-2"><SlDocs /></Link>
                                             })
                                         }
                                     </Typography>
@@ -160,8 +160,8 @@ const SingleDriverDetail = () => {
                                     <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Work Compensation</Typography>
                                     <Typography variant="large" title="workers compensation" className="font-normal text-gray-700 dark:text-gray-400 flex">
                                         {
-                                            data.workCompensationFile.map(item => {
-                                                return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                            data.workCompensationFile.map((item, index) => {
+                                                return <Link href={item.url} target="_blank" key={"workcompensation" + index} className="mr-2"><SlDocs /></Link>
                                             })
                                         }
                                     </Typography>
@@ -173,8 +173,8 @@ const SingleDriverDetail = () => {
                                     <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Truck Registration</Typography>
                                     <Typography variant="large" title="truck registration" className="font-normal text-gray-700 dark:text-gray-400 flex">
                                         {
-                                            data.truckRegistrationFile.map(item => {
-                                                return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                            data.truckRegistrationFile.map((item, index) => {
+                                                return <Link href={item.url} target="_blank" key={"truckregistration" + index} className="mr-2"><SlDocs /></Link>
                                             })
                                         }
                                     </Typography>
