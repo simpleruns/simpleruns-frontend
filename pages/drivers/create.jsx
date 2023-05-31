@@ -10,6 +10,7 @@ import { SlArrowLeft, SlArrowRight } from 'react-icons/sl';
 import { instance } from 'helpers/axios';
 
 import Dropzone from 'components/forms/dropZone';
+import DropzoneForFile from 'components/forms/dropZoneForFile';
 import { idAtom } from "helpers/authorize";
 
 const options = {
@@ -36,14 +37,19 @@ const DriverCreate = () => {
     const [user, __] = useAtom(idAtom);
     const [checked, setChecked] = useState(true);
     const [birthDate, setBirthDate] = useState('1990-01-01');
-    const [publishedDate, setPublishedDate] = useState('1990-01-01');
     const [expireDate, setExpireDate] = useState('2050-01-01');
     const [licensePhoto, setLicensePhoto] = useState(null);
+    const [insuranceFile, setInsuranceFile] = useState(null);
+    const [workCompensationFile, setWorkCompensationFile] = useState(null);
+    const [truckRegistrationFile, setTruckRegistrationFile] = useState(null);
     const [birthShow, setBirthShow] = useState(false);
-    const [publishShow, setPublishShow] = useState(false);
     const [expireShow, setExpireShow] = useState(false);
     const [avatar, setAvatar] = useState(null);
     const [imageDataUrl, setImageDataUrl] = useState(null);
+    const [selectedCategoryOption, setSelectedCategoryOption] = useState('');
+    const [inputCategoryValue, setInputCategoryValue] = useState('');
+    const [selectedMakeOption, setSelectedMakeOption] = useState('');
+    const [inputMakeValue, setInputMakeValue] = useState('');
     const router = useRouter();
 
     const formik = useFormik({
@@ -59,13 +65,9 @@ const DriverCreate = () => {
             cardNumber: "1651981561526895",
             licenseClass: "",
             licenseState: "CA",
-            insurances: '',
-            workCompensation: '',
-            truckRegistration: '',
             year: 2023,
             numberPlate: "AB12CD3456",
             VIN: "1GNEK13Z14R167545",
-            make: "Mercedez",
             model: "C63"
         },
         validationSchema: Yup.object({
@@ -100,20 +102,34 @@ const DriverCreate = () => {
             VIN: Yup.string()
                 .matches(/^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/, 'Invalid VIN')
                 .required('VIN is required'),
-            make: Yup.string().required('Please select an Make'),
             model: Yup.string().required('Model is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();
             if (avatar == null)
                 alert("You didn'nt uploaded driver user image.");
-            else if (licensePhoto == null)
+            else if (licensePhoto == null || !licensePhoto.length)
                 alert("You didn't uploaded driver license photo.");
+            else if ((insuranceFile == null || !insuranceFile.length) && values.role === 'subcontractor')
+                alert("You didn't uploaded insurance doc.");
+            else if ((workCompensationFile == null || !workCompensationFile.length) && values.role === 'subcontractor')
+                alert("You didn't uploaded workers compensation doc.");
+            else if ((truckRegistrationFile == null || !truckRegistrationFile.length) && values.role === 'subcontractor')
+                alert("You didn't uploaded gools in transit doc.");
             else {
                 avatar && formData.append('avatar', avatar, avatar.name);
                 licensePhoto && licensePhoto.map((item, i) => {
                     formData.append('licensePhoto', item, item.name);
-                })
+                });
+                insuranceFile && insuranceFile.map((item, i) => {
+                    formData.append('insuranceFile', item, item.name);
+                });
+                workCompensationFile && workCompensationFile.map((item, i) => {
+                    formData.append('workCompensationFile', item, item.name);
+                });
+                truckRegistrationFile && truckRegistrationFile.map((item, i) => {
+                    formData.append('truckRegistrationFile', item, item.name);
+                });
                 formData.append('firstname', values.firstname);
                 formData.append('lastname', values.lastname);
                 formData.append('email', values.email);
@@ -123,17 +139,14 @@ const DriverCreate = () => {
                 formData.append('password', values.password);
                 formData.append('licenseNumber', values.licenseNumber);
                 formData.append('cardNumber', values.cardNumber);
-                formData.append('publishedDate', publishedDate);
                 formData.append('expireDate', expireDate);
                 formData.append('licenseClass', values.licenseClass);
                 formData.append('licenseState', values.licenseState);
-                formData.append('insurances', values.insurances);
-                formData.append('workCompensation', values.workCompensation);
-                formData.append('truckRegistration', values.truckRegistration);
                 formData.append('year', values.year);
                 formData.append('numberPlate', values.numberPlate);
                 formData.append('VIN', values.VIN);
-                formData.append('make', values.make);
+                inputMakeValue == '' ? formData.append('make', 'other') : formData.append('make', inputMakeValue);
+                inputCategoryValue == '' ? formData.append('category', 'other') : formData.append('category', inputCategoryValue);
                 formData.append('model', values.model);
                 formData.append('approved', checked);
                 formData.append('userId', user);
@@ -182,20 +195,24 @@ const DriverCreate = () => {
         setLicensePhoto(licensePhoto);
     };
 
+    const handleInsuranceFile = (File) => {
+        setInsuranceFile(File);
+    }
+
+    const handleWorkCompensationFile = (File) => {
+        setWorkCompensationFile(File);
+    }
+
+    const handleTruckRegistrationFile = (File) => {
+        setTruckRegistrationFile(File);
+    }
+
     const handleBirthChange = (birthDate) => {
         setBirthDate(birthDate);
     }
 
     const handleBirthClose = (state) => {
         setBirthShow(state)
-    }
-
-    const handlePublishChange = (publishedDate) => {
-        setPublishedDate(publishedDate);
-    }
-
-    const handlePublishClose = (state) => {
-        setPublishShow(state)
     }
 
     const handleExpireChange = (expireDate) => {
@@ -205,6 +222,27 @@ const DriverCreate = () => {
     const handleExpireClose = (state) => {
         setExpireShow(state)
     }
+
+    const handleCategoryOptionChange = (event) => {
+        setSelectedCategoryOption(event.target.value);
+        event.target.value == 'other' ? setInputCategoryValue('') : setInputCategoryValue(event.target.value);
+        setInputMakeValue('');
+        setSelectedMakeOption('');
+    };
+
+    const handleCategoryInputChange = (event) => {
+        setInputCategoryValue(event.target.value);
+    };
+
+    const handleMakeOptionChange = (event) => {
+        setSelectedMakeOption(event.target.value);
+        setInputMakeValue(event.target.value);
+        event.target.value == 'other' ? setInputMakeValue('') : setInputMakeValue(event.target.value);
+    };
+
+    const handleMakeInputChange = (event) => {
+        setInputMakeValue(event.target.value);
+    };
 
     return (
         <section className="bg-white dark:bg-gray-900">
@@ -319,7 +357,7 @@ const DriverCreate = () => {
                         <div className="w-full">
                             <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Password</label>
                             <input
-                                className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 type="password"
                                 name="password"
                                 placeholder="Password..."
@@ -335,7 +373,7 @@ const DriverCreate = () => {
                         <div className="w-full">
                             <label htmlFor="confirm" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Confirm</label>
                             <input
-                                className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                className="w-full bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 type="text"
                                 name="confirm"
                                 placeholder="Rewrite Password..."
@@ -381,17 +419,6 @@ const DriverCreate = () => {
                             {formik.touched.cardNumber && formik.errors.cardNumber ? (
                                 <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.cardNumber}</div>
                             ) : null}
-                        </div>
-                        <div className="w-full">
-                            <label htmlFor="publishedDate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Published Date</label>
-                            <div className="relative">
-                                <Datepicker
-                                    key="publishDate"
-                                    options={options}
-                                    onChange={handlePublishChange}
-                                    show={publishShow}
-                                    setShow={handlePublishClose} />
-                            </div>
                         </div>
                         <div className="w-full">
                             <label htmlFor="expirationDate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expire Date</label>
@@ -440,66 +467,29 @@ const DriverCreate = () => {
                                 <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseState}</div>
                             ) : null}
                         </div>
-                        {
-                            formik.values.role === 'subcontractor' ?
-                                <>
-                                    <div className="w-full">
-                                        <label htmlFor="insurances" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Insurances</label>
 
-                                        <select id="insurances" name="insurances" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.insurances} onChange={formik.handleChange} onBlur={formik.handleBlur}>
-                                            <option value="">Choose a Insurances</option>
-                                            <option value="Liability">Liability Insurance</option>
-                                            <option value="Collision">Collision Insurance</option>
-                                            <option value="Comprehensive">Comprehensive Insurance</option>
-                                            <option value="PIP">Personal Injury Protection (PIP) Insurance</option>
-                                            <option value="UMI">Uninsured/Underinsured Motorist Insurance</option>
-                                        </select>
-                                        {formik.touched.insurances && formik.errors.insurances ? (
-                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.insurances}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className="w-full">
-                                        <label htmlFor="workCompensation" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Work Compensation</label>
-                                        <input
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            type="text"
-                                            name="workCompensation"
-                                            id="workCompensation"
-                                            value={formik.values.workCompensation}
-                                            placeholder={formik.values.workCompensation}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        />
-                                        {formik.touched.workCompensation && formik.errors.workCompensation ? (
-                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.workCompensation}</div>
-                                        ) : null}
-                                    </div>
-
-                                    <div className="w-full">
-                                        <label htmlFor="truckRegistration" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Truck Registration</label>
-                                        <input
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            type="text"
-                                            name="truckRegistration"
-                                            id="truckRegistration"
-                                            value={formik.values.truckRegistration}
-                                            placeholder={formik.values.truckRegistration}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        />
-                                        {formik.touched.truckRegistration && formik.errors.truckRegistration ? (
-                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.truckRegistration}</div>
-                                        ) : null}
-                                    </div>
-                                </> : <></>
-                        }
                         <div className="sm:col-span-2">
-                            <label htmlFor="licesePhoto" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Photo</label>
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Photo</label>
                             <Dropzone onDrop={handleDrop} id={licensePhoto} setLicensePhotoHandler={handleDrop} />
                         </div>
 
                         <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">Vehicle Info</h2>
+
+                        <div className="w-full">
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Select Category</label>
+                            <div className="relative flex items-center">
+                                <select id="category" name="category" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" value={selectedCategoryOption} onChange={handleCategoryOptionChange} required>
+                                    <option value="">Select a Category</option>
+                                    <option value="truck">Truck</option>
+                                    <option value="van">VAN</option>
+                                    <option value="ute">UTE</option>
+                                    <option value="other">Other</option>
+                                </select>
+                                {
+                                    selectedCategoryOption == 'other' && <input type="text" id="categoryInput" name="categoryInput" value={inputCategoryValue} onChange={handleCategoryInputChange} className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-6" placeholder="Enter an option" required />
+                                }
+                            </div>
+                        </div>
 
                         <div className="w-full">
                             <label htmlFor="year" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Year</label>
@@ -516,21 +506,80 @@ const DriverCreate = () => {
                                 <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.year}</div>
                             ) : null}
                         </div>
+
                         <div className="w-full">
-                            <label htmlFor="numberPlate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Number Plate</label>
-                            <input
-                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                type="text"
-                                name="numberPlate"
-                                id="numberPlate"
-                                value={formik.values.numberPlate}
-                                placeholder={formik.values.numberPlate}
-                                onChange={formik.handleChange}
-                                onBlur={formik.handleBlur} />
-                            {formik.touched.numberPlate && formik.errors.numberPlate ? (
-                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.numberPlate}</div>
-                            ) : null}
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Make</label>
+
+                            {
+                                selectedCategoryOption == 'other' || selectedCategoryOption == '' ?
+                                    <input
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        type="text"
+                                        name="makeInput1"
+                                        id="makeInput1"
+                                        value={inputMakeValue}
+                                        onChange={handleMakeInputChange}
+                                        required
+                                    />
+                                    :
+                                    <div className="relative flex items-center">
+                                        <select id="make" name="make" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={selectedMakeOption} onChange={handleMakeOptionChange} required>
+                                            <option value="">Choose a Make</option>
+                                            {
+                                                selectedCategoryOption == 'truck' ?
+                                                    <>
+                                                        <option value="Ford">Ford</option>
+                                                        <option value="FreightLiner">FreightLiner</option>
+                                                        <option value="Fuso">Fuso</option>
+                                                        <option value="Hino">Hino</option>
+                                                        <option value="Isuzu">Isuzu</option>
+                                                        <option value="Iveco">Iveco</option>
+                                                        <option value="KenWorth">KenWorth</option>
+                                                        <option value="Mack">Mack</option>
+                                                        <option value="M.A.N">M.A.N</option>
+                                                        <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                                        <option value="Mitsubishi">Mitsubishi</option>
+                                                        <option value="Volvo">Volvo</option>
+                                                        <option value="Western Star">Western Star</option>
+                                                        <option value="CaterPillar">CaterPillar</option>
+                                                        <option value="Daf">Daf</option>
+                                                        <option value="International">International</option>
+                                                        <option value="Scania">Scania</option>
+                                                        <option value="Sinotruck">Sinotruck</option>
+                                                        <option value="Sterling">Sterling</option>
+                                                        <option value="U.D">U.D</option>
+                                                        <option value="other">Other</option>
+                                                    </>
+                                                    :
+                                                    selectedCategoryOption == 'van' || selectedCategoryOption == 'ute' ?
+                                                        <>
+                                                            <option value="Audi">Audi</option>
+                                                            <option value="Ford">Ford</option>
+                                                            <option value="Holden">Holden</option>
+                                                            <option value="Honda">Honda</option>
+                                                            <option value="Hyundai">Hyundai</option>
+                                                            <option value="Kia">Kia</option>
+                                                            <option value="Mitsubishi">Mitsubishi</option>
+                                                            <option value="Nissan">Nissan</option>
+                                                            <option value="Toyota">Toyota</option>
+                                                            <option value="Volkswagon">Volkswagon</option>
+                                                            <option value="LDV">LDV</option>
+                                                            <option value="Mercedes-Benz">Mercedes-Benz</option>
+                                                            <option value="Peugeot">Peugeot</option>
+                                                            <option value="Renault">Renault</option>
+                                                            <option value="Citreon">Citreon</option>
+                                                            <option value="Daihatsu">Daihatsu</option>
+                                                            <option value="other">Other</option>
+                                                        </> : <></>
+                                            }
+                                        </select>
+                                        {
+                                            selectedMakeOption == 'other' && <input type="text" id="makeInput" value={inputMakeValue} onChange={handleMakeInputChange} name="makeInput" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500 ml-6" placeholder="Enter an option" />
+                                        }
+                                    </div>
+                            }
                         </div>
+
                         <div className="w-full">
                             <label htmlFor="VIN" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">VIN</label>
                             <input
@@ -546,37 +595,8 @@ const DriverCreate = () => {
                                 <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.VIN}</div>
                             ) : null}
                         </div>
-                        <div className="w-full">
-                            <label htmlFor="make" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Make</label>
 
-                            <select id="make" name="make" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.make} onChange={formik.handleChange} onBlur={formik.handleBlur}>
-                                <option value="">Choose a Make Class</option>
-                                <option value="Toyota">Toyota</option>
-                                <option value="Ford">Ford</option>
-                                <option value="Honda">Honda</option>
-                                <option value="Chevrolet">Chevrolet</option>
-                                <option value="Nissan">Nissan</option>
-                                <option value="BMW">BMW</option>
-                                <option value="Mercedes-Benz">Mercedes-Benz</option>
-                                <option value="Audi">Audi</option>
-                                <option value="Volkswagen">Volkswagen</option>
-                                <option value="Hyundai">Hyundai</option>
-                                <option value="Kia">Kia</option>
-                                <option value="Porsche">Porsche</option>
-                                <option value="Ferrari">Ferrari</option>
-                                <option value="Lamborghini">Lamborghini</option>
-                                <option value="Aston Martin">Aston Martin</option>
-                                <option value="McLaren">McLaren</option>
-                                <option value="Jeep">Jeep</option>
-                                <option value="Dodge">Dodge</option>
-                                <option value="Chrysler">Chrysler</option>
-                                <option value="Tesla">Tesla</option>
-                            </select>
-                            {formik.touched.make && formik.errors.make ? (
-                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.make}</div>
-                            ) : null}
-                        </div>
-                        <div className="sm:col-span-2">
+                        <div className="w-full">
                             <label htmlFor="model" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Model</label>
                             <input
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -591,6 +611,43 @@ const DriverCreate = () => {
                                 <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.model}</div>
                             ) : null}
                         </div>
+
+                        <div className="w-full">
+                            <label htmlFor="numberPlate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Number Plate</label>
+                            <input
+                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                type="text"
+                                name="numberPlate"
+                                id="numberPlate"
+                                value={formik.values.numberPlate}
+                                placeholder={formik.values.numberPlate}
+                                onChange={formik.handleChange}
+                                onBlur={formik.handleBlur} />
+                            {formik.touched.numberPlate && formik.errors.numberPlate ? (
+                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.numberPlate}</div>
+                            ) : null}
+                        </div>
+
+                        {
+                            formik.values.role === 'subcontractor' ?
+                                <>
+                                    <div className="sm:col-span-2">
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Insurance (Vehicle)</label>
+                                        <DropzoneForFile onDrop={handleInsuranceFile} id={insuranceFile} setLicensePhotoHandler={handleInsuranceFile} />
+                                    </div>
+
+                                    <div className="sm:col-span-2">
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Workers Compensation</label>
+                                        <DropzoneForFile onDrop={handleWorkCompensationFile} id={workCompensationFile} setLicensePhotoHandler={handleWorkCompensationFile} />
+                                    </div>
+
+                                    <div className="sm:col-span-2">
+                                        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Goods in Transit</label>
+                                        <DropzoneForFile onDrop={handleTruckRegistrationFile} id={truckRegistrationFile} setLicensePhotoHandler={handleTruckRegistrationFile} />
+                                    </div>
+                                </> : <></>
+                        }
+
                         <div className="w-full">
                             <label htmlFor="status" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Status</label>
                             <label className="relative inline-flex items-center cursor-pointer">

@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { Typography, avatar } from "@material-tailwind/react";
 import Link from "next/link";
 
+import { SlDocs } from 'react-icons/sl';
+
 import { instance } from 'helpers/axios';
 
 import InfoBoxCard from "components/card/info";
@@ -32,12 +34,13 @@ const SingleDriverDetail = () => {
                     expireDate: res.data.expireDate,
                     licenseClass: res.data.licenseClass,
                     licenseState: res.data.licenseState,
-                    insurances: res.data.insurances,
-                    workCompensation: res.data.workCompensation,
-                    truckRegistration: res.data.truckRegistration,
+                    insuranceFile: res.data.insuranceFile,
+                    workCompensationFile: res.data.workCompensationFile,
+                    truckRegistrationFile: res.data.truckRegistrationFile,
                     year: res.data.year,
                     numberPlate: res.data.numberPlate,
                     VIN: res.data.VIN,
+                    category: res.data.category,
                     make: res.data.make,
                     model: res.data.model,
                     approved: res.data.approved
@@ -104,15 +107,7 @@ const SingleDriverDetail = () => {
                             <div className="w-full">
                                 <InfoBoxCard title="License State" content={data.licenseState} />
                             </div>
-                            <div className="w-full">
-                                <InfoBoxCard title="Insurances" content={data.insurances} />
-                            </div>
-                            <div className="w-full">
-                                <InfoBoxCard title="Work Compensation" content={data.workCompensation} />
-                            </div>
-                            <div className="w-full">
-                                <InfoBoxCard title="Truck Registration" content={data.truckRegistration} />
-                            </div>
+
                             <div className="sm:col-span-2">
                                 <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
                                     <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">License Photo</Typography>
@@ -138,11 +133,54 @@ const SingleDriverDetail = () => {
                                 <InfoBoxCard title="VIN" content={data.VIN} />
                             </div>
                             <div className="w-full">
+                                <InfoBoxCard title="Category" content={data.category} />
+                            </div>
+                            <div className="w-full">
                                 <InfoBoxCard title="Make" content={data.make} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Model" content={data.model} />
                             </div>
+
+                            <div className="w-full">
+                                <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
+                                    <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Insurances</Typography>
+                                    <Typography variant="large" title="insurances" className="font-normal text-gray-700 dark:text-gray-400 flex">
+                                        {
+                                            data.insuranceFile.map(item => {
+                                                return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                            })
+                                        }
+                                    </Typography>
+                                </div>
+                            </div>
+
+                            <div className="w-full">
+                                <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
+                                    <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Work Compensation</Typography>
+                                    <Typography variant="large" title="workers compensation" className="font-normal text-gray-700 dark:text-gray-400 flex">
+                                        {
+                                            data.workCompensationFile.map(item => {
+                                                return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                            })
+                                        }
+                                    </Typography>
+                                </div>
+                            </div>
+
+                            <div className="w-full">
+                                <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
+                                    <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Truck Registration</Typography>
+                                    <Typography variant="large" title="truck registration" className="font-normal text-gray-700 dark:text-gray-400 flex">
+                                        {
+                                            data.truckRegistrationFile.map(item => {
+                                                return <Link href={item.url} target="_blank" className="mr-2"><SlDocs /></Link>
+                                            })
+                                        }
+                                    </Typography>
+                                </div>
+                            </div>
+
                             <div className="sm:col-span-2">
                                 {
                                     status ?
