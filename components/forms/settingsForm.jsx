@@ -20,20 +20,27 @@ const SettingsForm = (props) => {
     const [api, setApi] = useState('');
 
     useEffect(() => {
-        const existingScript = document.getElementById('googleMaps');
-        if (!existingScript && api !== '') {
-            const script = document.createElement('script');
-            script.src = `https://maps.googleapis.com/maps/api/js?key=${api}&libraries=places`;
-            script.id = 'googleMaps'
-            script.async = true;
-            document.body.appendChild(script);
-        }
+        user && instance.get(`/settings/googleapi/${user}`)
+            .then((res) => {
+                setApi(res.data);
+                const existingScript = document.getElementById('googleMaps');
+
+                if (!existingScript) {
+                    const script = document.createElement('script');
+                    script.src = `https://maps.googleapis.com/maps/api/js?key=${res.data}&libraries=places`;
+                    script.id = 'googleMaps'
+                    script.async = true;
+                    document.body.appendChild(script);
+                }
+            }).catch(error => {
+                console.log(error.message);
+            });
     }, []);
 
     useEffect(() => {
         const existingScript = document.getElementById('googleMaps');
 
-        if (existingScript) {
+        if (address && existingScript && api) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
@@ -59,16 +66,6 @@ const SettingsForm = (props) => {
         setAddress(prediction.description);
         setPredictions([]);
     };
-
-    useEffect(() => {
-        handleLogoSelect(data.logo);
-        user && instance.get(`/settings/googleapi/${user}`)
-            .then((res) => {
-                setApi(res.data);
-            }).catch(error => {
-                console.log(error.message);
-            });
-    }, []);
 
     async function handleLogoSelect(data) {
         const blob = data ? await loadFile(data.url) : await loadFile(invoiceImage.src);
