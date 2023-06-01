@@ -74,9 +74,7 @@ const DriverCreate = () => {
             firstname: Yup.string().required('First Name is required'),
             lastname: Yup.string().required('Last Name is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
-            phone: Yup.string()
-                .matches(/^(?:\+61|0)4(?:[ -]?[0-9]){8}$/, 'Please enter a valid phone number')
-                .required('Phone number is required'),
+            phone: Yup.string().required('Phone number is required'),
             role: Yup.string().required('Please select an option'),
             password: Yup.string()
                 .min(6, 'Password must be at least 6 characters')
@@ -85,10 +83,8 @@ const DriverCreate = () => {
                 oneOf([Yup.ref('password'), null], 'Passwords does not match')
                 .required('Password is required'),
             licenseNumber: Yup.string()
-                .matches(/^[A-Z]{2}\d{6}$/i, 'Invalid driver license number')
                 .required('Driver license number is required'),
             cardNumber: Yup.string()
-                .matches(/^[0-9]{16}$/, 'Driver card number must be 16 digits')
                 .required('Driver card number is required'),
             licenseClass: Yup.string().required('Please select an class'),
             licenseState: Yup.string()
@@ -99,9 +95,7 @@ const DriverCreate = () => {
                 .required('Year is required'),
             numberPlate: Yup.string()
                 .required('Number plate is required'),
-            VIN: Yup.string()
-                .matches(/^[A-HJ-NPR-Z\d]{8}[\dX][A-HJ-NPR-Z\d]{2}\d{6}$/, 'Invalid VIN')
-                .required('VIN is required'),
+            VIN: Yup.string().required('VIN is required'),
             model: Yup.string().required('Model is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {

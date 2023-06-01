@@ -27,17 +27,21 @@ const SettingsForm = (props) => {
             script.id = 'googleMaps'
             script.async = true;
             document.body.appendChild(script);
+        }
+    }, []);
 
-            script.addEventListener('load', () => {
-                // The Google Maps API is now loaded and ready to use
-                const geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ address }, (results, status) => {
-                    if (status === 'OK') {
-                        setIsValidAddress(true);
-                    } else {
-                        setIsValidAddress(false);
-                    }
-                });
+    useEffect(() => {
+        const existingScript = document.getElementById('googleMaps');
+
+        if (existingScript) {
+            // The Google Maps API is now loaded and ready to use
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address }, (results, status) => {
+                if (status === 'OK') {
+                    setIsValidAddress(true);
+                } else {
+                    setIsValidAddress(false);
+                }
             });
         }
     }, [address, api]);
@@ -96,18 +100,13 @@ const SettingsForm = (props) => {
             firstname: Yup.string().required('First Name is required'),
             lastname: Yup.string().required('Last Name is required'),
             bank: Yup.string().required('Bank Name is required'),
-            bsb: Yup.string().matches(/^\d{3}-\d{3}$/, 'Invalid BSB')
-                .required('BSB is required'),
-            accountNo: Yup.string().matches(/^\d{9}$/, 'Invalid account number')
-                .required('Account number is required'),
+            bsb: Yup.string().required('BSB is required'),
+            accountNo: Yup.string().required('Account number is required'),
             company: Yup.string()
                 .required('Company Name is required'),
-            abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/, 'Invalid ABN')
-                .required('ABN is required'),
+            abn: Yup.string().required('ABN is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
-            phone: Yup.string()
-                .matches(/^(?:\+61|0)[2-478](?:[ -]?[0-9]){8}$/, 'Invalid phone number')
-                .required('Phone number is required'),
+            phone: Yup.string().required('Phone number is required'),
             api: Yup.string().min(39, 'API key must be at least 39 characters long').test('is-api-key', 'Invalid API key', (value) => {
                 const apiKeyRegex = /^[A-Za-z0-9-_]{39}$/;
                 return apiKeyRegex.test(value);

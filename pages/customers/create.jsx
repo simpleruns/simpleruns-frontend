@@ -26,17 +26,21 @@ const CustomerCreate = () => {
             script.id = 'googleMaps'
             script.async = true;
             document.body.appendChild(script);
+        }
+    }, []);
 
-            script.addEventListener('load', () => {
-                // The Google Maps API is now loaded and ready to use
-                const geocoder = new google.maps.Geocoder();
-                geocoder.geocode({ address }, (results, status) => {
-                    if (status === 'OK') {
-                        setIsValidAddress(true);
-                    } else {
-                        setIsValidAddress(false);
-                    }
-                });
+    useEffect(() => {
+        const existingScript = document.getElementById('googleMaps');
+
+        if (existingScript) {
+            // The Google Maps API is now loaded and ready to use
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address }, (results, status) => {
+                if (status === 'OK') {
+                    setIsValidAddress(true);
+                } else {
+                    setIsValidAddress(false);
+                }
             });
         }
     }, [address, api]);
@@ -79,16 +83,13 @@ const CustomerCreate = () => {
         validationSchema: Yup.object({
             companyName: Yup.string().required('Company Name is required'),
             email: Yup.string().email('Invalid Email').required('Email is required'),
-            phone: Yup.string()
-                .matches(/^(?:\+61|0)[2-478](?:[ -]?[0-9]){8}$/, 'Invalid phone number')
-                .required('Phone number is required'),
+            phone: Yup.string().required('Phone number is required'),
             rateType: Yup.string().required('Please select an option'),
             localRate: Yup.number().required('Local Rate is required'),
             countryRate: Yup.number().required('Country Rate is required'),
             fuelRate: Yup.number().required('Fuel Rate is required'),
             loadRate: Yup.number().required('Load Rate is required'),
-            abn: Yup.string().matches(/^(?:(\d{2})(\d{3})(\d{3})(\d{3}))?$/, 'Invalid ABN')
-                .required('ABN is required'),
+            abn: Yup.string().required('ABN is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();
