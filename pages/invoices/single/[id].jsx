@@ -6,6 +6,7 @@ import { useAtom } from "jotai";
 import { Typography } from '@material-tailwind/react';
 import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import { useRouter } from 'next/router';
+import Link from "next/link";
 
 import { idAtom } from "helpers/authorize";
 import { instance } from 'helpers/axios';
@@ -50,8 +51,6 @@ const generateInvoice = (invoice) => {
 
     function getBase64Image(img) {
         var canvas = document.createElement("canvas");
-        // canvas.width = img.width;
-        // canvas.height = img.height;
         canvas.width = (img.width * 40) / img.height;
         canvas.height = 40;
         var ctx = canvas.getContext("2d");
@@ -237,7 +236,7 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.description.split(' ').map(word => {
+                                        text: row.job + ' - LOAD ' + row.load + ' ' + row.description.split(' ').map(word => {
                                             const suffixes = ['st', 'rd', 'nd', 'th'];
                                             if (suffixes.includes(word.toLowerCase().slice(-2))) {
                                                 return word.slice(0, -2);
@@ -480,7 +479,7 @@ const Invoice = () => {
         invoice && <div className='font-sans text-gray-900 font-medium'>
             <div className="grid grid-cols-3 gap-2">
                 <div className='sm:col-span-2'>
-                    <img className="h-[3rem] my-[3rem]" id="imageid" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
+                    <img className="h-[3rem] my-[3rem]" id="imageid" crossOrigin="anonymous" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
                     <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
 
                     <h4 className="block text-sm font-medium text-gray-900 mt-2">Address: {invoice.adminAddress}</h4>
@@ -572,6 +571,9 @@ const Invoice = () => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
+                                                {
+                                                    row.job + ' - LOAD ' + row.load + ' '
+                                                }
                                                 {
                                                     row.description.split(' ').map(word => {
                                                         const suffixes = ['st', 'rd', 'nd', 'th'];
@@ -671,7 +673,12 @@ const Invoice = () => {
                 </div>
             </div>
 
-            <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-6 mx-auto flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
+            <div className="flex items-center mt-6">
+                <Link href={`/invoices/edit/${id}?start=${start}&end=${end}`} className='mr-4'>
+                    <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
+                </Link>
+                <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
+            </div>
         </div >
     );
 };

@@ -14,7 +14,11 @@ const headers = [
     { text: 'Start Time', key: 'startTime' },
     { text: 'End Time', key: 'endTime' },
     { text: 'Total Hour', key: 'totalHour' },
-    { text: 'Ref#', key: 'ref' },
+    { text: 'REF', key: 'ref' },
+    { text: 'Docket', key: 'docket' },
+    { text: 'Job', key: 'job' },
+    { text: 'Load#', key: 'load' },
+    { text: 'PO', key: 'po' },
     { text: 'Description', key: 'description' },
     { text: 'Tolls', key: 'tolls' },
     { text: 'Rate', key: 'rate' },
@@ -41,8 +45,7 @@ const Invoice = ({ data: invoiceData }) => {
     const saveInvoiceHandler = () => {
         user && instance.post(`/invoices/edit/${id}`, { params: { user: user, data: invoice.deliveries } })
             .then((res) => {
-                console.log(res.data);
-                res.status == 200 && router.push('/invoices');
+                router.push('/invoices');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -218,6 +221,106 @@ const Invoice = ({ data: invoiceData }) => {
                                                     setInvoice(updatedRef);
                                                 }}
                                                 value={invoice.deliveries[index].ref}
+                                            />
+                                        </td>
+                                        <td className={classes}>
+                                            <input
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                type="text"
+                                                name="docket"
+                                                id={"docket" + index}
+                                                onChange={(e) => {
+                                                    const updatedDocket = {
+                                                        ...invoice,
+                                                        deliveries: invoice.deliveries.map((delivery, id) => {
+                                                            if (id === index) {
+                                                                return {
+                                                                    ...delivery,
+                                                                    docket: e.target.value
+                                                                }
+                                                            } else {
+                                                                return delivery;
+                                                            }
+                                                        })
+                                                    }
+                                                    setInvoice(updatedDocket);
+                                                }}
+                                                value={invoice.deliveries[index].docket}
+                                            />
+                                        </td>
+                                        <td className={classes}>
+                                            <input
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                type="text"
+                                                name="job"
+                                                id={"job" + index}
+                                                onChange={(e) => {
+                                                    const updatedJob = {
+                                                        ...invoice,
+                                                        deliveries: invoice.deliveries.map((delivery, id) => {
+                                                            if (id === index) {
+                                                                return {
+                                                                    ...delivery,
+                                                                    job: e.target.value
+                                                                }
+                                                            } else {
+                                                                return delivery;
+                                                            }
+                                                        })
+                                                    }
+                                                    setInvoice(updatedJob);
+                                                }}
+                                                value={invoice.deliveries[index].job}
+                                            />
+                                        </td>
+                                        <td className={classes}>
+                                            <input
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                type="text"
+                                                name="load"
+                                                id={"load" + index}
+                                                onChange={(e) => {
+                                                    const updatedLoad = {
+                                                        ...invoice,
+                                                        deliveries: invoice.deliveries.map((delivery, id) => {
+                                                            if (id === index) {
+                                                                return {
+                                                                    ...delivery,
+                                                                    load: e.target.value
+                                                                }
+                                                            } else {
+                                                                return delivery;
+                                                            }
+                                                        })
+                                                    }
+                                                    setInvoice(updatedLoad);
+                                                }}
+                                                value={invoice.deliveries[index].load}
+                                            />
+                                        </td>
+                                        <td className={classes}>
+                                            <input
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                                                type="text"
+                                                name="PO"
+                                                id={"PO" + index}
+                                                onChange={(e) => {
+                                                    const updatedPO = {
+                                                        ...invoice,
+                                                        deliveries: invoice.deliveries.map((delivery, id) => {
+                                                            if (id === index) {
+                                                                return {
+                                                                    ...delivery,
+                                                                    PO: e.target.value
+                                                                }
+                                                            } else {
+                                                                return delivery;
+                                                            }
+                                                        })
+                                                    }
+                                                    setInvoice(updatedPO);
+                                                }}
+                                                value={invoice.deliveries[index].PO}
                                             />
                                         </td>
                                         <td className={classes}>
