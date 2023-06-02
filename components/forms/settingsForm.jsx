@@ -16,10 +16,11 @@ const SettingsForm = (props) => {
     const [imageDataUrl, setImageDataUrl] = useState(data.logo == undefined ? null : data.logo.url);
     const [address, setAddress] = useState(data.address);
     const [predictions, setPredictions] = useState([]);
-    const [isValidAddress, setIsValidAddress] = useState(true);
+    const [isValidAddress, setIsValidAddress] = useState(false);
     const [api, setApi] = useState('');
 
     useEffect(() => {
+        handleLogoSelect(data.logo);
         user && instance.get(`/settings/googleapi/${user}`)
             .then((res) => {
                 setApi(res.data);
@@ -37,21 +38,20 @@ const SettingsForm = (props) => {
             });
     }, []);
 
-    useEffect(() => {
+    const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
-
-        if (address && existingScript && api) {
+        if (existingScript && api) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
-                if (status === 'OK') {
+                if (status === 'OK' && address !== '') {
                     setIsValidAddress(true);
                 } else {
                     setIsValidAddress(false);
                 }
             });
         }
-    }, [address, api]);
+    }
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
@@ -65,6 +65,7 @@ const SettingsForm = (props) => {
     const handlePredictionClick = (prediction) => {
         setAddress(prediction.description);
         setPredictions([]);
+        addressValidateHandler();
     };
 
     async function handleLogoSelect(data) {
@@ -110,9 +111,12 @@ const SettingsForm = (props) => {
             })
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
+            addressValidateHandler();
             const formData = new FormData();
             if (logo == null)
                 alert("You didn'nt uploaded logo image.");
+            else if (!isValidAddress)
+                alert("You entered Invalid Address.");
             else {
                 try {
                     formData.append('logo', logo, logo.name);
@@ -140,7 +144,7 @@ const SettingsForm = (props) => {
     });
 
     const saveEditedSettings = async (data) => {
-        instance.put(`/settings/user/${user}`, data)
+        isValidAddress && instance.put(`/settings/user/${user}`, data)
             .then((res) => {
                 res.status == 200 && router.push('/');
             }).catch(error => {
@@ -278,10 +282,13 @@ const SettingsForm = (props) => {
                         value={address}
                         placeholder={address}
                         onChange={(e) => {
+                            setIsValidAddress(true);
                             setAddress(e.target.value);
                             handleAddressAutoComplete(e.target.value);
+                            addressValidateHandler();
                             e.target.value == null || e.target.value == '' ? setPredictions([]) : '';
                         }}
+                        onBlur={(e) => { addressValidateHandler() }}
                     />
                     {predictions.length > 0 && (
                         <div className="mt-1 flex flex-col absolute z-30 bg-white max-w-[300px] shadow-md py-2">
@@ -297,9 +304,6 @@ const SettingsForm = (props) => {
                             ))}
                         </div>
                     )}
-                    {!isValidAddress ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">Invalid Address</div>
-                    ) : null}
                 </div>
 
                 <div className="w-full">
@@ -388,7 +392,7 @@ const SettingsForm = (props) => {
                 </div>
             </div>
 
-            <button type="submit" className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" disabled={logo ? false : true}>Save</button>
+            <button type="submit" className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 disabled:opacity-60" disabled={logo ? false : true}>Save</button>
 
             <Link href="/">
                 <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 opacity-90">Back</button>

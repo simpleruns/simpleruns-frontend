@@ -15,7 +15,7 @@ const SingleCustomerForm = (props) => {
     const [imageDataUrl, setImageDataUrl] = useState(data.photo.url);
     const [address, setAddress] = useState(data.address);
     const [predictions, setPredictions] = useState([]);
-    const [isValidAddress, setIsValidAddress] = useState(true);
+    const [isValidAddress, setIsValidAddress] = useState(false);
     const [api, setApi] = useState('');
     const router = useRouter();
 
@@ -37,21 +37,20 @@ const SingleCustomerForm = (props) => {
             });
     }, []);
 
-    useEffect(() => {
+    const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
-
-        if (address && existingScript && api) {
+        if (existingScript && api) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
-                if (status === 'OK') {
+                if (status === 'OK' && address !== '') {
                     setIsValidAddress(true);
                 } else {
                     setIsValidAddress(false);
                 }
             });
         }
-    }, [address, api]);
+    }
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
@@ -65,6 +64,7 @@ const SingleCustomerForm = (props) => {
     const handlePredictionClick = (prediction) => {
         setAddress(prediction.description);
         setPredictions([]);
+        addressValidateHandler();
     };
 
     useEffect(() => {
@@ -109,9 +109,12 @@ const SingleCustomerForm = (props) => {
             abn: Yup.string().required('ABN is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
+            addressValidateHandler();
             const formData = new FormData();
             if (photo == null || photo == undefined)
                 alert("You didn'nt uploaded customer user image.");
+            else if (!isValidAddress)
+                alert("You entered Invalid Address.");
             else {
                 try {
                     formData.append('companyName', values.companyName);
@@ -141,7 +144,7 @@ const SingleCustomerForm = (props) => {
     });
 
     const saveEditedCustomer = async (data) => {
-        user && instance.put(`/admin/customers/${id}`, data)
+        (user && isValidAddress) && instance.put(`/admin/customers/${id}`, data)
             .then((res) => {
                 console.log(res.data);
                 res.status == 200 && router.push('/customers');
@@ -328,10 +331,13 @@ const SingleCustomerForm = (props) => {
                         value={address}
                         placeholder={address}
                         onChange={(e) => {
+                            setIsValidAddress(true);
                             setAddress(e.target.value);
                             handleAddressAutoComplete(e.target.value);
+                            addressValidateHandler();
                             e.target.value == null || e.target.value == '' ? setPredictions([]) : '';
                         }}
+                        onBlur={(e) => { addressValidateHandler() }}
                     />
                     {predictions.length > 0 && (
                         <div className="mt-1 flex flex-col absolute z-30 bg-white max-w-[300px] shadow-md py-2">
@@ -347,9 +353,6 @@ const SingleCustomerForm = (props) => {
                             ))}
                         </div>
                     )}
-                    {!isValidAddress ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">Invalid Address</div>
-                    ) : null}
                 </div>
 
                 <div className="w-full">
