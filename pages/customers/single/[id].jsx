@@ -74,7 +74,7 @@ const CustomerDetail = () => {
                                 <InfoBoxCard title="Rate Type" content={data.rateType} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="Fuel Rate" content={data.loadRate} />
+                                <InfoBoxCard title="Load Rate" content={data.loadRate} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Fuel Rate" content={data.fuelRate} />

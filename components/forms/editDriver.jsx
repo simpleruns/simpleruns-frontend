@@ -384,7 +384,7 @@ const SingleDriverForm = (props) => {
                 <div className="w-full">
                     <label htmlFor="role" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Role</label>
 
-                    <select id="role" name="role" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.role} onChange={formik.handleChange} onBlur={formik.handleBlur}>
+                    <select id="role" name="role" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.role} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
                         <option value="">Choose a Role</option>
                         <option value="driver">Driver</option>
                         <option value="subcontractor">Subcontractor</option>
@@ -408,6 +408,7 @@ const SingleDriverForm = (props) => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.password}
+                        required
                     />
                     {formik.touched.password && formik.errors.password ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.password}</div>
@@ -424,6 +425,7 @@ const SingleDriverForm = (props) => {
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         value={formik.values.confirm}
+                        required
                     />
                     {formik.touched.confirm && formik.errors.confirm ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.confirm}</div>
@@ -442,7 +444,9 @@ const SingleDriverForm = (props) => {
                         value={formik.values.licenseNumber}
                         placeholder={formik.values.licenseNumber}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur} />
+                        onBlur={formik.handleBlur}
+                        required
+                    />
                     {formik.touched.licenseNumber && formik.errors.licenseNumber ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseNumber}</div>
                     ) : null}
@@ -458,6 +462,7 @@ const SingleDriverForm = (props) => {
                         placeholder={formik.values.cardNumber}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        required
                     />
                     {formik.touched.cardNumber && formik.errors.cardNumber ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.cardNumber}</div>
@@ -476,7 +481,7 @@ const SingleDriverForm = (props) => {
                 <div className="w-full">
                     <label htmlFor="licenseClass" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Class</label>
 
-                    <select id="licenseClass" name="licenseClass" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseClass} onChange={formik.handleChange} onBlur={formik.handleBlur}>
+                    <select id="licenseClass" name="licenseClass" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseClass} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
                         <option value="">Choose a license Class</option>
                         <option value="R">R Motorcycle</option>
                         <option value="R-DATE">R-Date</option>
@@ -493,7 +498,7 @@ const SingleDriverForm = (props) => {
                 </div>
                 <div className="w-full">
                     <label htmlFor="licenseState" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License State</label>
-                    <select id="licenseState" name="licenseState" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseState} onChange={formik.handleChange} onBlur={formik.handleBlur}>
+                    <select id="licenseState" name="licenseState" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseState} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
                         <option value="">Choose a license State</option>
                         <option value="NSW">New South Wales</option>
                         <option value="VT">Victoria</option>
@@ -544,7 +549,9 @@ const SingleDriverForm = (props) => {
                         value={formik.values.year}
                         placeholder={formik.values.year}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur} />
+                        onBlur={formik.handleBlur}
+                        required
+                    />
                     {formik.touched.year && formik.errors.year ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.year}</div>
                     ) : null}
@@ -633,7 +640,9 @@ const SingleDriverForm = (props) => {
                         value={formik.values.VIN}
                         placeholder={formik.values.VIN}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur} />
+                        onBlur={formik.handleBlur}
+                        required
+                    />
                     {formik.touched.VIN && formik.errors.VIN ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.VIN}</div>
                     ) : null}
@@ -649,7 +658,9 @@ const SingleDriverForm = (props) => {
                         value={formik.values.model}
                         placeholder={formik.values.model}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur} />
+                        onBlur={formik.handleBlur}
+                        required
+                    />
                     {formik.touched.model && formik.errors.model ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.model}</div>
                     ) : null}
@@ -664,7 +675,9 @@ const SingleDriverForm = (props) => {
                         value={formik.values.numberPlate}
                         placeholder={formik.values.numberPlate}
                         onChange={formik.handleChange}
-                        onBlur={formik.handleBlur} />
+                        onBlur={formik.handleBlur}
+                        required
+                    />
                     {formik.touched.numberPlate && formik.errors.numberPlate ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.numberPlate}</div>
                     ) : null}

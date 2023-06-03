@@ -367,7 +367,7 @@ export default function Drivers() {
                                             </td>
                                             <td className={classes}>
                                                 <div className="flex items-center">
-                                                    <Link href={`/drivers/single/${row._id}`} className="text-indigo-600 hover:text-indigo-900" title="Insight"><SlEye /></Link>
+                                                    <Link href={`/drivers/single/${row._id}`} className="text-indigo-600 hover:text-indigo-900" title="View"><SlEye /></Link>
                                                     <Link href={`/drivers/edit/${row._id}`} className="text-green-600 hover:text-green-900 ml-4" title="Edit"><BsPen /></Link>
                                                     <button className="text-red-600 hover:text-red-900 ml-4" onClick={() => handleModalClick(row._id)} title="Delete"><SlTrash /></button>
                                                 </div>

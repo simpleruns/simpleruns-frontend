@@ -338,6 +338,7 @@ const SingleCustomerForm = (props) => {
                             e.target.value == null || e.target.value == '' ? setPredictions([]) : '';
                         }}
                         onBlur={(e) => { addressValidateHandler() }}
+                        required
                     />
                     {predictions.length > 0 && (
                         <div className="mt-1 flex flex-col absolute z-30 bg-white max-w-[300px] shadow-md py-2">
@@ -366,6 +367,7 @@ const SingleCustomerForm = (props) => {
                         placeholder={formik.values.abn}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
+                        required
                     />
                     {formik.touched.abn && formik.errors.abn ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.abn}</div>

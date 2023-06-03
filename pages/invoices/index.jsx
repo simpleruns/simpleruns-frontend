@@ -211,7 +211,7 @@ export default function Invoices() {
                                         </td>
                                         <td className={classes}>
                                             <div className="flex items-center">
-                                                <Link href={`/invoices/single/${row._id}?start=${moment(startDay).valueOf()}&end=${moment(endDay).valueOf()}`} className="text-indigo-600 hover:text-indigo-900" title="Insight"><SlEye /></Link>
+                                                <Link href={`/invoices/single/${row._id}?start=${moment(startDay).valueOf()}&end=${moment(endDay).valueOf()}`} className="text-indigo-600 hover:text-indigo-900" title="View"><SlEye /></Link>
                                                 <Link href={`/invoices/edit/${row._id}?start=${moment(startDay).valueOf()}&end=${moment(endDay).valueOf()}`} className="text-green-600 hover:text-green-900 ml-4" title="Edit"><BsPen /></Link>
                                             </div>
                                         </td>
