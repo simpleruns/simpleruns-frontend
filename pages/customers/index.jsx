@@ -411,8 +411,8 @@ export default function Customers() {
                         </div>
 
                         <div className="m-10">
-                            <div key={sortedData[showID]._id} className="bg-white relative grid gap-4 sm:grid-cols-2 md:grid-cols-4 px-4 py-10">
-                                <div className="p-2 flex items-center">
+                            <div key={sortedData[showID]._id} className="bg-white relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 py-10">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -428,7 +428,7 @@ export default function Customers() {
                                         <Avatar src={sortedData[showID].photo.url} alt="image" size="sm" />
                                     </div>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -444,7 +444,7 @@ export default function Customers() {
                                         {sortedData[showID].companyName}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -460,7 +460,7 @@ export default function Customers() {
                                         {sortedData[showID].email}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -476,7 +476,7 @@ export default function Customers() {
                                         {sortedData[showID].phone}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -491,7 +491,7 @@ export default function Customers() {
                                         {sortedData[showID].abn}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -507,7 +507,7 @@ export default function Customers() {
                                         {sortedData[showID].rateType}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -523,7 +523,7 @@ export default function Customers() {
                                         {sortedData[showID].loadRate}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -539,7 +539,7 @@ export default function Customers() {
                                         {sortedData[showID].fuelRate}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -555,7 +555,7 @@ export default function Customers() {
                                         {sortedData[showID].localRate}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -571,7 +571,7 @@ export default function Customers() {
                                         {sortedData[showID].countryRate}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -587,7 +587,7 @@ export default function Customers() {
                                         {sortedData[showID].address}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center">
+                                <div className="p-2 flex items-center justify-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -608,7 +608,7 @@ export default function Customers() {
                             </div>
 
                             <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex relative">
-                                <div className="p-2 flex items-center w-full">
+                                <div className="p-2 flex items-center justify-center sm:justify-start w-full">
                                     <div className="flex items-center">
                                         <Link href={`/customers/single/${sortedData[showID]._id}`} className="text-indigo-600 hover:text-indigo-900" title="View"><SlEye /></Link>
                                         <Link href={`/customers/edit/${sortedData[showID]._id}`} className="text-green-600 hover:text-green-900 ml-4" title="Edit"><BsPen /></Link>
