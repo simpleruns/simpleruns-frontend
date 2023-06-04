@@ -55,7 +55,7 @@ const SingleCustomerForm = (props) => {
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value }, (predictions, status) => {
+        service.getPlacePredictions({ input: value, componentRestrictions: { country: 'au' } }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
             }
