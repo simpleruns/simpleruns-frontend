@@ -70,6 +70,8 @@ export default function Customers() {
     const router = useRouter();
     const countPerPage = 10;
     const [showModal, setShowModal] = useState(false);
+    const [showModal1, setShowModal1] = useState(false);
+    const [showID, setShowID] = useState(null);
 
     const handleModalClick = (id) => {
         setShowModal(true);
@@ -85,6 +87,16 @@ export default function Customers() {
     const handleCancel = () => {
         setShowModal(false);
         setDelID(null);
+    };
+
+    const handleModal1Click = (id) => {
+        setShowModal1(true);
+        setShowID(id);
+    };
+
+    const handleCancel1 = () => {
+        setShowModal1(false);
+        setShowID(null);
     };
 
     const [user, __] = useAtom(idAtom);
@@ -189,7 +201,7 @@ export default function Customers() {
                         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
                             <Button className="flex items-center gap-3" color="blue" size="sm">
                                 <Link href="/customers/create" className="flex items-center">
-                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Customer
                                 </Link>
                             </Button>
                         </div>
@@ -245,7 +257,7 @@ export default function Customers() {
                                                 </div>
                                             </td>
                                             <td className={classes}>
-                                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                                <Typography variant="small" color="blue-gray" className="font-normal cursor-pointer" onClick={() => handleModal1Click(index)}>
                                                     {row.companyName}
                                                 </Typography>
                                             </td>
@@ -390,6 +402,235 @@ export default function Customers() {
                     </div>
                 </div>
             )}
+
+            {showModal1 && (
+                <div className="fixed inset-0 z-50 overflow-y-auto">
+                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div className="fixed inset-0 transition-opacity">
+                            <div className="absolute inset-0 bg-gray-500 dark:bg-[#000000] opacity-75"></div>
+                        </div>
+
+                        <div className="m-10">
+                            <div key={sortedData[showID]._id} className="bg-white relative grid gap-4 sm:grid-cols-2 md:grid-cols-4 px-4 py-10">
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Image
+                                        </Typography>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar src={sortedData[showID].photo.url} alt="image" size="sm" />
+                                    </div>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Company Name
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].companyName}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Email
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].email}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Phone
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].phone}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >Company ABN
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].abn}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Rate Type
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].rateType}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Load Rate
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].loadRate}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Fuel Levy
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].fuelRate}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Local Rate
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].localRate}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Country Rate
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].countryRate}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Company Address
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].address}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Status
+                                        </Typography>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" className="sr-only peer" checked={checkedItems[showID]} onChange={() => handleToggleClick(showID, sortedData[showID]._id)} />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 hidden">Toggle me</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex relative">
+                                <div className="p-2 flex items-center w-full">
+                                    <div className="flex items-center">
+                                        <Link href={`/customers/single/${sortedData[showID]._id}`} className="text-indigo-600 hover:text-indigo-900" title="View"><SlEye /></Link>
+                                        <Link href={`/customers/edit/${sortedData[showID]._id}`} className="text-green-600 hover:text-green-900 ml-4" title="Edit"><BsPen /></Link>
+                                        <button className="text-red-600 hover:text-red-900 ml-4" onClick={() => {
+                                            handleModalClick(sortedData[showID]._id);
+                                            handleCancel1();
+                                        }} title="Delete"><SlTrash /></button>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                    onClick={() => handleCancel1()}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div >
+            )
+            }
         </>
     );
 }

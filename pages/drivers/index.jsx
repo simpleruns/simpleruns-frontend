@@ -196,7 +196,7 @@ export default function Drivers() {
                         <div className="flex shrink-0 flex-col gap-2 sm:flex-row">
                             <Button className="flex items-center gap-3" color="blue" size="sm">
                                 <Link href="/drivers/create" className="flex items-center">
-                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add member
+                                    <UserPlusIcon strokeWidth={2} className="h-4 w-4" /> Add Driver
                                 </Link>
                             </Button>
                         </div>

@@ -30,11 +30,12 @@ const CustomerCreate = () => {
                     script.id = 'googleMaps'
                     script.async = true;
                     document.body.appendChild(script);
+                    addressValidateHandler();
                 }
             }).catch(error => {
                 console.log(error.message);
             });
-    }, []);
+    }, [api, address]);
 
     const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
@@ -63,7 +64,6 @@ const CustomerCreate = () => {
     const handlePredictionClick = (prediction) => {
         setAddress(prediction.description);
         setPredictions([]);
-        addressValidateHandler();
     };
 
     const formik = useFormik({
@@ -90,11 +90,10 @@ const CustomerCreate = () => {
             abn: Yup.string().required('ABN is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
-            addressValidateHandler();
             const formData = new FormData();
             if (photo == null || photo == undefined)
                 alert("You didn'nt uploaded customer user image.");
-            else if (!isValidAddress)
+            else if (address == '' || !isValidAddress)
                 alert("You entered Invalid Address.");
             else {
                 formData.append('userId', user);

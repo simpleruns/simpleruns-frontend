@@ -16,7 +16,7 @@ const SettingsForm = (props) => {
     const [imageDataUrl, setImageDataUrl] = useState(data.logo == undefined ? null : data.logo.url);
     const [address, setAddress] = useState(data.address);
     const [predictions, setPredictions] = useState([]);
-    const [isValidAddress, setIsValidAddress] = useState(false);
+    const [isValidAddress, setIsValidAddress] = useState(true);
     const [api, setApi] = useState('');
 
     useEffect(() => {
@@ -32,13 +32,30 @@ const SettingsForm = (props) => {
                     script.id = 'googleMaps'
                     script.async = true;
                     document.body.appendChild(script);
+                    addressValidateHandler();
+                    addressValidateHandler1(data.address);
                 }
             }).catch(error => {
                 console.log(error.message);
             });
-    }, []);
+    }, [api, address]);
 
     const addressValidateHandler = () => {
+        const existingScript = document.getElementById('googleMaps');
+        if (existingScript && api) {
+            // The Google Maps API is now loaded and ready to use
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address }, (results, status) => {
+                if (status === 'OK' && address !== '') {
+                    setIsValidAddress(true);
+                } else {
+                    setIsValidAddress(false);
+                }
+            });
+        }
+    }
+
+    const addressValidateHandler1 = (address) => {
         const existingScript = document.getElementById('googleMaps');
         if (existingScript && api) {
             // The Google Maps API is now loaded and ready to use
@@ -65,7 +82,6 @@ const SettingsForm = (props) => {
     const handlePredictionClick = (prediction) => {
         setAddress(prediction.description);
         setPredictions([]);
-        addressValidateHandler();
     };
 
     async function handleLogoSelect(data) {
@@ -111,7 +127,6 @@ const SettingsForm = (props) => {
             })
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
-            addressValidateHandler();
             const formData = new FormData();
             if (logo == null)
                 alert("You didn'nt uploaded logo image.");
