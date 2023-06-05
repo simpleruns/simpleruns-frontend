@@ -33,8 +33,13 @@ const generateInvoice = (invoice) => {
 
     const subTotal = () => {
         var value = 0;
+        console.log("item: ")
         invoice.deliveries.forEach((item) => {
-            value += item.subTotal;
+            if (item.status == 'completed') {
+                value += item.subTotal;
+            } else {
+                value += item.subTotal + (4 - item.totalHour) * item.hourlyRate;
+            }
         });
         return value;
     }
@@ -231,29 +236,29 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.ref,
+                                        text: row.status == 'completed' ? row.ref : '',
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.job + ' - LOAD ' + row.load + ' ' + row.description.split(' ').map(word => {
+                                        text: row.status == 'completed' ? (row.job + ' - LOAD ' + row.load + ' ' + row.description.split(' ').map(word => {
                                             const suffixes = ['st', 'rd', 'nd', 'th'];
                                             if (suffixes.includes(word.toLowerCase().slice(-2))) {
                                                 return word.slice(0, -2);
                                             } else {
                                                 return word[0];
                                             }
-                                        }).filter(word => word !== '').join(''),
+                                        }).filter(word => word !== '').join('')) : '',
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.tolls.toFixed(2)}`,
+                                        text: `$${row.tolls.toFixed(3)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.totalHour.toFixed(2),
+                                        text: row.status == 'completed' ? row.totalHour.toFixed(3) : 4,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -263,22 +268,22 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.fuelLevy.toFixed(2)}`,
+                                        text: `$${row.fuelLevy.toFixed(3)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.subTotal.toFixed(2)}`,
+                                        text: `$${row.status == 'completed' ? row.subTotal.toFixed(3) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate).toFixed(3)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${row.GST.toFixed(2)}`,
+                                        text: `$${row.status == 'completed' ? row.GST.toFixed(3) : ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1).toFixed(3)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: `$${(row.subTotal + row.GST).toFixed(2)}`,
+                                        text: `$${row.status == 'completed' ? (row.subTotal + row.GST).toFixed(3) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate + ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1)).toFixed(3)}`,
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -356,7 +361,7 @@ const generateInvoice = (invoice) => {
                                         style: "tableFooter",
                                     },
                                     {
-                                        text: `$${subTotal().toFixed(2)}`,
+                                        text: `$${subTotal().toFixed(3)}`,
                                         style: "tableFooter",
                                     },
                                 ],
@@ -366,7 +371,7 @@ const generateInvoice = (invoice) => {
                                         style: "tableFooter",
                                     },
                                     {
-                                        text: `$${(subTotal() * 0.1).toFixed(2)}`,
+                                        text: `$${(subTotal() * 0.1).toFixed(3)}`,
                                         style: "tableFooter",
                                     },
                                 ],
@@ -376,7 +381,7 @@ const generateInvoice = (invoice) => {
                                         style: "tableFooterBold",
                                     },
                                     {
-                                        text: `$${(subTotal() * 1.1).toFixed(2)}`,
+                                        text: `$${(subTotal() * 1.1).toFixed(3)}`,
                                         style: "tableFooterBold",
                                     },
                                 ],
@@ -465,7 +470,11 @@ const Invoice = () => {
     const subTotal = () => {
         var value = 0;
         invoice.deliveries && invoice.deliveries.forEach((item) => {
-            value += item.subTotal;
+            if (item.status == 'completed') {
+                value += item.subTotal;
+            } else {
+                value += item.subTotal + (4 - item.totalHour) * item.hourlyRate;
+            }
         });
         return value;
     }
@@ -566,34 +575,34 @@ const Invoice = () => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.ref}
+                                                {row.status == 'completed' ? row.ref : ''}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {
-                                                    row.job + ' - LOAD ' + row.load + ' '
+                                                    row.status == 'completed' ? row.job + ' - LOAD ' + row.load + ' ' : ''
                                                 }
                                                 {
-                                                    row.description.split(' ').map(word => {
+                                                    row.status == 'completed' ? row.description.split(' ').map(word => {
                                                         const suffixes = ['st', 'rd', 'nd', 'th'];
                                                         if (suffixes.includes(word.toLowerCase().slice(-2))) {
                                                             return word.slice(0, -2);
                                                         } else {
                                                             return word[0];
                                                         }
-                                                    }).filter(word => word !== '').join('')
+                                                    }).filter(word => word !== '').join('') : ''
                                                 }
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.tolls.toFixed(2)}
+                                                {row.tolls.toFixed(3)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.totalHour.toFixed(2)}
+                                                {row.status == 'completed' ? row.totalHour.toFixed(3) : '4'}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -603,22 +612,22 @@ const Invoice = () => {
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.fuelLevy.toFixed(2)}
+                                                {row.fuelLevy.toFixed(3)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.subTotal.toFixed(2)}
+                                                {row.status == 'completed' ? row.subTotal.toFixed(3) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate).toFixed(3)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.GST.toFixed(2)}
+                                                {row.status == 'completed' ? row.GST.toFixed(3) : ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1).toFixed(3)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {(row.subTotal + row.GST).toFixed(2)}
+                                                {row.status == 'completed' ? (row.subTotal + row.GST).toFixed(3) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate + ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1)).toFixed(3)}
                                             </Typography>
                                         </td>
                                     </tr>
@@ -657,15 +666,15 @@ const Invoice = () => {
                 <div className='col-span-3'>
                     <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
                         <span>SUBTOTAL</span>
-                        <span>${subTotal().toFixed(2)}</span>
+                        <span>${subTotal().toFixed(3)}</span>
                     </div>
                     <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
                         <span>GST</span>
-                        <span>${(subTotal() * 0.1).toFixed(2)}</span>
+                        <span>${(subTotal() * 0.1).toFixed(3)}</span>
                     </div>
                     <div className=' flex justify-between px-2 py-2 bg-gray-200 border-b border-solid border-gray-800 '>
                         <span className='font-semibold'>TOTAL</span>
-                        <span className='font-semibold'>${(subTotal() * 1.1).toFixed(2)}</span>
+                        <span className='font-semibold'>${(subTotal() * 1.1).toFixed(3)}</span>
                     </div>
                     <div className=' flex justify-center px-2 py-2 '>
                         <span className=' font-semibold'>The Total price includes GST</span>

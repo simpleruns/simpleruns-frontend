@@ -125,7 +125,8 @@ export default function Customers() {
     const deleteDriverHandler = (itemId) => {
         instance.delete(`/admin/customers/${itemId}`)
             .then((res) => {
-                instance.get('/admin/customers')
+                var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
+                instance.get(`/admin/customers${url}`, { params: { user: user } })
                     .then((res) => {
                         setCustomerData(res.data.customers);
                     }).catch(error => {
@@ -157,7 +158,7 @@ export default function Customers() {
             }).catch(error => {
                 console.log(error.message);
             });
-    }, [approve, router]);
+    }, [approve, router, user]);
 
     useEffect(() => {
         // console.log(customerData, sortKey, sortOrder)

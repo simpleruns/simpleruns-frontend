@@ -11,6 +11,7 @@ import { instance } from 'helpers/axios';
 import invoiceImage from "public/assets/img/invoice.png";
 
 const headers = [
+    { text: 'Status', key: 'status' },
     { text: 'Start Time', key: 'startTime' },
     { text: 'End Time', key: 'endTime' },
     { text: 'Total Hour', key: 'totalHour' },
@@ -37,7 +38,11 @@ const Invoice = ({ data: invoiceData }) => {
     const subTotal = () => {
         var value = 0;
         invoice.deliveries && invoice.deliveries.forEach((item) => {
-            value += item.subTotal;
+            if (item.status == 'completed') {
+                value += item.subTotal;
+            } else {
+                value += item.subTotal + (4 - item.totalHour) * item.hourlyRate;
+            }
         });
         return value;
     }
@@ -136,6 +141,11 @@ const Invoice = ({ data: invoiceData }) => {
                                 return (
                                     <tr key={"delivery" + index}>
                                         <td className={classes}>
+                                            <Typography variant="small" color="blue-gray" className="font-medium capitalize">
+                                                {row.status}
+                                            </Typography>
+                                        </td>
+                                        <td className={classes}>
                                             <input
                                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                                                 type="datetime-local"
@@ -161,7 +171,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedInvoices);
                                                 }}
-                                                value={moment(invoice.deliveries[index].startTime).format("YYYY-MM-DDTkk:mm:ss.SSS")}
+                                                value={moment(row.startTime).format("YYYY-MM-DDTkk:mm:ss.SSS")}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -190,12 +201,13 @@ const Invoice = ({ data: invoiceData }) => {
                                                     };
                                                     setInvoice(updatedInvoices);
                                                 }}
-                                                value={moment(invoice.deliveries[index].endTime).format("YYYY-MM-DDTkk:mm:ss.SSS")}
+                                                value={moment(row.endTime).format("YYYY-MM-DDTkk:mm:ss.SSS")}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.totalHour.toFixed(3)}
+                                                {row.status == 'completed' ? row.totalHour.toFixed(3) : '4'}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
@@ -220,7 +232,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedRef);
                                                 }}
-                                                value={invoice.deliveries[index].ref}
+                                                value={row.ref}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -245,7 +258,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedDocket);
                                                 }}
-                                                value={invoice.deliveries[index].docket}
+                                                value={row.docket}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -270,7 +284,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedJob);
                                                 }}
-                                                value={invoice.deliveries[index].job}
+                                                value={row.job}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -295,7 +310,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedLoad);
                                                 }}
-                                                value={invoice.deliveries[index].load}
+                                                value={row.load}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -320,7 +336,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedPO);
                                                 }}
-                                                value={invoice.deliveries[index].PO}
+                                                value={row.PO}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -345,7 +362,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedInvoices);
                                                 }}
-                                                value={invoice.deliveries[index].description}
+                                                value={row.description}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -373,7 +391,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedInvoices);
                                                 }}
-                                                value={invoice.deliveries[index].tolls}
+                                                value={row.tolls}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -400,7 +419,8 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedInvoices);
                                                 }}
-                                                value={invoice.deliveries[index].hourlyRate}
+                                                value={row.hourlyRate}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
@@ -428,22 +448,23 @@ const Invoice = ({ data: invoiceData }) => {
                                                     }
                                                     setInvoice(updatedInvoices);
                                                 }}
-                                                value={invoice.deliveries[index].fuelLevy}
+                                                value={row.fuelLevy}
+                                                readOnly={row.status == 'completed' ? false : true}
                                             />
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.subTotal.toFixed(3)}
+                                                {row.status == 'completed' ? row.subTotal.toFixed(3) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate).toFixed(3)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.GST.toFixed(3)}
+                                                {row.status == 'completed' ? row.GST.toFixed(3) : ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1).toFixed(3)}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {(row.subTotal + row.GST).toFixed(3)}
+                                                {row.status == 'completed' ? (row.subTotal + row.GST).toFixed(3) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate + ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1)).toFixed(3)}
                                             </Typography>
                                         </td>
                                     </tr>

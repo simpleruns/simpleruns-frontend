@@ -120,7 +120,8 @@ export default function Drivers() {
     const deleteDriverHandler = (itemId) => {
         instance.delete(`/admin/drivers/${itemId}`)
             .then((res) => {
-                instance.get('/admin/drivers')
+                var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
+                instance.get(`/admin/drivers${url}`, { params: { user: user } })
                     .then((res) => {
                         setDriverData(res.data.drivers);
                     }).catch(error => {
@@ -152,7 +153,7 @@ export default function Drivers() {
             }).catch(error => {
                 console.log(error.message);
             });
-    }, [approve, router]);
+    }, [approve, router, user]);
 
     useEffect(() => {
         // console.log(driverData, sortKey, sortOrder)
