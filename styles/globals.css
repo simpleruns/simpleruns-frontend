@@ -35,6 +35,20 @@ input:checked.defaultCheckbox::before {
     border-radius: 5px;
 }
 
+.user-profile-dropdown {
+    opacity: 0;
+    transform: translateY(-30px);
+    visibility: hidden;
+    transition: opacity .3s, transform .3s;
+}
+
+.user-profile-dropdown:hover,
+.user-avatar:hover+.user-profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+}
+
 #file_input input#file-upload-button {
     background-color: #000 !important;
 }

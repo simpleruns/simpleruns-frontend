@@ -262,6 +262,14 @@ const Sidebar = (props) => {
 									Tolls Table
 								</ListItem>
 							</Link> */}
+							<Link className="flex items-center" href="/settings/profile">
+								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
+									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>
+										<SlArrowRight strokeWidth={3} className="h-3 w-5" />
+									</ListItemPrefix>
+									Profile Settings
+								</ListItem>
+							</Link>
 							<Link className="flex items-center" href="/settings">
 								<ListItem className="flex items-center w-full text-base font-normal text-gray-900 transition duration-75 rounded-lg group hover:bg-blue-500 hover:text-white dark:text-white dark:hover:bg-navy-700 !bg-opacity-100">
 									<ListItemPrefix className={`${!sidebarOpen ? "mx-auto" : ""}`}>

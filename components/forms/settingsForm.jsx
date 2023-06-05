@@ -105,22 +105,14 @@ const SettingsForm = (props) => {
             company: data.company,
             abn: data.abn,
             api: data.api,
-            firstname: data.firstname,
-            lastname: data.lastname,
-            email: data.email,
-            phone: data.phone
         },
         validationSchema: Yup.object({
-            firstname: Yup.string().required('First Name is required'),
-            lastname: Yup.string().required('Last Name is required'),
             bank: Yup.string().required('Bank Name is required'),
             bsb: Yup.string().required('BSB is required'),
             accountNo: Yup.string().required('Account number is required'),
             company: Yup.string()
                 .required('Company Name is required'),
             abn: Yup.string().required('ABN is required'),
-            email: Yup.string().email('Invalid Email').required('Email is required'),
-            phone: Yup.string().required('Phone number is required'),
             api: Yup.string().min(39, 'API key must be at least 39 characters long').test('is-api-key', 'Invalid API key', (value) => {
                 const apiKeyRegex = /^[A-Za-z0-9-_]{39}$/;
                 return apiKeyRegex.test(value);
@@ -142,10 +134,6 @@ const SettingsForm = (props) => {
                     formData.append('company', values.company);
                     formData.append('abn', values.abn);
                     formData.append('api', values.api);
-                    formData.append('firstname', values.firstname);
-                    formData.append('lastname', values.lastname);
-                    formData.append('email', values.email);
-                    formData.append('phone', values.phone);
 
                     await saveEditedSettings(formData);
                     setSuccess(true);
@@ -253,40 +241,6 @@ const SettingsForm = (props) => {
                     ) : null}
                 </div>
 
-                <div className="grid gap-4 grid-cols-2 sm:gap-6">
-                    <div className="w-full">
-                        <label htmlFor="firstname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">First Name</label>
-                        <input
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            type="text"
-                            name="firstname"
-                            id="firstname"
-                            value={formik.values.firstname}
-                            placeholder={formik.values.firstname}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur} />
-                        {formik.touched.firstname && formik.errors.firstname ? (
-                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.firstname}</div>
-                        ) : null}
-                    </div>
-
-                    <div className="w-full">
-                        <label htmlFor="lastname" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Last Name</label>
-                        <input
-                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                            type="text"
-                            name="lastname"
-                            id="lastname"
-                            value={formik.values.lastname}
-                            placeholder={formik.values.lastname}
-                            onChange={formik.handleChange}
-                            onBlur={formik.handleBlur} />
-                        {formik.touched.lastname && formik.errors.lastname ? (
-                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.lastname}</div>
-                        ) : null}
-                    </div>
-                </div>
-
                 <div className="w-full">
                     <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>
                     <input
@@ -339,23 +293,6 @@ const SettingsForm = (props) => {
                 </div>
 
                 <div className="w-full">
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Email</label>
-                    <input
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        type="text"
-                        name="email"
-                        id="email"
-                        value={formik.values.email}
-                        placeholder={formik.values.email}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.email && formik.errors.email ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.email}</div>
-                    ) : null}
-                </div>
-
-                <div className="w-full">
                     <label htmlFor="accountNo" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Account Number</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
@@ -369,23 +306,6 @@ const SettingsForm = (props) => {
                     />
                     {formik.touched.accountNo && formik.errors.accountNo ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.accountNo}</div>
-                    ) : null}
-                </div>
-
-                <div className="w-full">
-                    <label htmlFor="phone" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Phone</label>
-                    <input
-                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                        type="text"
-                        name="phone"
-                        id="phone"
-                        value={formik.values.phone}
-                        placeholder={formik.values.phone}
-                        onChange={formik.handleChange}
-                        onBlur={formik.handleBlur}
-                    />
-                    {formik.touched.phone && formik.errors.phone ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.phone}</div>
                     ) : null}
                 </div>
 
