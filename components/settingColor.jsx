@@ -3,6 +3,7 @@ import { useAtom } from "jotai";
 import { RiMoonFill, RiSunFill } from "react-icons/ri";
 import { useRouter } from "next/router";
 import Cookies from 'js-cookie';
+import Link from "next/link";
 
 import { instance } from 'helpers/axios';
 import { idAtom } from "helpers/authorize";
@@ -74,8 +75,8 @@ export default function SettingColor(props) {
                             </div>
                             <div class="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 "></div>
                             <div class="mt-3 ml-4 pb-3 flex flex-col">
-                                <a href="/settings/profile" class="text-sm text-gray-800 dark:text-white hover:dark:text-white">Profile Settings</a>
-                                <a href="/" class="mt-3 text-sm font-medium text-red-500 hover:text-red-500" onClick={logoutHandler}>Sign Out</a>
+                                <Link href="/settings/profile" class="text-sm text-gray-800 dark:text-white hover:dark:text-white">Profile Settings</Link>
+                                <Link href="/" class="mt-3 text-sm font-medium text-red-500 hover:text-red-500" onClick={logoutHandler}>Sign Out</Link>
                             </div>
                         </div>
                     </div>
