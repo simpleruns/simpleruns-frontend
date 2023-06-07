@@ -318,8 +318,8 @@ export default function Drivers() {
                                             <td className={classes}>
                                                 <div className="flex items-center gap-3">
                                                     {
-                                                        row.licensePhoto.map((item, index) => {
-                                                            return <Avatar src={item.url} alt="image" size="sm" />
+                                                        row.licensePhoto.map((item, index1) => {
+                                                            return <Avatar src={item.url} alt="image" size="sm" key={"license Photo " + index + '/' + index1} />
                                                         })
                                                     }
                                                 </div>
@@ -675,7 +675,7 @@ export default function Drivers() {
                                     <div className="flex items-center gap-3">
                                         {
                                             sortedData[showID].licensePhoto.map((item, index) => {
-                                                return <Avatar src={item.url} alt="image" size="sm" />
+                                                return <Avatar src={item.url} alt="image" size="sm" key={"license Photo Modal " + index} />
                                             })
                                         }
                                     </div>
