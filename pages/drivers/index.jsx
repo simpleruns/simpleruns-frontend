@@ -52,6 +52,7 @@ const headers = [
     { text: 'Expire Date', key: 'expireDate' },
     { text: 'License Class', key: 'licenseClass' },
     { text: "License State", key: 'licenseState' },
+    { text: "License Photo", key: 'licensePhoto' },
     { text: 'Year', key: 'year' },
     { text: 'Number Plate', key: 'numberPlate' },
     { text: 'VIN', key: 'VIN' },
@@ -79,6 +80,8 @@ export default function Drivers() {
     const countPerPage = 10;
     const [delID, setDelID] = useState(null);
     const [showModal, setShowModal] = useState(false);
+    const [showModal1, setShowModal1] = useState(false);
+    const [showID, setShowID] = useState(null);
 
     const handleModalClick = (id) => {
         setShowModal(true);
@@ -94,6 +97,16 @@ export default function Drivers() {
     const handleCancel = () => {
         setShowModal(false);
         setDelID(null);
+    };
+
+    const handleModal1Click = (id) => {
+        setShowModal1(true);
+        setShowID(id);
+    };
+
+    const handleCancel1 = () => {
+        setShowModal1(false);
+        setShowID(null);
     };
 
     const handleSort = (key) => {
@@ -253,7 +266,7 @@ export default function Drivers() {
                                                 </div>
                                             </td>
                                             <td className={classes}>
-                                                <Typography variant="small" color="blue-gray" className="font-normal">
+                                                <Typography variant="small" color="blue-gray" className="font-normal cursor-pointer" onClick={() => handleModal1Click(index)}>
                                                     {row.firstname + ' ' + row.lastname}
                                                 </Typography>
                                             </td>
@@ -301,6 +314,15 @@ export default function Drivers() {
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
                                                     {row.licenseState}
                                                 </Typography>
+                                            </td>
+                                            <td className={classes}>
+                                                <div className="flex items-center gap-3">
+                                                    {
+                                                        row.licensePhoto.map((item, index) => {
+                                                            return <Avatar src={item.url} alt="image" size="sm" />
+                                                        })
+                                                    }
+                                                </div>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
@@ -454,6 +476,410 @@ export default function Drivers() {
                     </div>
                 </div>
             )}
+
+            {showModal1 && (
+                <div className="fixed inset-0 z-50 overflow-y-auto">
+                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                        <div className="fixed inset-0 transition-opacity">
+                            <div className="absolute inset-0 bg-gray-500 dark:bg-[#000000] opacity-75"></div>
+                        </div>
+
+                        <div className="m-10">
+                            <div key={sortedData[showID]._id} className="bg-white relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 py-10">
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Image
+                                        </Typography>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        <Avatar src={sortedData[showID].avatar.url} alt="image" size="sm" />
+                                    </div>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Driver Name
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal cursor-pointer" onClick={() => handleModal1Click(index)}>
+                                        {sortedData[showID].firstname + ' ' + sortedData[showID].lastname}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Email
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].email}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Phone
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].phone}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >Date of Birth
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {moment(sortedData[showID].birthDate).format('YYYY-MM-DD')}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Driver Role
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].role}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            License Number
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].licenseNumber}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Card Number
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].cardNumber}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >Exipre Date
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {moment(sortedData[showID].expireDate).format('YYYY-MM-DD')}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            License State
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].licenseState}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            License Class
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].licenseClass}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            License Photo
+                                        </Typography>
+                                    </div>
+                                    <div className="flex items-center gap-3">
+                                        {
+                                            sortedData[showID].licensePhoto.map((item, index) => {
+                                                return <Avatar src={item.url} alt="image" size="sm" />
+                                            })
+                                        }
+                                    </div>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Year
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].year}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Vehicle Number Plate
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].numberPlate}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Vehicle VIN
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].VIN}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Vehicle Category
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].category}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Vehicle Make
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].make}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Vehicle Model
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="small" color="blue-gray" className="font-normal">
+                                        {sortedData[showID].model}
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Vehicle Insurances
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="large" title="insurances" color="blue-gray" className="font-normal flex">
+                                        {
+                                            sortedData[showID].insuranceFile.map((item, index) => {
+                                                return <Link href={item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
+                                            })
+                                        }
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Workers Compensation
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="large" title="workers compensation" color="blue-gray" className="font-normal flex">
+                                        {
+                                            sortedData[showID].workCompensationFile.map((item, index) => {
+                                                return <Link href={item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
+                                            })
+                                        }
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Truck Registration
+                                        </Typography>
+                                    </div>
+                                    <Typography variant="large" title="truck registration" color="blue-gray" className="font-normal flex">
+                                        {
+                                            sortedData[showID].truckRegistrationFile.map((item, index) => {
+                                                return <Link href={item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
+                                            })
+                                        }
+                                    </Typography>
+                                </div>
+                                <div className="p-2 flex items-center justify-center">
+                                    <div
+                                        className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
+                                    >
+                                        <Typography
+                                            variant="small"
+                                            color="blue-gray"
+                                            className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
+                                        >
+                                            Status
+                                        </Typography>
+                                    </div>
+                                    <label className="relative inline-flex items-center cursor-pointer">
+                                        <input type="checkbox" value="" className="sr-only peer" checked={checkedItems[showID]} onChange={() => handleToggleClick(showID, sortedData[showID]._id)} />
+                                        <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+                                        <span className="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300 hidden">Toggle me</span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div className="bg-gray-50 px-4 py-3 sm:px-6 sm:flex relative">
+                                <div className="p-2 flex items-center justify-center sm:justify-start w-full">
+                                    <div className="flex items-center">
+                                        <Link href={`/drivers/single/${sortedData[showID]._id}`} className="text-indigo-600 hover:text-indigo-900" title="View"><SlEye /></Link>
+                                        <Link href={`/drivers/edit/${sortedData[showID]._id}`} className="text-green-600 hover:text-green-900 ml-4" title="Edit"><BsPen /></Link>
+                                        <button className="text-red-600 hover:text-red-900 ml-4" onClick={() => {
+                                            handleModalClick(sortedData[showID]._id);
+                                            handleCancel1();
+                                        }} title="Delete"><SlTrash /></button>
+                                    </div>
+                                </div>
+                                <button
+                                    type="button"
+                                    className="mt-3 w-full inline-flex justify-center rounded-md border border-gray-300 shadow-sm px-4 py-2 bg-white text-base font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm"
+                                    onClick={() => handleCancel1()}
+                                >
+                                    Cancel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div >
+            )
+            }
         </>
     );
 }

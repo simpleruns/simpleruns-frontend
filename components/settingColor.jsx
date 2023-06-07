@@ -39,17 +39,19 @@ export default function SettingColor(props) {
             }).catch(error => {
                 console.log(error.message);
             });
+        Cookies.get('token') ? '' : setData(null);
     }, [user, router]);
 
     function logoutHandler(e) {
         e.preventDefault();
         Cookies.remove('token');
         Cookies.remove('rememberMe');
+        setData(null);
         router.push('/auth/login');
     }
 
     return (
-        <div className={`mt-[3px] flex h-[61px] backdrop-blur-xl flex-grow items-center justify-around gap-2 rounded-full px-2 py-2 shadow-xl shadow-shadow-500 dark:shadow-none md:flex-grow-0 md:gap-1 xl:gap-2 fixed top-[30px] right-[35px] !z-[99] ${data ? "w-[150px]" : "w-[61px]"}`}>
+        <div className={`mt-[3px] flex h-[61px] backdrop-blur-xl flex-grow items-center justify-around gap-2 rounded-full px-2 py-2 shadow-xl shadow-shadow-500 dark:shadow-none md:flex-grow-0 md:gap-1 xl:gap-2 fixed top-[20px] right-[35px] !z-[99] ${data ? "w-[110px]" : "w-[61px]"}`}>
             <button
                 className="border-px flex h-[40px] w-[40px] items-center justify-center rounded-full border-[#6a53ff] bg-gradient-to-br from-brandLinear to-blueSecondary p-0"
                 onClick={changeThemeHandler}
@@ -63,20 +65,20 @@ export default function SettingColor(props) {
                 </div>
             </button>
             {
-                data && <div class="relative flex">
-                    <div class="flex user-avatar z-[50]">
-                        <img class="h-10 w-10 rounded-full object-cover" src={data.avatar.url} alt="User Avatar" /></div>
-                    <div class="py-2 top-8 -left-[180px] w-max absolute z-10 origin-top-right transition-all duration-300 ease-in-out scale-100 user-profile-dropdown">
-                        <div class="flex w-56 flex-col justify-start rounded-[5px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none">
-                            <div class="mt-3 ml-4">
-                                <div class="flex items-center gap-2">
-                                    <p class="text-sm font-bold text-navy-700 dark:text-white">👋 Hey, {data.firstname + ' ' + data.lastname}</p>
+                data && <div className="relative flex">
+                    <div className="flex user-avatar z-[50]">
+                        <img className="h-10 w-10 rounded-full object-cover" src={data.avatar.url} alt="User Avatar" /></div>
+                    <div className="py-3 top-11 -left-[180px] w-max absolute z-10 origin-top-right transition-all duration-300 ease-in-out scale-100 user-profile-dropdown">
+                        <div className="flex w-56 flex-col justify-start rounded-[5px] bg-white bg-cover bg-no-repeat shadow-xl shadow-shadow-500 dark:!bg-navy-700 dark:text-white dark:shadow-none font-sans">
+                            <div className="mt-3 ml-4">
+                                <div className="flex items-center gap-2">
+                                    <p className="text-sm font-bold text-navy-700 dark:text-white">👋 Hey, {data.firstname + ' ' + data.lastname}</p>
                                 </div>
                             </div>
-                            <div class="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 "></div>
-                            <div class="mt-3 ml-4 pb-3 flex flex-col">
-                                <Link href="/settings/profile" class="text-sm text-gray-800 dark:text-white hover:dark:text-white">Profile Settings</Link>
-                                <Link href="/" class="mt-3 text-sm font-medium text-red-500 hover:text-red-500" onClick={logoutHandler}>Sign Out</Link>
+                            <div className="mt-3 h-px w-full bg-gray-200 dark:bg-white/20 "></div>
+                            <div className="mt-3 ml-4 pb-3 flex flex-col">
+                                <Link href="/settings/profile" className="text-sm text-gray-800 dark:text-white hover:dark:text-white">Profile Settings</Link>
+                                <Link href="/" className="mt-3 text-sm font-medium text-red-500 hover:text-red-500" onClick={logoutHandler}>Sign Out</Link>
                             </div>
                         </div>
                     </div>

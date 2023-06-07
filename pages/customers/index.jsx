@@ -80,7 +80,7 @@ export default function Customers() {
 
     const handleConfirm = () => {
         setShowModal(false);
-        deleteDriverHandler(delID);
+        deleteCustomerHandler(delID);
         setDelID(null);
     };
 
@@ -122,7 +122,7 @@ export default function Customers() {
             });
     };
 
-    const deleteDriverHandler = (itemId) => {
+    const deleteCustomerHandler = (itemId) => {
         instance.delete(`/admin/customers/${itemId}`)
             .then((res) => {
                 var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;

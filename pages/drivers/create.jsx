@@ -54,21 +54,21 @@ const DriverCreate = () => {
 
     const formik = useFormik({
         initialValues: {
-            firstname: "John",
-            lastname: "Doe",
-            email: "your@email.com",
-            phone: "+61423456789",
+            firstname: "",
+            lastname: "",
+            email: "",
+            phone: "",
             role: "",
             password: "",
             confirm: "",
-            licenseNumber: "AB123456",
-            cardNumber: "1651981561526895",
+            licenseNumber: "",
+            cardNumber: "",
             licenseClass: "",
-            licenseState: "CA",
-            year: 2023,
-            numberPlate: "AB12CD3456",
-            VIN: "1GNEK13Z14R167545",
-            model: "C63"
+            licenseState: "",
+            year: "",
+            numberPlate: "",
+            VIN: "",
+            model: ""
         },
         validationSchema: Yup.object({
             firstname: Yup.string().required('First Name is required'),

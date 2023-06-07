@@ -68,15 +68,15 @@ const CustomerCreate = () => {
 
     const formik = useFormik({
         initialValues: {
-            companyName: "Advanced Precast",
-            email: "your@email.com",
-            phone: "+61234567890",
-            rateType: "hourly",
-            localRate: 115,
-            countryRate: 140,
-            fuelRate: 15,
-            loadRate: 20,
-            abn: null
+            companyName: "",
+            email: "",
+            phone: "",
+            rateType: "",
+            localRate: "",
+            countryRate: "",
+            fuelRate: "",
+            loadRate: "",
+            abn: ""
         },
         validationSchema: Yup.object({
             companyName: Yup.string().required('Company Name is required'),
@@ -185,7 +185,9 @@ const CustomerCreate = () => {
                                 value={formik.values.companyName}
                                 placeholder={formik.values.companyName}
                                 onChange={formik.handleChange}
-                                onBlur={formik.handleBlur} requ />
+                                onBlur={formik.handleBlur}
+                                required
+                            />
                             {formik.touched.companyName && formik.errors.companyName ? (
                                 <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.companyName}</div>
                             ) : null}
