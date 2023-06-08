@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 
 import { instance } from 'helpers/axios';
 import { idAtom } from "helpers/authorize";
+import { BsFolderSymlinkFill } from "react-icons/bs";
 
 const SingleCustomerForm = (props) => {
     const { data, id } = props;
@@ -15,7 +16,7 @@ const SingleCustomerForm = (props) => {
     const [imageDataUrl, setImageDataUrl] = useState(data.photo.url);
     const [address, setAddress] = useState(data.address);
     const [predictions, setPredictions] = useState([]);
-    const [isValidAddress, setIsValidAddress] = useState(false);
+    const [isValidAddress, setIsValidAddress] = useState(true);
     const [api, setApi] = useState('');
     const router = useRouter();
 
@@ -31,11 +32,11 @@ const SingleCustomerForm = (props) => {
                     script.id = 'googleMaps'
                     script.async = true;
                     document.body.appendChild(script);
-                    addressValidateHandler();
                 }
             }).catch(error => {
                 console.log(error.message);
             });
+        addressValidateHandler();
     }, [api, address]);
 
     const addressValidateHandler = () => {
@@ -44,7 +45,7 @@ const SingleCustomerForm = (props) => {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
-                if (status === 'OK' && address !== '') {
+                if (status == 'OK' && address != '') {
                     setIsValidAddress(true);
                 } else {
                     setIsValidAddress(false);
@@ -55,7 +56,7 @@ const SingleCustomerForm = (props) => {
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value, componentRestrictions: { country: 'au' } }, (predictions, status) => {
+        service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
             }
@@ -65,6 +66,7 @@ const SingleCustomerForm = (props) => {
     const handlePredictionClick = (prediction) => {
         setAddress(prediction.description);
         setPredictions([]);
+        addressValidateHandler();
     };
 
     useEffect(() => {
@@ -94,7 +96,7 @@ const SingleCustomerForm = (props) => {
             localRate: data.localRate,
             countryRate: data.countryRate,
             loadRate: data.loadRate,
-            fuelRate: data.fuelRate,
+            fuelLevy: data.fuelLevy,
             abn: data.abn
         },
         validationSchema: Yup.object({
@@ -102,10 +104,6 @@ const SingleCustomerForm = (props) => {
             email: Yup.string().email('Invalid Email').required('Email is required'),
             phone: Yup.string().required('Phone number is required'),
             rateType: Yup.string().required('Please select an option'),
-            localRate: Yup.number().required('Local Rate is required'),
-            countryRate: Yup.number().required('Country Rate is required'),
-            fuelRate: Yup.number().required('Fuel Rate is required'),
-            loadRate: Yup.number().required('Load Rate is required'),
             abn: Yup.string().required('ABN is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
@@ -123,13 +121,13 @@ const SingleCustomerForm = (props) => {
                     formData.append('rateType', values.rateType);
                     formData.append('localRate', values.localRate);
                     formData.append('countryRate', values.countryRate);
-                    formData.append('fuelRate', values.fuelRate);
+                    formData.append('fuelLevy', values.fuelLevy);
                     formData.append('loadRate', values.loadRate);
                     formData.append('approved', checked);
                     formData.append('abn', values.abn);
                     photo && formData.append('photo', photo, photo.name);
 
-                    var changedData = `name: ${values.companyName}, email: ${values.email}, phone: ${values.phone}${values.resetPassword ? ', password: ' : ''}${values.resetPassword ? values.password : ''}, year: ${values.year}, numberPlate: ${values.numberPlate}, VIN: ${values.VIN}, approved: ${checked}`
+                    var changedData = `name: ${values.companyName}, email: ${values.email}, phone: ${values.phone}, address: ${address}, rate type: ${values.rateType}, local rate: ${values.localRate}, country rate: ${values.countryRate}, fuel levy: ${values.fuelLevy},load rate: ${values.loadRate}, abn: ${values.abn}, approved: ${checked}`
                     alert(`You changed customer detail as ${changedData}`)
                     await saveEditedCustomer(formData);
                     setSuccess(true);
@@ -145,7 +143,6 @@ const SingleCustomerForm = (props) => {
     const saveEditedCustomer = async (data) => {
         (user && isValidAddress) && instance.put(`/admin/customers/${id}`, data)
             .then((res) => {
-                console.log(res.data);
                 res.status == 200 && router.push('/customers');
             }).catch(error => {
                 console.log(error.message);
@@ -262,6 +259,7 @@ const SingleCustomerForm = (props) => {
                                     placeholder={formik.values.localRate}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    required
                                 />
                                 {formik.touched.localRate && formik.errors.localRate ? (
                                     <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.localRate}</div>
@@ -278,46 +276,66 @@ const SingleCustomerForm = (props) => {
                                     placeholder={formik.values.countryRate}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    required
                                 />
                                 {formik.touched.countryRate && formik.errors.countryRate ? (
                                     <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.countryRate}</div>
                                 ) : null}
                             </div>
-                        </> :
-                        <>
                             <div className="w-full">
-                                <label htmlFor="loadRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Load Rate</label>
+                                <label htmlFor="fuelLevy" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Levy</label>
                                 <input
                                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                     type="number"
-                                    name="loadRate"
-                                    id="loadRate"
-                                    value={formik.values.loadRate}
-                                    placeholder={formik.values.loadRate}
+                                    name="fuelLevy"
+                                    id="fuelLevy"
+                                    value={formik.values.fuelLevy}
+                                    placeholder={formik.values.fuelLevy}
                                     onChange={formik.handleChange}
                                     onBlur={formik.handleBlur}
+                                    required
                                 />
-                                {formik.touched.loadRate && formik.errors.loadRate ? (
-                                    <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.loadRate}</div>
+                                {formik.touched.fuelLevy && formik.errors.fuelLevy ? (
+                                    <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelLevy}</div>
                                 ) : null}
                             </div>
-                            <div className="w-full">
-                                <label htmlFor="fuelRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Rate</label>
-                                <input
-                                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                    type="number"
-                                    name="fuelRate"
-                                    id="fuelRate"
-                                    value={formik.values.fuelRate}
-                                    placeholder={formik.values.fuelRate}
-                                    onChange={formik.handleChange}
-                                    onBlur={formik.handleBlur}
-                                />
-                                {formik.touched.fuelRate && formik.errors.fuelRate ? (
-                                    <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelRate}</div>
-                                ) : null}
-                            </div>
-                        </>
+                        </> : formik.values.rateType == 'load' ?
+                            <>
+                                <div className="w-full">
+                                    <label htmlFor="loadRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Load Rate</label>
+                                    <input
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        type="number"
+                                        name="loadRate"
+                                        id="loadRate"
+                                        value={formik.values.loadRate}
+                                        placeholder={formik.values.loadRate}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        required
+                                    />
+                                    {formik.touched.loadRate && formik.errors.loadRate ? (
+                                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.loadRate}</div>
+                                    ) : null}
+                                </div>
+                                <div className="w-full">
+                                    <label htmlFor="fuelLevy" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Levy</label>
+                                    <input
+                                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                        type="number"
+                                        name="fuelLevy"
+                                        id="fuelLevy"
+                                        value={formik.values.fuelLevy}
+                                        placeholder={formik.values.fuelLevy}
+                                        onChange={formik.handleChange}
+                                        onBlur={formik.handleBlur}
+                                        required
+                                    />
+                                    {formik.touched.fuelLevy && formik.errors.fuelLevy ? (
+                                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelLevy}</div>
+                                    ) : null}
+                                </div>
+                            </> : ''
                 }
 
                 <div className="w-full">

@@ -7,6 +7,8 @@ import * as Yup from 'yup';
 import { instance } from 'helpers/axios';
 import { idAtom } from "helpers/authorize";
 
+import invoiceImage from "public/assets/img/driver.png";
+
 const CustomerCreate = () => {
     const [user, __] = useAtom(idAtom);
     const [checked, setChecked] = useState(true);
@@ -17,6 +19,10 @@ const CustomerCreate = () => {
     const [isValidAddress, setIsValidAddress] = useState(false);
     const router = useRouter();
     const [api, setApi] = useState(null);
+
+    useEffect(() => {
+        handlePhotoSelect();
+    }, []);
 
     useEffect(() => {
         user && instance.get(`/settings/googleapi/${user}`)
@@ -30,12 +36,25 @@ const CustomerCreate = () => {
                     script.id = 'googleMaps'
                     script.async = true;
                     document.body.appendChild(script);
-                    addressValidateHandler();
                 }
             }).catch(error => {
                 console.log(error.message);
             });
+        addressValidateHandler();
     }, [api, address]);
+
+    async function handlePhotoSelect() {
+        const blob = await loadFile(invoiceImage.src);
+        const newFile = new File([blob], 'avatar.jpg', { type: "image/jpg" });
+        setPhoto(newFile);
+        setImageDataUrl(invoiceImage.src);
+    }
+
+    async function loadFile(filePath) {
+        const response = await fetch(filePath);
+        const blob = await response.blob();
+        return blob;
+    }
 
     const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
@@ -43,7 +62,7 @@ const CustomerCreate = () => {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
-                if (status === 'OK' && address !== '') {
+                if (status == 'OK' && address != '') {
                     setIsValidAddress(true);
                 } else {
                     setIsValidAddress(false);
@@ -54,7 +73,7 @@ const CustomerCreate = () => {
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value, componentRestrictions: { country: 'au' } }, (predictions, status) => {
+        service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
             }
@@ -64,6 +83,7 @@ const CustomerCreate = () => {
     const handlePredictionClick = (prediction) => {
         setAddress(prediction.description);
         setPredictions([]);
+        addressValidateHandler();
     };
 
     const formik = useFormik({
@@ -74,7 +94,7 @@ const CustomerCreate = () => {
             rateType: "",
             localRate: "",
             countryRate: "",
-            fuelRate: "",
+            fuelLevy: "",
             loadRate: "",
             abn: ""
         },
@@ -83,10 +103,6 @@ const CustomerCreate = () => {
             email: Yup.string().email('Invalid Email').required('Email is required'),
             phone: Yup.string().required('Phone number is required'),
             rateType: Yup.string().required('Please select an option'),
-            localRate: Yup.number().required('Local Rate is required'),
-            countryRate: Yup.number().required('Country Rate is required'),
-            fuelRate: Yup.number().required('Fuel Rate is required'),
-            loadRate: Yup.number().required('Load Rate is required'),
             abn: Yup.string().required('ABN is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
@@ -104,7 +120,7 @@ const CustomerCreate = () => {
                 formData.append('rateType', values.rateType);
                 formData.append('localRate', values.localRate);
                 formData.append('countryRate', values.countryRate);
-                formData.append('fuelRate', values.fuelRate);
+                formData.append('fuelLevy', values.fuelLevy);
                 formData.append('loadRate', values.loadRate);
                 formData.append('approved', checked);
                 formData.append('abn', values.abn);
@@ -140,7 +156,7 @@ const CustomerCreate = () => {
         if (file && file.type.startsWith('image/')) {
             setPhoto(file);
         } else {
-            setPhoto(null);
+            alert('please select image.');
         }
 
         const reader = new FileReader();
@@ -250,6 +266,7 @@ const CustomerCreate = () => {
                                             placeholder={formik.values.localRate}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
+                                            required
                                         />
                                         {formik.touched.localRate && formik.errors.localRate ? (
                                             <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.localRate}</div>
@@ -266,46 +283,67 @@ const CustomerCreate = () => {
                                             placeholder={formik.values.countryRate}
                                             onChange={formik.handleChange}
                                             onBlur={formik.handleBlur}
+                                            required
                                         />
                                         {formik.touched.countryRate && formik.errors.countryRate ? (
                                             <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.countryRate}</div>
                                         ) : null}
                                     </div>
+                                    <div className="w-full">
+                                        <label htmlFor="fuelLevy" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Levy</label>
+                                        <input
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            type="number"
+                                            name="fuelLevy"
+                                            id="fuelLevy"
+                                            value={formik.values.fuelLevy}
+                                            placeholder={formik.values.fuelLevy}
+                                            onChange={formik.handleChange}
+                                            onBlur={formik.handleBlur}
+                                            required
+                                        />
+                                        {formik.touched.fuelLevy && formik.errors.fuelLevy ? (
+                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelLevy}</div>
+                                        ) : null}
+                                    </div>
                                 </> :
-                                <>
-                                    <div className="w-full">
-                                        <label htmlFor="loadRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Load Rate</label>
-                                        <input
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            type="number"
-                                            name="loadRate"
-                                            id="loadRate"
-                                            value={formik.values.loadRate}
-                                            placeholder={formik.values.loadRate}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        />
-                                        {formik.touched.loadRate && formik.errors.loadRate ? (
-                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.loadRate}</div>
-                                        ) : null}
-                                    </div>
-                                    <div className="w-full">
-                                        <label htmlFor="fuelRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Rate</label>
-                                        <input
-                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            type="number"
-                                            name="fuelRate"
-                                            id="fuelRate"
-                                            value={formik.values.fuelRate}
-                                            placeholder={formik.values.fuelRate}
-                                            onChange={formik.handleChange}
-                                            onBlur={formik.handleBlur}
-                                        />
-                                        {formik.touched.fuelRate && formik.errors.fuelRate ? (
-                                            <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelRate}</div>
-                                        ) : null}
-                                    </div>
-                                </>
+                                formik.values.rateType == 'load' ?
+                                    <>
+                                        <div className="w-full">
+                                            <label htmlFor="loadRate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Load Rate</label>
+                                            <input
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                type="number"
+                                                name="loadRate"
+                                                id="loadRate"
+                                                value={formik.values.loadRate}
+                                                placeholder={formik.values.loadRate}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                required
+                                            />
+                                            {formik.touched.loadRate && formik.errors.loadRate ? (
+                                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.loadRate}</div>
+                                            ) : null}
+                                        </div>
+                                        <div className="w-full">
+                                            <label htmlFor="fuelLevy" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Fuel Levy</label>
+                                            <input
+                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                                type="number"
+                                                name="fuelLevy"
+                                                id="fuelLevy"
+                                                value={formik.values.fuelLevy}
+                                                placeholder={formik.values.fuelLevy}
+                                                onChange={formik.handleChange}
+                                                onBlur={formik.handleBlur}
+                                                required
+                                            />
+                                            {formik.touched.fuelLevy && formik.errors.fuelLevy ? (
+                                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.fuelLevy}</div>
+                                            ) : null}
+                                        </div>
+                                    </> : ''
                         }
                         <div className="w-full">
                             <label htmlFor="address" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company Address</label>

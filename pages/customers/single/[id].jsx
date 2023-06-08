@@ -22,7 +22,7 @@ const CustomerDetail = () => {
                     phone: res.data.phone,
                     rateType: res.data.rateType,
                     loadRate: res.data.loadRate,
-                    fuelRate: res.data.fuelRate,
+                    fuelLevy: res.data.fuelLevy,
                     localRate: res.data.localRate,
                     countryRate: res.data.countryRate,
                     address: res.data.address,
@@ -77,7 +77,7 @@ const CustomerDetail = () => {
                                 <InfoBoxCard title="Load Rate" content={data.loadRate} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="Fuel Levy" content={data.fuelRate} />
+                                <InfoBoxCard title="Fuel Levy" content={data.fuelLevy} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Local Rate" content={data.localRate} />

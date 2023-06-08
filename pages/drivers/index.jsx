@@ -326,36 +326,36 @@ export default function Drivers() {
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.year}
+                                                    {row.year ? row.year : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.numberPlate}
+                                                    {row.numberPlate ? row.numberPlate : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.VIN}
+                                                    {row.VIN ? row.VIN : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal uppercase">
-                                                    {row.category}
+                                                    {row.category ? row.category : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.make}
+                                                    {row.make ? row.make : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.model}
+                                                    {row.model ? row.model : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
-                                                <Typography variant="large" title="insurances" color="blue-gray" className="font-normal flex">
+                                                <Typography variant="h4" title="insurances" color="blue-gray" className="font-normal flex">
                                                     {
                                                         row.insuranceFile.map((item, index) => {
                                                             return <Link href={item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
@@ -364,7 +364,7 @@ export default function Drivers() {
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
-                                                <Typography variant="large" title="workers compensation" color="blue-gray" className="font-normal flex">
+                                                <Typography variant="h4" title="workers compensation" color="blue-gray" className="font-normal flex">
                                                     {
                                                         row.workCompensationFile.map((item, index) => {
                                                             return <Link href={item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
@@ -373,7 +373,7 @@ export default function Drivers() {
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
-                                                <Typography variant="large" title="truck registration" color="blue-gray" className="font-normal flex">
+                                                <Typography variant="h4" title="truck registration" color="blue-gray" className="font-normal flex">
                                                     {
                                                         row.truckRegistrationFile.map((item, index) => {
                                                             return <Link href={item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
@@ -693,7 +693,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].year}
+                                        {sortedData[showID].year ? sortedData[showID].year : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -709,7 +709,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].numberPlate}
+                                        {sortedData[showID].numberPlate ? sortedData[showID].numberPlate : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -725,7 +725,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].VIN}
+                                        {sortedData[showID].VIN ? sortedData[showID].VIN : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -741,7 +741,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].category}
+                                        {sortedData[showID].category ? sortedData[showID].category : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -757,7 +757,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].make}
+                                        {sortedData[showID].make ? sortedData[showID].make : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -773,7 +773,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].model}
+                                        {sortedData[showID].model ? sortedData[showID].model : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -788,7 +788,7 @@ export default function Drivers() {
                                             Vehicle Insurances
                                         </Typography>
                                     </div>
-                                    <Typography variant="large" title="insurances" color="blue-gray" className="font-normal flex">
+                                    <Typography variant="h4" title="insurances" color="blue-gray" className="font-normal flex">
                                         {
                                             sortedData[showID].insuranceFile.map((item, index) => {
                                                 return <Link href={item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
@@ -808,7 +808,7 @@ export default function Drivers() {
                                             Workers Compensation
                                         </Typography>
                                     </div>
-                                    <Typography variant="large" title="workers compensation" color="blue-gray" className="font-normal flex">
+                                    <Typography variant="h4" title="workers compensation" color="blue-gray" className="font-normal flex">
                                         {
                                             sortedData[showID].workCompensationFile.map((item, index) => {
                                                 return <Link href={item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
@@ -828,7 +828,7 @@ export default function Drivers() {
                                             Truck Registration
                                         </Typography>
                                     </div>
-                                    <Typography variant="large" title="truck registration" color="blue-gray" className="font-normal flex">
+                                    <Typography variant="h4" title="truck registration" color="blue-gray" className="font-normal flex">
                                         {
                                             sortedData[showID].truckRegistrationFile.map((item, index) => {
                                                 return <Link href={item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>

@@ -49,7 +49,7 @@ const headers = [
     { text: 'Company ABN', key: 'abn' },
     { text: 'Rate Type', key: 'rateType' },
     { text: 'Load Rate', key: 'loadRate' },
-    { text: 'Fuel Rate', key: 'fuelRate' },
+    { text: 'Fuel Levy', key: 'fuelLevy' },
     { text: 'Local Rate', key: 'localRate' },
     { text: 'Country Rate', key: 'countryRate' },
     { text: 'Company Address', key: 'address' },
@@ -284,22 +284,22 @@ export default function Customers() {
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.loadRate}
+                                                    {row.loadRate ? row.loadRate : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.fuelRate}
+                                                    {row.fuelLevy ? row.fuelLevy : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.localRate}
+                                                    {row.localRate ? row.localRate : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.countryRate}
+                                                    {row.countryRate ? row.countryRate : ''}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
@@ -521,7 +521,7 @@ export default function Customers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].loadRate}
+                                        {sortedData[showID].loadRate ? sortedData[showID].loadRate : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -537,7 +537,7 @@ export default function Customers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].fuelRate}
+                                        {sortedData[showID].fuelLevy ? sortedData[showID].fuelLevy : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -553,7 +553,7 @@ export default function Customers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].localRate}
+                                        {sortedData[showID].localRate ? sortedData[showID].localRate : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">
@@ -569,7 +569,7 @@ export default function Customers() {
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].countryRate}
+                                        {sortedData[showID].countryRate ? sortedData[showID].countryRate : ''}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center justify-center">

@@ -23,7 +23,7 @@ const CustomerEdit = () => {
                     localRate: res.data.localRate,
                     countryRate: res.data.countryRate,
                     loadRate: res.data.loadRate,
-                    fuelRate: res.data.fuelRate,
+                    fuelLevy: res.data.fuelLevy,
                     abn: res.data.abn,
                     approved: res.data.approved
                 });
