@@ -7,7 +7,7 @@ import * as Yup from 'yup';
 
 import { instance } from 'helpers/axios';
 
-import invoiceImage from "public/assets/img/driver.jpg";
+import invoiceImage from "public/assets/img/driver.png";
 
 const SettingsForm = (props) => {
     const { data, user } = props;
