@@ -97,7 +97,7 @@ const CustomerDetail = () => {
                                     <ul>
                                         {
                                             data.job.map((item, index) => (
-                                                <li key={"job site" + index} className="font-normal text-gray-700 dark:text-gray-400"><span className="font-weight-bold text-gray-900 dark:text-white">{index + 1}: </span>{item.name}</li>
+                                                <li key={"job site" + index} className="font-normal text-gray-700 dark:text-gray-400"><span className="font-weight-bold text-gray-900 dark:text-white">{item.name}: </span>{item.address}</li>
                                             ))
                                         }
                                     </ul>

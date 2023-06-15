@@ -456,6 +456,7 @@ const SingleCustomerForm = (props) => {
                             <tr>
                                 <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white w-[10%]">ID</th>
                                 <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">Site Name</th>
+                                <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">Site Address</th>
                                 <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">latitude</th>
                                 <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">longitude</th>
                                 <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">Action</th>
@@ -465,20 +466,33 @@ const SingleCustomerForm = (props) => {
                             {tableData.map((row, index) => (
                                 <tr key={index} className="pt-4 pb-4 h-[3rem]">
                                     <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center">{index + 1}</td>
+                                    <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center">
+                                        <input
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            type="text"
+                                            name={"name" + index}
+                                            id={"name" + index}
+                                            value={tableData[index].name}
+                                            onChange={(e) => {
+                                                setTableData(tableData.map((r, i) => i === index ? { ...r, name: e.target.value } : r));
+                                            }}
+                                            required={true}
+                                        />
+                                    </td>
                                     <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center relative address">
                                         <input
                                             type="text"
                                             name={"address" + index}
                                             id={"address" + index}
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
-                                            value={tableData[index].name}
+                                            value={tableData[index].address}
                                             onChange={(e) => {
                                                 handleAddressAutoComplete1(e.target.value);
-                                                setTableData(tableData.map((r, i) => i === index ? { ...r, name: e.target.value } : r));
+                                                setTableData(tableData.map((r, i) => i === index ? { ...r, address: e.target.value } : r));
                                                 e.target.value == null || e.target.value == '' ? setPredictions1([]) : '';
                                             }}
                                             onBlur={(e) => {
-                                                addressValidateHandler1(e.target.value) ? setTableData(tableData.map((r, i) => i === index ? { ...r, name: e.target.value } : r)) : '';
+                                                addressValidateHandler1(e.target.value) ? setTableData(tableData.map((r, i) => i === index ? { ...r, addres: e.target.value } : r)) : '';
                                             }}
                                             required={true}
                                         />
