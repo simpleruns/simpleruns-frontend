@@ -18,6 +18,7 @@ const SettingsForm = (props) => {
     const [predictions, setPredictions] = useState([]);
     const [isValidAddress, setIsValidAddress] = useState(true);
     const [api, setApi] = useState('');
+    const [scriptLoaded, setScriptLoaded] = useState(false);
 
     useEffect(() => {
         handleLogoSelect(data.logo);
@@ -32,13 +33,16 @@ const SettingsForm = (props) => {
                     script.id = 'googleMaps'
                     script.async = true;
                     document.body.appendChild(script);
-                    addressValidateHandler();
-                    addressValidateHandler1(data.address);
+                    setTimeout(() => {
+                        setScriptLoaded(true);
+                    }, 500);
                 }
             }).catch(error => {
                 console.log(error.message);
             });
-    }, [api, address]);
+        scriptLoaded && addressValidateHandler();
+        scriptLoaded && addressValidateHandler1(data.address);
+    }, [api, address, scriptLoaded]);
 
     const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');

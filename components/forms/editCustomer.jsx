@@ -3,10 +3,11 @@ import { useRouter } from "next/router";
 import { useAtom } from "jotai";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import axios from 'axios';
 
 import { instance } from 'helpers/axios';
 import { idAtom } from "helpers/authorize";
-import { BsFolderSymlinkFill } from "react-icons/bs";
+import { SlPlus, SlClose } from "react-icons/sl";
 
 const SingleCustomerForm = (props) => {
     const { data, id } = props;
@@ -16,9 +17,12 @@ const SingleCustomerForm = (props) => {
     const [imageDataUrl, setImageDataUrl] = useState(data.photo.url);
     const [address, setAddress] = useState(data.address);
     const [predictions, setPredictions] = useState([]);
+    const [predictions1, setPredictions1] = useState([]);
     const [isValidAddress, setIsValidAddress] = useState(true);
     const [api, setApi] = useState('');
     const router = useRouter();
+    const [scriptLoaded, setScriptLoaded] = useState(false);
+    const [tableData, setTableData] = useState(JSON.parse(data.job));
 
     useEffect(() => {
         user && instance.get(`/settings/googleapi/${user}`)
@@ -32,12 +36,15 @@ const SingleCustomerForm = (props) => {
                     script.id = 'googleMaps'
                     script.async = true;
                     document.body.appendChild(script);
+                    setTimeout(() => {
+                        setScriptLoaded(true);
+                    }, 2000);
                 }
             }).catch(error => {
                 console.log(error.message);
             });
-        addressValidateHandler();
-    }, [api, address]);
+        scriptLoaded && addressValidateHandler();
+    }, [api, address, scriptLoaded]);
 
     const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
@@ -54,11 +61,34 @@ const SingleCustomerForm = (props) => {
         }
     }
 
+    const addressValidateHandler1 = (address) => {
+        const existingScript = document.getElementById('googleMaps');
+        if (existingScript && api) {
+            // The Google Maps API is now loaded and ready to use
+            const geocoder = new google.maps.Geocoder();
+            geocoder.geocode({ address }, (results, status) => {
+                if (status === 'OK' && address !== '') {
+                    return true;
+                }
+            });
+        }
+        return false;
+    }
+
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
         service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
+            }
+        });
+    };
+
+    const handleAddressAutoComplete1 = (value) => {
+        const service = new google.maps.places.AutocompleteService();
+        service.getPlacePredictions({ input: value }, (predictions, status) => {
+            if (status === google.maps.places.PlacesServiceStatus.OK) {
+                setPredictions1(predictions);
             }
         });
     };
@@ -69,9 +99,23 @@ const SingleCustomerForm = (props) => {
         addressValidateHandler();
     };
 
+    const handlePredictionClick1 = async (e, index, prediction) => {
+        const address = prediction.description;
+        const { lat, lng } = await getGeocodingData(address);
+        setTableData(tableData.map((r, i) => i === index ? { ...r, name: address, lat: lat, lng: lng } : r));
+        setPredictions1([]);
+    };
+
     useEffect(() => {
         handleAvatarSelect(data.photo);
     }, []);
+
+    const getGeocodingData = async (address) => {
+        const response = await axios.get(`https://maps.googleapis.com/maps/api/geocode/json?address=${address}&key=${api}`);
+        const { results } = response.data;
+        const { lat, lng } = results[0].geometry.location;
+        return { lat, lng };
+    };
 
     async function handleAvatarSelect(data) {
         const blob = await loadFile(data.url);
@@ -93,9 +137,9 @@ const SingleCustomerForm = (props) => {
             phone: data.phone,
             role: data.role,
             rateType: data.rateType,
-            localRate: data.localRate,
-            countryRate: data.countryRate,
-            loadRate: data.loadRate,
+            localRate: data.localRate ? data.localRate : '',
+            countryRate: data.countryRate ? data.countryRate : '',
+            loadRate: data.loadRate ? data.loadRate : '',
             fuelLevy: data.fuelLevy,
             abn: data.abn
         },
@@ -125,6 +169,7 @@ const SingleCustomerForm = (props) => {
                     formData.append('loadRate', values.loadRate);
                     formData.append('approved', checked);
                     formData.append('abn', values.abn);
+                    formData.append('job', JSON.stringify(tableData));
                     photo && formData.append('photo', photo, photo.name);
 
                     var changedData = `name: ${values.companyName}, email: ${values.email}, phone: ${values.phone}, address: ${address}, rate type: ${values.rateType}, local rate: ${values.localRate}, country rate: ${values.countryRate}, fuel levy: ${values.fuelLevy},load rate: ${values.loadRate}, abn: ${values.abn}, approved: ${checked}`
@@ -141,7 +186,11 @@ const SingleCustomerForm = (props) => {
     });
 
     const saveEditedCustomer = async (data) => {
-        (user && isValidAddress) && instance.put(`/admin/customers/${id}`, data)
+        (user && isValidAddress) && instance.put(`/admin/customers/${id}`, data, {
+            headers: {
+                'content-Type': 'multipart/form-data'
+            }
+        })
             .then((res) => {
                 res.status == 200 && router.push('/customers');
             }).catch(error => {
@@ -162,6 +211,14 @@ const SingleCustomerForm = (props) => {
             setImageDataUrl(reader.result);
         };
         reader.readAsDataURL(file);
+    };
+
+    const handleAddRow = () => {
+        setTableData([...tableData, { name: '', lat: '', lng: '' }]);
+    };
+
+    const handleDeleteRow = (id) => {
+        setTableData(tableData.filter((row, index) => index !== id));
     };
 
     return (
@@ -389,6 +446,81 @@ const SingleCustomerForm = (props) => {
                     {formik.touched.abn && formik.errors.abn ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.abn}</div>
                     ) : null}
+                </div>
+
+                <div className="sm:col-span-2 relative">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Add Job Sites</label>
+
+                    <table className="w-full mt-4">
+                        <thead>
+                            <tr>
+                                <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white w-[10%]">ID</th>
+                                <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">Site Name</th>
+                                <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">latitude</th>
+                                <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">longitude</th>
+                                <th className="cursor-pointer border-y border-blue-gray-100 dark:border-white-100  bg-blue-gray-50/50 dark:border-navy-700 p-4 transition-colors hover:bg-blue-gray-50 dark:text-white">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {tableData.map((row, index) => (
+                                <tr key={index} className="pt-4 pb-4 h-[3rem]">
+                                    <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center">{index + 1}</td>
+                                    <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center relative address">
+                                        <input
+                                            type="text"
+                                            name={"address" + index}
+                                            id={"address" + index}
+                                            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                                            value={tableData[index].name}
+                                            onChange={(e) => {
+                                                handleAddressAutoComplete1(e.target.value);
+                                                setTableData(tableData.map((r, i) => i === index ? { ...r, name: e.target.value } : r));
+                                                e.target.value == null || e.target.value == '' ? setPredictions1([]) : '';
+                                            }}
+                                            onBlur={(e) => {
+                                                addressValidateHandler1(e.target.value) ? setTableData(tableData.map((r, i) => i === index ? { ...r, name: e.target.value } : r)) : '';
+                                            }}
+                                            required={true}
+                                        />
+                                        {predictions1.length > 0 && (
+                                            <div className="mt-1 flex flex-col absolute z-30 bg-white max-w-[300px] shadow-md py-2 prediction">
+                                                {predictions1.map((prediction) => (
+                                                    <div
+                                                        className="py-2 px-4 bg-white border-x-shadow-500 hover:opacity-80 overflow-hidden text-ellipsis whitespace-nowrap cursor-pointer"
+                                                        key={prediction.place_id}
+                                                        onClick={(e) => {
+                                                            handlePredictionClick1(e, index, prediction);
+                                                            addressValidateHandler1(prediction) ? alert("Invalid Job Site address.") : '';
+                                                        }}
+                                                    >
+                                                        {prediction.description}
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
+                                    </td>
+                                    <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center">{row.lat}</td>
+                                    <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center">{row.lng}</td>
+                                    <td className="border-b border-blue-gray-50 dark:border-navy-700 text-center">
+                                        <button type="primary" onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.preventDefault();
+                                            handleDeleteRow(index)
+                                        }} className=""><SlClose className="text-red-600 hover:text-red-900 transition-colors text-2xl" /></button>
+                                    </td>
+                                </tr>
+                            ))}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div className="sm:col-span-2">
+                    <button type="primary" onClick={(e) => {
+                        e.stopPropagation();
+                        e.preventDefault();
+                        handleAddRow();
+                    }
+                    } className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 items-center inline-flex mb-2"><SlPlus className="mr-2 text-lg" /> Add New</button>
                 </div>
 
                 <div className="w-full">

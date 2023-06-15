@@ -485,210 +485,678 @@ const Invoice = () => {
     };
 
     return (
-        invoice && <div className='font-sans text-gray-900 font-medium'>
-            <div className="grid grid-cols-3 gap-2">
-                <div className='sm:col-span-2'>
-                    <img className="h-[3rem] my-[3rem]" id="imageid" crossOrigin="anonymous" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
-                    <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
+        <>
+            {
+                invoice && <div className='font-sans text-gray-900 font-medium p-4 md:pt-20 pt-10 pb-20 bg-white rounded-md'>
+                    <div className="grid grid-cols-3 gap-2">
+                        <div className='col-span-3 md:col-span-2'>
+                            <img className="h-[3rem] my-[3rem]" id="imageid" crossOrigin="anonymous" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2 ms-[10rem]">ABN: {invoice.abn}</h4>
 
-                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Address: {invoice.adminAddress}</h4>
-                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone: {invoice.adminPhone
-                    }</h4>
-                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Email: {invoice.adminEmail
-                    }</h4>
-                </div>
-
-                <div className='sm:col-span-1'>
-                    <h2 className="block text-4xl font-medium text-gray-900 mt-2 uppercase text-right">Tax Invoice</h2>
-
-                    <div className='grid grid-cols-4'>
-                        <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Date:</h4>
-                        </div>
-                        <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2 text-right">{invoice.date
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Address: {invoice.adminAddress}</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone: {invoice.adminPhone
+                            }</h4>
+                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Email: {invoice.adminEmail
                             }</h4>
                         </div>
-                        <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Invoice-#:</h4>
-                        </div>
-                        <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.invoiceNumber}</h4>
-                        </div>
-                        <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">For:</h4>
-                        </div>
-                        <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Transport Services Provided<br />Transport Division</h4>
-                        </div>
-                        <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Bill To:</h4>
-                        </div>
-                        <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerName}<br />Transport Division</h4>
-                        </div>
-                        <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Address:</h4>
-                        </div>
-                        <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerAddress}</h4>
-                        </div>
-                        <div className='col-span-1'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone:</h4>
-                        </div>
-                        <div className='col-span-3'>
-                            <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerPhone}</h4>
+
+                        <div className='col-span-3 md:col-span-1'>
+                            <h2 className="block text-4xl font-medium text-gray-900 mt-2 uppercase text-right">Tax Invoice</h2>
+
+                            <div className='grid grid-cols-4'>
+                                <div className='col-span-1'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Date:</h4>
+                                </div>
+                                <div className='col-span-3'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2 text-right">{invoice.date
+                                    }</h4>
+                                </div>
+                                <div className='col-span-1'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Invoice-#:</h4>
+                                </div>
+                                <div className='col-span-3'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.invoiceNumber}</h4>
+                                </div>
+                                <div className='col-span-1'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">For:</h4>
+                                </div>
+                                <div className='col-span-3'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Transport Services Provided<br />Transport Division</h4>
+                                </div>
+                                <div className='col-span-1'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Bill To:</h4>
+                                </div>
+                                <div className='col-span-3'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerName}<br />Transport Division</h4>
+                                </div>
+                                <div className='col-span-1'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Address:</h4>
+                                </div>
+                                <div className='col-span-3'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerAddress}</h4>
+                                </div>
+                                <div className='col-span-1'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">Phone:</h4>
+                                </div>
+                                <div className='col-span-3'>
+                                    <h4 className="block text-sm font-medium text-gray-900 mt-2">{invoice.customerPhone}</h4>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </div>
 
-            <div className="overflow-x-scroll custom-scroller px-0 border-b-2 border-solid border-gray-800 mt-4">
-                <table className="mt-4 w-full min-w-max table-auto text-left mb-40">
-                    <thead>
-                        <tr className='border-dark border-solid border-y-2 px-0'>
-                            {headers.map((head) => (
-                                <th
-                                    key={head.key}
-                                    className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
-                                >
-                                    <h3
-                                        className="flex items-center justify-between gap-2 text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity"
-                                        dangerouslySetInnerHTML={{ __html: head.text }}
-                                    ></h3>
-                                </th>
-                            ))}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            invoice.deliveries ? invoice.deliveries.map((row, index) => {
-                                const isLast = index === invoice.deliveries.length - 1;
-                                const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
-
-                                return (
-                                    <tr key={"delivery" + index}>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {moment(row.endTime).format('YYYY-MM-DD')}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.status == 'completed' ? row.ref : ''}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {
-                                                    row.status == 'completed' ? row.job + ' - LOAD ' + row.load + ' ' : ''
-                                                }
-                                                {
-                                                    row.status == 'completed' ? row.description.split(' ').map(word => {
-                                                        const suffixes = ['st', 'rd', 'nd', 'th'];
-                                                        if (suffixes.includes(word.toLowerCase().slice(-2))) {
-                                                            return word.slice(0, -2);
-                                                        } else {
-                                                            return word[0];
-                                                        }
-                                                    }).filter(word => word !== '').join('') : ''
-                                                }
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.tolls.toFixed(2)}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.status == 'completed' ? row.totalHour.toFixed(2) : '4'}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.hourlyRate}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.fuelLevy.toFixed(2)}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.status == 'completed' ? row.subTotal.toFixed(2) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate).toFixed(2)}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.status == 'completed' ? row.GST.toFixed(2) : ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1).toFixed(2)}
-                                            </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <Typography variant="small" color="blue-gray" className="font-medium">
-                                                {row.status == 'completed' ? (row.subTotal + row.GST).toFixed(2) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate + ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1)).toFixed(2)}
-                                            </Typography>
-                                        </td>
-                                    </tr>
-                                )
-                            }) :
-                                <tr>
-                                    <td>
-                                        <Typography variant="small" color="blue-gray" className="font-semibold py-10 px-4">
-                                            No Invoices to show...
-                                        </Typography>
-                                    </td>
+                    <div className="overflow-x-scroll custom-scroller px-0 border-b-2 border-solid border-gray-800 mt-4">
+                        <table className="mt-4 w-full min-w-max table-auto text-left mb-40">
+                            <thead>
+                                <tr className='border-dark border-solid border-y-2 px-0'>
+                                    {headers.map((head) => (
+                                        <th
+                                            key={head.key}
+                                            className="cursor-pointer border-y border-blue-gray-100 bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50"
+                                        >
+                                            <h3
+                                                className="flex items-center justify-between gap-2 text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity"
+                                                dangerouslySetInnerHTML={{ __html: head.text }}
+                                            ></h3>
+                                        </th>
+                                    ))}
                                 </tr>
-                        }
-                    </tbody>
-                </table>
-            </div>
+                            </thead>
+                            <tbody>
+                                {
+                                    invoice.deliveries ? invoice.deliveries.map((row, index) => {
+                                        const isLast = index === invoice.deliveries.length - 1;
+                                        const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
 
-            <div className='grid grid-cols-12 mt-4'>
-                <div className='col-span-7 text-center font-medium'>
-                    <p>All invoices are payable within 14 days to {invoice.adminCompany}.</p>
-                    <p>If you have any questions concerning this invoice please contact.</p>
-                    <p>{invoice.adminName} - {invoice.adminPhone}</p>
-                    <p className=" mb-10">Email:{invoice.adminEmail}</p>
-                    <div className='grid grid-cols-12 items-center text-left'>
-                        <div className='col-span-3 '>
-                            <p className=" ml-2">Direct<br />Deposit</p>
+                                        return (
+                                            <tr key={"delivery" + index}>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {moment(row.endTime).format('YYYY-MM-DD')}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.status == 'completed' ? row.ref : ''}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {
+                                                            row.status == 'completed' ? row.job + ' - LOAD ' + row.load + ' ' : ''
+                                                        }
+                                                        {
+                                                            row.status == 'completed' ? row.description.split(' ').map(word => {
+                                                                const suffixes = ['st', 'rd', 'nd', 'th'];
+                                                                if (suffixes.includes(word.toLowerCase().slice(-2))) {
+                                                                    return word.slice(0, -2);
+                                                                } else {
+                                                                    return word[0];
+                                                                }
+                                                            }).filter(word => word !== '').join('') : ''
+                                                        }
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.tolls.toFixed(2)}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.status == 'completed' ? row.totalHour.toFixed(2) : '4'}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.hourlyRate}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.fuelLevy.toFixed(2)}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.status == 'completed' ? row.subTotal.toFixed(2) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate).toFixed(2)}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.status == 'completed' ? row.GST.toFixed(2) : ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1).toFixed(2)}
+                                                    </Typography>
+                                                </td>
+                                                <td className={classes}>
+                                                    <Typography variant="small" color="blue-gray" className="font-medium">
+                                                        {row.status == 'completed' ? (row.subTotal + row.GST).toFixed(2) : (row.subTotal + (4 - row.totalHour) * row.hourlyRate + ((row.subTotal + (4 - row.totalHour) * row.hourlyRate) * 0.1)).toFixed(2)}
+                                                    </Typography>
+                                                </td>
+                                            </tr>
+                                        )
+                                    }) :
+                                        <tr>
+                                            <td>
+                                                <Typography variant="small" color="blue-gray" className="font-semibold py-10 px-4">
+                                                    No Invoices to show...
+                                                </Typography>
+                                            </td>
+                                        </tr>
+                                }
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div className='grid grid-cols-12 mt-4'>
+                        <div className='col-span-12 md:col-span-7 text-center font-medium'>
+                            <p>All invoices are payable within 14 days to {invoice.adminCompany}.</p>
+                            <p>If you have any questions concerning this invoice please contact.</p>
+                            <p>{invoice.adminName} - {invoice.adminPhone}</p>
+                            <p className=" mb-10">Email:{invoice.adminEmail}</p>
+                            <div className='grid grid-cols-12 items-center text-left'>
+                                <div className='col-span-3 '>
+                                    <p className=" ml-2">Direct<br />Deposit</p>
+                                </div>
+                                <div className='col-span-9'>
+                                    <p>Bank:{invoice.adminBank}</p>
+                                    <p>AccountName: {invoice.adminName}</p>
+                                    <p>BSB: {invoice.adminBSB} Account No:{invoice.adminAccountNo}</p>
+                                </div>
+                            </div>
                         </div>
-                        <div className='col-span-9'>
-                            <p>Bank:{invoice.adminBank}</p>
-                            <p>AccountName: {invoice.adminName}</p>
-                            <p>BSB: {invoice.adminBSB} Account No:{invoice.adminAccountNo}</p>
+                        <div className='col-span-12 md:col-span-2'></div>
+                        <div className='col-span-12 md:col-span-3'>
+                            <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
+                                <span>SUBTOTAL</span>
+                                <span>${subTotal().toFixed(2)}</span>
+                            </div>
+                            <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
+                                <span>GST</span>
+                                <span>${(subTotal() * 0.1).toFixed(2)}</span>
+                            </div>
+                            <div className=' flex justify-between px-2 py-2 bg-gray-200 border-b border-solid border-gray-800 '>
+                                <span className='font-semibold'>TOTAL</span>
+                                <span className='font-semibold'>${(subTotal() * 1.1).toFixed(2)}</span>
+                            </div>
+                            <div className=' flex justify-center px-2 py-2 '>
+                                <span className=' font-semibold'>The Total price includes GST</span>
+                            </div>
                         </div>
+                    </div>
+
+                    <div className="flex items-center mt-6">
+                        <Link href={`/invoices/edit/${id}?start=${start}&end=${end}`} className='mr-4'>
+                            <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
+                        </Link>
+                        <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
                     </div>
                 </div>
-                <div className='col-span-2'></div>
-                <div className='col-span-3'>
-                    <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
-                        <span>SUBTOTAL</span>
-                        <span>${subTotal().toFixed(2)}</span>
+            }
+
+            <div className='font-sans text-gray-900 font-medium p-4 pt-20 pb-20 bg-white rounded-md mt-5'>
+                <div className='grid grid-cols-5 gap-2'>
+                    <div className='col-span-5 md:col-span-3 xl:col-span-4 flex flex-col justify-end mb-4 md:mb-0'>
+                        <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6'>
+                            <div className='col-span-2 xl:col-span-1'>
+                                <img className="h-[3rem] mt-[3rem] mb-0 xl:my-[3rem] object-contain" id="imageid" crossOrigin="anonymous" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
+                            </div>
+
+                            <div className='col-span-2'>
+                                <div className='flex items-center flex-wrap justify-between mb-4'>
+                                    <h3 className='text-lg font-bold leading-6 text-dark mr-4'>ABN: 22609607954</h3>
+
+                                    <h2 className='text-3xl font-bold leading-8 text-dark mr-4'>RUN SHEET NO: <span className='text-red-600 text-4xl font-medium'>10546</span></h2>
+                                </div>
+
+                                <h3 className='text-xl leading-6 text-dark mr-4 max-w-[250px]'>600 Cowpasture Road, Elizabeth Hills NSW 2171</h3>
+
+                                <h3 className='text-xl leading-6 text-dark mr-4'><span className='font-bold'>Phone: </span>0457 407 357</h3>
+
+                                <h3 className='text-xl leading-6 text-dark mr-4'><span className='font-bold'>Website: </span>www.spinningwheels.com.au</h3>
+                            </div>
+                        </div>
+
+                        <div className='flex items-end flex-wrap justify-between'>
+                            <h3 className='text-xl leading-6 text-dark mr-4 mb-2'><span className='font-bold'>CHARGE TO: </span><span className='border-b-2 border-dashed border-gray-600'>www.spinningwheels.com.au</span></h3>
+
+                            <h3 className='text-xl leading-6 text-dark mb-2'><span className='font-bold'>ORDER TO: </span><span className='border-b-2 border-dashed border-gray-600'>www.spinningwheels.com.au</span></h3>
+                        </div>
                     </div>
-                    <div className=' flex justify-between px-2 py-2  border-b border-solid border-gray-800'>
-                        <span>GST</span>
-                        <span>${(subTotal() * 0.1).toFixed(2)}</span>
+
+                    <div className='col-span-5 md:col-span-2 xl:col-span-1 flex items-end'>
+                        <table className='table-auto text-left w-full'>
+                            <tbody>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DATE:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>20/10/22</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DAY:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>Thurs</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRAILER REGO:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>Jog</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DRIVER:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>abg</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRUCK REGO:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>Lveco</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div className=' flex justify-between px-2 py-2 bg-gray-200 border-b border-solid border-gray-800 '>
-                        <span className='font-semibold'>TOTAL</span>
-                        <span className='font-semibold'>${(subTotal() * 1.1).toFixed(2)}</span>
+                </div>
+
+                <div className='grid grid-cols-5 gap-2 mt-4'>
+                    <div className='col-span-3 xl:col-span-4 overflow-x-scroll custom-scroller'>
+                        <table className='table-auto text-center min-w-max w-full text-xs'>
+                            <thead className='bg-gray-900 text-white max-h-[4rem] h-[4rem]'>
+                                <th className='p-3'>COMPANY NAME</th>
+                                <th className='p-3'>ADDRESS</th>
+                                <th className='p-3' style={{ width: '10rem' }}>CUSTOMER DOCKET NO:</th>
+                                <th className='p-3' style={{ width: '8rem' }}>SIGNATURE</th>
+                                <th className='p-3'>TOLLS</th>
+                            </thead>
+
+                            <tbody>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
-                    <div className=' flex justify-center px-2 py-2 '>
-                        <span className=' font-semibold'>The Total price includes GST</span>
+
+                    <div className='col-span-2 xl:col-span-1 overflow-x-scroll custom-scroller'>
+                        <table className='table-auto text-center w-full min-w-max w-full text-xs'>
+                            <thead className='bg-gray-900 text-white h-[4rem]'>
+                                <th className='p-3'>ARRIVE</th>
+                                <th className='p-3'>DEPART</th>
+                            </thead>
+
+                            <tbody>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                                <tr className=''>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div className='grid grid-cols-5 gap-2 mt-4'>
+                    <div className='col-span-5 md:col-span-3 xl:col-span-4 mb-4 md:mb-0'>
+                        <h3 className='text-xl leading-6 font-bold text-dark mb-2'>SPECIAL INSTRUCTIONS DELAYS (Given Reasons)</h3>
+
+                        <table className='table-auto w-full mb-4'>
+                            <tbody>
+                                <tr className='border-dark border-dotted border-b-2'>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
+                                </tr>
+                                <tr className='border-dark border-dotted border-b-2'>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
+                                </tr>
+                                <tr className='border-dark border-dotted border-b-2'>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <h3 className='text-xl leading-6 font-bold text-dark mb-2'>BREAKS-</h3>
+                        <h3 className='text-xl leading-6 text-dark mb-3'>(Please ensure all RTA & Lunch breaks are taken as required)</h3>
+
+                        <div className='overflow-x-scroll custom-scroller'>
+                            <table className='table-auto min-w-max w-full text-xs'>
+                                <thead>
+                                    <th className='text-center border-dark border-solid border-2 p-3 w-40' colSpan={4}>PRE-TRIP INSPECTION</th>
+                                    <th className='text-center border-dark border-solid border-2 p-3 w-60' colSpan={2}>CHECKS</th>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td className='border-dark border-solid border-2 p-3'>AIR TANKS DRAINED</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>LIGHTS</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 24 HOURS</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                    </tr>
+                                    <tr>
+                                        <td className='border-dark border-solid border-2 p-3'>ANY DAMAGE</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>OIL</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 48 HOURS</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                    </tr>
+                                    <tr>
+                                        <td className='border-dark border-solid border-2 p-3'>BRAKES</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>WATER</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>I AM FIT FOR DUTY</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                    </tr>
+                                    <tr>
+                                        <td className='border-dark border-solid border-2 p-3'>FUEL</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>KM'S</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>ARE YOU WEARING YOUR PPE?</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                    </tr>
+                                    <tr>
+                                        <td className='border-dark border-solid border-2 p-3'>LIFTING GEAR</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>CRANE</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                        <td className='border-dark border-solid border-2 p-3'>DID YOU RECORD TOLLS?</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                    </tr>
+                                    <tr>
+                                        <td className='border-dark border-solid border-2 p-3' colSpan={4}></td>
+                                        <td className='border-dark border-solid border-2 p-3'>DID YOU GET A NAME & SIGNATURE</td>
+                                        <td className='border-dark border-solid border-2 p-3 w-14'></td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <td className="bg-gray-900 text-white text-center p-3 w-full" colSpan={6}>I HAVE CARRIED OUT DAILY & WEEKLY VEHICLE CHECK</td>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+
+                        <div className='overflow-x-scroll custom-scroller'>
+                            <table className='table-auto min-w-max w-full w-full mt-4'>
+                                <tbody>
+                                    <tr className=''>
+                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 w-[180px]'>Drivers Signature:</td>
+                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 border-b-2 border-dashed border-gray-600 w-[60%-180px] min-w-[200px]'></td>
+                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 w-[115px]'>Print Name:</td>
+                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 border-b-2 border-dashed border-gray-600 w-[40%-115px] min-w-[200px]'></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div className='col-span-5 md:col-span-2 xl:col-span-1 overflow-x-scroll custom-scroller'>
+                        <table className='table-auto text-left w-full min-w-max mb-4'>
+                            <tbody>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>START/FINISH<br />TIME:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>10:15AM<br />02:15PM</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TOTAL HOURS:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>4</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>SERVICE:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>Jog</td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>$</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table className='table-auto text-left w-full min-w-max mb-4'>
+                            <tbody>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>JOB:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'></td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2 h-[3rem]'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2' colSpan={2}></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table className='table-auto text-left w-full min-w-max mb-4'>
+                            <tbody>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>START KM'S:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'></td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2 h-[3rem]'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2' colSpan={2}></td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                        <table className='table-auto text-left w-full min-w-max'>
+                            <tbody>
+                                <tr className='border-dark border-solid border-2'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>FINISH KM'S:</td>
+                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'></td>
+                                </tr>
+                                <tr className='border-dark border-solid border-2 h-[3rem]'>
+                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2' colSpan={2}></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
-
-            <div className="flex items-center mt-6">
-                <Link href={`/invoices/edit/${id}?start=${start}&end=${end}`} className='mr-4'>
-                    <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
-                </Link>
-                <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
-            </div>
-        </div >
+        </>
     );
 };
 

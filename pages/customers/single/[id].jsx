@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { Typography } from "@material-tailwind/react";
 
 import { instance } from 'helpers/axios';
 
@@ -27,7 +28,8 @@ const CustomerDetail = () => {
                     countryRate: res.data.countryRate,
                     address: res.data.address,
                     abn: res.data.abn,
-                    approved: res.data.approved
+                    approved: res.data.approved,
+                    job: JSON.parse(res.data.job),
                 });
                 setStatus(res.data.approved);
             }).catch(error => {
@@ -88,6 +90,20 @@ const CustomerDetail = () => {
                             <div className="w-full">
                                 <InfoBoxCard title="Company Address" content={data.address} />
                             </div>
+
+                            <div className="w-full">
+                                <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
+                                    <Typography variant="h4" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Job Sites</Typography>
+                                    <ul>
+                                        {
+                                            data.job.map((item, index) => (
+                                                <li key={"job site" + index} className="font-normal text-gray-700 dark:text-gray-400"><span className="font-weight-bold text-gray-900 dark:text-white">{index + 1}: </span>{item.name}</li>
+                                            ))
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+
                             <div className="sm:col-span-2">
                                 {
                                     status ?

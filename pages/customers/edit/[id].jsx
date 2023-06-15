@@ -25,7 +25,8 @@ const CustomerEdit = () => {
                     loadRate: res.data.loadRate,
                     fuelLevy: res.data.fuelLevy,
                     abn: res.data.abn,
-                    approved: res.data.approved
+                    approved: res.data.approved,
+                    job: res.data.job,
                 });
             }).catch(error => {
                 console.log(error.message);

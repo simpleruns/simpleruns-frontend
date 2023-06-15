@@ -479,14 +479,14 @@ export default function Drivers() {
 
             {showModal1 && (
                 <div className="fixed inset-0 z-50 overflow-y-auto">
-                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+                    <div className="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 sm:block sm:p-0">
                         <div className="fixed inset-0 transition-opacity">
                             <div className="absolute inset-0 bg-gray-500 dark:bg-[#000000] opacity-75"></div>
                         </div>
 
-                        <div className="m-10">
+                        <div className="m-10 absolute top-1/2 -translate-y-1/2">
                             <div key={sortedData[showID]._id} className="bg-white relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 py-10">
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -502,7 +502,7 @@ export default function Drivers() {
                                         <Avatar src={sortedData[showID].avatar.url} alt="image" size="sm" />
                                     </div>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -518,7 +518,7 @@ export default function Drivers() {
                                         {sortedData[showID].firstname + ' ' + sortedData[showID].lastname}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -534,7 +534,7 @@ export default function Drivers() {
                                         {sortedData[showID].email}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -550,7 +550,7 @@ export default function Drivers() {
                                         {sortedData[showID].phone}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -565,7 +565,7 @@ export default function Drivers() {
                                         {moment(sortedData[showID].birthDate).format('YYYY-MM-DD')}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -581,7 +581,7 @@ export default function Drivers() {
                                         {sortedData[showID].role}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -597,7 +597,7 @@ export default function Drivers() {
                                         {sortedData[showID].licenseNumber}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -613,7 +613,7 @@ export default function Drivers() {
                                         {sortedData[showID].cardNumber}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -628,7 +628,7 @@ export default function Drivers() {
                                         {moment(sortedData[showID].expireDate).format('YYYY-MM-DD')}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -644,7 +644,7 @@ export default function Drivers() {
                                         {sortedData[showID].licenseState}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -660,7 +660,7 @@ export default function Drivers() {
                                         {sortedData[showID].licenseClass}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -680,7 +680,7 @@ export default function Drivers() {
                                         }
                                     </div>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -696,7 +696,7 @@ export default function Drivers() {
                                         {sortedData[showID].year ? sortedData[showID].year : ''}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -712,7 +712,7 @@ export default function Drivers() {
                                         {sortedData[showID].numberPlate ? sortedData[showID].numberPlate : ''}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -728,7 +728,7 @@ export default function Drivers() {
                                         {sortedData[showID].VIN ? sortedData[showID].VIN : ''}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -744,7 +744,7 @@ export default function Drivers() {
                                         {sortedData[showID].category ? sortedData[showID].category : ''}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -760,7 +760,7 @@ export default function Drivers() {
                                         {sortedData[showID].make ? sortedData[showID].make : ''}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -776,7 +776,7 @@ export default function Drivers() {
                                         {sortedData[showID].model ? sortedData[showID].model : ''}
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -796,7 +796,7 @@ export default function Drivers() {
                                         }
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -816,7 +816,7 @@ export default function Drivers() {
                                         }
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >
@@ -836,7 +836,7 @@ export default function Drivers() {
                                         }
                                     </Typography>
                                 </div>
-                                <div className="p-2 flex items-center justify-center">
+                                <div className="p-2 flex items-center">
                                     <div
                                         className="cursor-pointer bg-blue-gray-50/50 p-4 transition-colors hover:bg-blue-gray-50 relative"
                                     >

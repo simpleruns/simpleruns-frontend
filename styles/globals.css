@@ -52,3 +52,13 @@ input:checked.defaultCheckbox::before {
 #file_input input#file-upload-button {
     background-color: #000 !important;
 }
+
+.prediction {
+    transition: opacity .3s, visibility .3s;
+    transition-delay: .2s;
+}
+
+input:not(:focus)+.prediction {
+    opacity: 0;
+    visibility: hidden;
+}
