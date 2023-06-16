@@ -154,7 +154,6 @@ export default function Customers() {
         user && instance.get(`/admin/customers${url}`, { params: { user: user } })
             .then((res) => {
                 setCustomerData(res.data.customers);
-                console.log(res.data.customers)
                 setTotalPage(Math.floor((res.data.totalCount - 1) / countPerPage) + 1);
             }).catch(error => {
                 console.log(error.message);

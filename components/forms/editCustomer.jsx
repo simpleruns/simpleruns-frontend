@@ -48,7 +48,7 @@ const SingleCustomerForm = (props) => {
 
     const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
-        if (existingScript && api) {
+        if (existingScript && api && scriptLoaded) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
@@ -63,7 +63,7 @@ const SingleCustomerForm = (props) => {
 
     const addressValidateHandler1 = (address) => {
         const existingScript = document.getElementById('googleMaps');
-        if (existingScript && api) {
+        if (existingScript && api && scriptLoaded) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
@@ -407,7 +407,7 @@ const SingleCustomerForm = (props) => {
                         onChange={(e) => {
                             setIsValidAddress(true);
                             setAddress(e.target.value);
-                            handleAddressAutoComplete(e.target.value);
+                            scriptLoaded && handleAddressAutoComplete(e.target.value);
                             addressValidateHandler();
                             e.target.value == null || e.target.value == '' ? setPredictions([]) : '';
                         }}
@@ -487,7 +487,7 @@ const SingleCustomerForm = (props) => {
                                             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                             value={tableData[index].address}
                                             onChange={(e) => {
-                                                handleAddressAutoComplete1(e.target.value);
+                                                scriptLoaded && handleAddressAutoComplete1(e.target.value);
                                                 setTableData(tableData.map((r, i) => i === index ? { ...r, address: e.target.value } : r));
                                                 e.target.value == null || e.target.value == '' ? setPredictions1([]) : '';
                                             }}
