@@ -519,6 +519,18 @@ const Invoice = ({ data: invoiceData }) => {
                 </div>
             </div>
 
+            <div className='grid grid-cols-12 mt-20'>
+                <div className='col-span-12 text-start font-normal'>
+                    <ol className='px-6 list-decimal'>
+                        <li>By accepting and utilizing the payment invoice, the payee agrees to fulfill the payment obligation(s) outlined in the invoice within the specified due date.</li>
+                        <li>In the event of late payment, the payee shall be charged an additional interest of 5% per day on the outstanding amount until the payment is recieved in full. Please refer to <Link href="https://simpleruns.com/wp-content/uploads/2023/06/Terms-and-Conditions-Spinning-Wheels-Transport-Pty-Ltd.pdf" target="_blank" className='text-navy-300 hover:text-navy-500 transition-colors'>Spinning Wheels Transport payment policy part(6) payments</Link> - clause 6.4</li>
+                        <li>Late payment charges will be calculated daily starting from the day immediately following the due date until the outstanding payment is settled in full.</li>
+                        <li>The payment invoice is non-transferable, and the payee shall not assign, transfer, or delegate their payment obligations to any third party without the explicit written consent of the invoice issuer.</li>
+                        <li>If the payment remains outstanding beyond the specified due date, Spinning Wheels Transport reserves the right to take appropriate legal action(s) or engage the services of a debt collection agency to recover the outstanding amount. All associated costs incurred in the process will be the payee’s responsibility.</li>
+                    </ol>
+                </div>
+            </div>
+
             <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center mt-20 mr-4" onClick={saveInvoiceHandler}>Save</button>
 
             <Link href="/invoices">
