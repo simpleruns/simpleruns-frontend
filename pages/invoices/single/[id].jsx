@@ -401,7 +401,46 @@ const generateInvoice = (invoice) => {
                         margin: [0, 0, 0, 0],
                     },
                 ]
-            }
+            },
+            {
+                stack: [
+                    {
+                        text: [
+                            {
+                                text: `1. By accepting and utilizing the payment invoice, the payee agrees to fulfill the payment obligation(s) outlined in the invoice within the specified due date.\n`,
+                                style: "subHeaderList",
+                            },
+                            {
+                                text: `2. In the event of late payment, the payee shall be charged an additional interest of 5% per day on the outstanding amount until the payment is recieved in full. Please refer to `,
+                                style: "subHeaderList",
+                            },
+                            {
+                                text: `Spinning Wheels Transport payment policy part(6) payments`,
+                                style: "subHeaderListATag",
+                                link: 'https://simpleruns.com/wp-content/uploads/2023/06/Terms-and-Conditions-Spinning-Wheels-Transport-Pty-Ltd.pdf',
+                                tag: 'yTag',
+                            },
+                            {
+                                text: ` - clause 6.4\n`,
+                                style: "subHeaderList",
+                            },
+                            {
+                                text: `3. Late payment charges will be calculated daily starting from the day immediately following the due date until the outstanding payment is settled in full.\n`,
+                                style: "subHeaderList",
+                            },
+                            {
+                                text: `4. The payment invoice is non-transferable, and the payee shall not assign, transfer, or delegate their payment obligations to any third party without the explicit written consent of the invoice issuer.\n`,
+                                style: "subHeaderList",
+                            },
+                            {
+                                text: `5. If the payment remains outstanding beyond the specified due date, Spinning Wheels Transport reserves the right to take appropriate legal action(s) or engage the services of a debt collection agency to recover the outstanding amount. All associated costs incurred in the process will be the payee’s responsibility.\n`,
+                                style: "subHeaderList",
+                            },
+                        ]
+                    }
+                ],
+                margin: [0, 30, 0, 0]
+            },
         ],
         styles: {
             header: {
@@ -414,6 +453,17 @@ const generateInvoice = (invoice) => {
                 fontSize: 8,
                 color: "#000",
                 margin: [20, 10, 20, 10],
+            },
+            subHeaderList: {
+                fontSize: 8,
+                color: "#000",
+            },
+            subHeaderListATag: {
+                fontSize: 8,
+                color: "#000",
+                color: "#728fea",
+                transition: "0.3s",
+                hovercolor: "#1b3bbb"
             },
             tableHeader: {
                 fontSize: 8,
