@@ -22,6 +22,7 @@ const Settings = () => {
                     company: res.data.company,
                     api: res.data.api,
                     abn: res.data.abn,
+                    website: res.data.website,
                 });
             }).catch(error => {
                 console.log(error.message);

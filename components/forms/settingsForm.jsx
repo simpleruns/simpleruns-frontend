@@ -109,6 +109,7 @@ const SettingsForm = (props) => {
             company: data.company,
             abn: data.abn,
             api: data.api,
+            website: data.website,
         },
         validationSchema: Yup.object({
             bank: Yup.string().required('Bank Name is required'),
@@ -120,7 +121,8 @@ const SettingsForm = (props) => {
             api: Yup.string().min(39, 'API key must be at least 39 characters long').test('is-api-key', 'Invalid API key', (value) => {
                 const apiKeyRegex = /^[A-Za-z0-9-_]{39}$/;
                 return apiKeyRegex.test(value);
-            })
+            }),
+            website: Yup.string().required('Company Website Url is required'),
         }),
         onSubmit: async (values, { setSubmitting, setErrors }) => {
             const formData = new FormData();
@@ -138,6 +140,7 @@ const SettingsForm = (props) => {
                     formData.append('company', values.company);
                     formData.append('abn', values.abn);
                     formData.append('api', values.api);
+                    formData.append('website', values.website);
 
                     await saveEditedSettings(formData);
                     setSuccess(true);
@@ -327,6 +330,23 @@ const SettingsForm = (props) => {
                     />
                     {formik.touched.api && formik.errors.api ? (
                         <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.api}</div>
+                    ) : null}
+                </div>
+
+                <div className="w-full">
+                    <label htmlFor="website" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Company WebSite URL</label>
+                    <input
+                        className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
+                        type="text"
+                        name="website"
+                        id="website"
+                        value={formik.values.website}
+                        placeholder={formik.values.website}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                    />
+                    {formik.touched.website && formik.errors.website ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.website}</div>
                     ) : null}
                 </div>
             </div>
