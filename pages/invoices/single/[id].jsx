@@ -4,13 +4,13 @@ import pdfFonts from 'pdfmake/build/vfs_fonts';
 import moment from 'moment';
 import { useAtom } from "jotai";
 import { Typography } from '@material-tailwind/react';
-import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import { useRouter } from 'next/router';
 import Link from "next/link";
 
 import { idAtom } from "helpers/authorize";
 import { instance } from 'helpers/axios';
 
+import { ArrowDownIcon } from "@heroicons/react/24/solid";
 import { RxCheck } from "react-icons/rx";
 
 import invoiceImage from "public/assets/img/invoice.png";
@@ -35,8 +35,7 @@ const generateInvoice = (invoice) => {
 
     const subTotal = () => {
         var value = 0;
-        console.log("item: ")
-        invoice.deliveries.forEach((item) => {
+        invoice && invoice.deliveries.forEach((item) => {
             if (item.status == 'completed') {
                 value += item.subTotal;
             } else {
@@ -53,6 +52,16 @@ const generateInvoice = (invoice) => {
             margin: [0, 0, 0, 40],
             height: 30,
             fit: ['auto', 30],
+        }
+    }
+
+    const logo1 = () => {
+        base64Image = document && getBase64Image(document.getElementById("imageid"));
+        return {
+            image: `${base64Image}`,
+            margin: [0, 0, 0, 40],
+            height: 15,
+            fit: ['auto', 15],
         }
     }
 
@@ -243,14 +252,14 @@ const generateInvoice = (invoice) => {
                                         margin: [0, 5, 0, 5],
                                     },
                                     {
-                                        text: row.status == 'completed' ? (row.job + ' - LOAD ' + row.load + ' ' + row.description.split(' ').map(word => {
+                                        text: row.status == 'completed' ? /*row.job + ' - LOAD ' + row.load + ' ' +*/ row.description.split(' ').map(word => {
                                             const suffixes = ['st', 'rd', 'nd', 'th'];
                                             if (suffixes.includes(word.toLowerCase().slice(-2))) {
                                                 return word.slice(0, -2);
                                             } else {
                                                 return word[0];
                                             }
-                                        }).filter(word => word !== '').join('')) : '',
+                                        }).filter(word => word !== '').join('').match(/.{1,25}/g).join('\n') : '',
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -390,11 +399,12 @@ const generateInvoice = (invoice) => {
                                 [
                                     {
                                         text: "The Total price includes GST",
-                                        style: "subHeader",
+                                        style: "tableFooter",
                                         colSpan: 2,
-                                        margin: [0, 10, 0, 0],
+                                        alignment: 'center',
                                     },
-                                    {},
+                                    {
+                                    },
                                 ],
                             ],
                         },
@@ -443,6 +453,271 @@ const generateInvoice = (invoice) => {
                 ],
                 margin: [0, 30, 0, 0]
             },
+            ...(invoice.deliveries
+                ? invoice.deliveries.map((row, index) => {
+                    const isLast = index === invoice.deliveries.length - 1;
+                    const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
+                    return [
+                        {
+                            text: '',
+                            pageBreak: 'before',
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: "72%",
+                                    stack: [
+                                        {
+                                            columns: [
+                                                {
+                                                    width: "35%",
+                                                    stack: [
+                                                        logo1(),
+                                                    ],
+                                                    margin: [0, 30, 30, 0]
+                                                },
+                                                {
+                                                    width: "65%",
+                                                    stack: [
+                                                        {
+                                                            columns: [
+                                                                {
+                                                                    width: "35%",
+                                                                    text: `ABN: ${invoice.abn}`,
+                                                                    style: "runHeader",
+                                                                    margin: [0, 5, 0, 0]
+                                                                },
+                                                                {
+                                                                    width: "65%",
+                                                                    text: `RUN SHEET NO: ${index + 1}`,
+                                                                    style: "runHeader1",
+                                                                    alignment: "right",
+                                                                },
+                                                            ],
+                                                            margin: [0, 0, 0, 15],
+                                                        },
+                                                        {
+                                                            text: [
+                                                                {
+                                                                    text: `${invoice.adminAddress}\n`,
+                                                                    style: "runHeader",
+                                                                },
+                                                                {
+                                                                    text: `Phone: ${invoice.adminPhone}\n`,
+                                                                    style: "runHeader",
+                                                                },
+                                                                {
+                                                                    text: `Website: ${invoice.adminWebSite}\n`,
+                                                                    style: "runHeader",
+                                                                },
+                                                            ]
+                                                        }
+                                                    ],
+                                                },
+                                            ]
+                                        },
+                                        {
+                                            columns: [
+                                                {
+                                                    width: "auto",
+                                                    text: "CHAEGE TO: ",
+                                                    style: "borderDot",
+                                                    margin: [5, 0, 5, 5]
+                                                },
+                                                {
+                                                    width: "auto",
+                                                    text: invoice.customerName,
+                                                    style: "borderDot",
+                                                },
+                                            ]
+                                        }
+                                    ],
+                                    margin: [0, 15, 0, 0]
+                                },
+                                {
+                                    table: {
+                                        widths: ["55%", "45%"],
+                                        body: [
+                                            [
+                                                {
+                                                    text: "DATE: ",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: moment(row.endTime).format('DD/MM/YYYY'),
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "DAY: ",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: moment(row.endTime).format('ddd'),
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "TRAILOR REGO",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: row.trailerID,
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "Driver",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: row.driverName,
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "TRUCK REGO",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: row.truckID,
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                        ],
+                                    },
+                                    width: "28%",
+                                },
+                            ],
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: "79.5%",
+                                    table: {
+                                        headerRows: 1,
+                                        widths: ["25%", "30%", "45%"],
+                                        body: [
+                                            [
+                                                {
+                                                    text: "COMPANY NAME",
+                                                    style: "tableHeader",
+                                                },
+                                                {
+                                                    text: "ADDRESS",
+                                                    style: "tableHeader",
+                                                },
+                                                {
+                                                    text: "DETAILS",
+                                                    style: "tableHeader",
+                                                },
+                                            ],
+                                            ...(row.runsheet
+                                                ? JSON.parse(row.runsheet).map((item, index) => {
+                                                    return [
+                                                        {
+                                                            text: moment(item.endTime).format('YYYY-MM-DD'),
+                                                            style: "tableRow",
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                        {
+                                                            text: item.status == 'completed' ? item.ref : '',
+                                                            style: "tableRow",
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                        {
+                                                            text: item.status == 'completed' ? /*item.job + ' - LOAD ' + item.load + ' ' +*/ item.description.split(' ').map(word => {
+                                                                const suffixes = ['st', 'rd', 'nd', 'th'];
+                                                                if (suffixes.includes(word.toLowerCase().slice(-2))) {
+                                                                    return word.slice(0, -2);
+                                                                } else {
+                                                                    return word[0];
+                                                                }
+                                                            }).filter(word => word !== '').join('').match(/.{1,25}/g).join('\n') : '',
+                                                            style: "tableRow",
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                    ];
+                                                })
+                                                : [
+                                                    [
+                                                        {
+                                                            text: "No Invoices to show…",
+                                                            style: "tableRow",
+                                                            colSpan: 10,
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                    ],
+                                                ]),
+                                        ],
+                                    },
+                                    margin: [0, 10, 15, 0],
+                                },
+                                {
+                                    width: "20%",
+                                    alignment: "right",
+                                    table: {
+                                        headerRows: 1,
+                                        widths: ["50%", "50%"],
+                                        body: [
+                                            [
+                                                {
+                                                    text: "ARRIVE",
+                                                    style: "tableHeader",
+                                                },
+                                                {
+                                                    text: "DEPART",
+                                                    style: "tableHeader",
+                                                },
+                                            ],
+                                            ...(row.runsheet
+                                                ? JSON.parse(row.runsheet).map((item, index) => {
+                                                    return [
+                                                        {
+                                                            text: moment(item.endTime).format('YYYY-MM-DD'),
+                                                            style: "tableRow",
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                        {
+                                                            text: item.status == 'completed' ? item.ref : '',
+                                                            style: "tableRow",
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                    ];
+                                                })
+                                                : [
+                                                    [
+                                                        {
+                                                            text: "No Invoices to show…",
+                                                            style: "tableRow",
+                                                            colSpan: 10,
+                                                            margin: [0, 5, 0, 5],
+                                                        },
+                                                    ],
+                                                ]),
+                                        ],
+                                    },
+                                    margin: [0, 10, 0, 0],
+                                }
+                            ]
+                        },
+                    ]
+                })
+                : [
+                    {
+                        text: "No Invoices to show…",
+                        style: "tableRow",
+                        colSpan: 10,
+                        margin: [0, 5, 0, 5],
+                    },
+                ]),
+            {
+
+            },
         ],
         styles: {
             header: {
@@ -466,6 +741,23 @@ const generateInvoice = (invoice) => {
                 color: "#728fea",
                 transition: "0.3s",
                 hovercolor: "#1b3bbb"
+            },
+            runHeader: {
+                fontSize: 9,
+                color: "#000",
+                margin: [0, 0, 0, 0],
+                lineHeight: 1.66,
+            },
+            runHeader1: {
+                fontSize: 15,
+                color: "#000",
+                margin: [10, 0, 10, 10],
+                lineHeight: 1,
+            },
+            borderDot: {
+                border: [false, false, false, { width: 2, style: 'dashed' }],
+                fontSize: 10,
+                textTransform: "uppercase",
             },
             tableHeader: {
                 fontSize: 8,
@@ -634,9 +926,9 @@ const Invoice = () => {
                                                 </td>
                                                 <td className={classes}>
                                                     <Typography variant="small" color="blue-gray" className="font-medium">
-                                                        {
+                                                        {/* {
                                                             row.status == 'completed' ? row.job + ' - LOAD ' + row.load + ' ' : ''
-                                                        }
+                                                        } */}
                                                         {
                                                             row.status == 'completed' ? row.description.split(' ').map(word => {
                                                                 const suffixes = ['st', 'rd', 'nd', 'th'];
@@ -747,6 +1039,13 @@ const Invoice = () => {
                             </ol>
                         </div>
                     </div>
+
+                    <div className="flex items-center mt-10">
+                        <Link href={`/invoices/edit/${id}?start=${start}&end=${end}`} className='mr-4'>
+                            <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
+                        </Link>
+                        <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
+                    </div>
                 </div>
             }
 
@@ -814,7 +1113,7 @@ const Invoice = () => {
                                             </tr>
                                             <tr className='border-dark border-solid border-2'>
                                                 <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRAILER REGO:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.trailer}</td>
+                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.trailerID}</td>
                                             </tr>
                                             <tr className='border-dark border-solid border-2'>
                                                 <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DRIVER:</td>
@@ -822,7 +1121,7 @@ const Invoice = () => {
                                             </tr>
                                             <tr className='border-dark border-solid border-2'>
                                                 <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRUCK REGO:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.truck}</td>
+                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.truckID}</td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -845,13 +1144,13 @@ const Invoice = () => {
                                                 JSON.parse(row.runsheet).map((item, id) => {
                                                     return (
                                                         <tr key={item._id + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
                                                                 {item.company}
                                                             </td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
                                                                 {item.address}
                                                             </td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
                                                                 {
                                                                     Object.entries(JSON.parse(row.runsheet)[1].details).slice(id, id + 1)[0][0]
                                                                 } : {
@@ -867,9 +1166,9 @@ const Invoice = () => {
                                                 JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, id) => {
                                                     return (
                                                         <tr key={'tempdata' + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
                                                                 {
                                                                     Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + id, JSON.parse(row.runsheet).length + id + 1)[0][0]
                                                                 } : {
@@ -898,10 +1197,10 @@ const Invoice = () => {
                                                 JSON.parse(row.runsheet).map((item, id) => {
                                                     return (
                                                         <tr key={item._id + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
                                                                 {item.arriveTime}
                                                             </td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
                                                                 {item.startTime}
                                                             </td>
                                                         </tr>
@@ -912,8 +1211,8 @@ const Invoice = () => {
                                                 JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, id) => {
                                                     return (
                                                         <tr key={'tempdata' + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 pr-2'></td>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
                                                         </tr>
                                                     )
                                                 })
@@ -999,11 +1298,11 @@ const Invoice = () => {
                                                     <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
                                                 </tr>
                                             </tbody>
-                                            <tfoot>
+                                            {/* <tfoot>
                                                 <tr>
                                                     <td className="bg-gray-900 text-white text-center p-3 w-full" colSpan={6}>I HAVE CARRIED OUT DAILY & WEEKLY VEHICLE CHECK</td>
                                                 </tr>
-                                            </tfoot>
+                                            </tfoot> */}
                                         </table>
                                     </div>
 
@@ -1044,7 +1343,7 @@ const Invoice = () => {
                             </div>
 
                             <div className="flex items-center mt-10">
-                                <Link href={`/invoices/edit/${id}?start=${start}&end=${end}`} className='mr-4'>
+                                <Link href={`/invoices/runsheet/${id}?start=${start}&end=${end}&order=${index}`} className='mr-4'>
                                     <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
                                 </Link>
                                 <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>

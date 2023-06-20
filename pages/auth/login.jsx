@@ -63,10 +63,10 @@ const Login = () => {
         <div className='relative float-right h-full min-h-screen w-full !bg-white dark:!bg-navy-900'>
             <main className="mx-auto min-h-screen">
                 <div className="relative flex">
-                    <div className="mx-auto flex w-full justify-start pt-12 md:max-w-[75%] lg:max-w-[1013px] min-h-screen lg:pt-0 xl:max-w-[1383px] xl:px-0 pl-0 no-scrollbar">
-                        <div className="flex flex-col pl-5 pr-5 lg:max-w-[48%] w-full xl:max-w-full">
-                            <div className="flex h-full w-full items-center justify-center px-2 md:mx-0 md:px-0 lg:items-center lg:justify-start">
-                                <div className="w-full max-w-full flex-col items-center md:pl-4 lg:pl-0 xl:pl-[70px] pt-10 pb-10 lg:max-w-[420px] xl:max-w-[580px]">
+                    <div className="mx-auto flex w-full justify-start pt-12 min-h-screen md:pt-0 xl:px-0 pl-0 no-scrollbar">
+                        <div className="flex flex-col lg:max-w-[46%] w-full xl:max-w-full">
+                            <div className="flex h-full w-full md:w-[50vw] xl:w-[40vw] items-center justify-center px-2 md:mx-0 md:px-0">
+                                <div className="w-full max-w-full flex-col items-center xl:pl-[70px] pl-12 pr-12 pt-10 pb-10 lg:max-w-[420px] xl:max-w-[580px]">
                                     <h4 className="mb-2.5 text-4xl font-bold text-navy-700 dark:text-white">
                                         Sign In
                                     </h4>
@@ -126,9 +126,9 @@ const Login = () => {
                                 </div>
                             </div>
 
-                            <div className="absolute right-0 hidden h-full min-h-screen md:block lg:w-[49vw] 2xl:w-[44vw]">
+                            <div className="absolute right-0 hidden h-full min-h-screen md:block w-[50vw] xl:w-[60vw]">
                                 <div
-                                    className="absolute flex h-full w-full items-end justify-center bg-cover bg-center bg-contain bg-no-repeat bg-right-bottom"
+                                    className="absolute flex h-full w-full items-end justify-center bg-cover bg-center bg-no-repeat"
                                     style={{ backgroundImage: `url(${authImg.src})` }}
                                 />
                             </div>

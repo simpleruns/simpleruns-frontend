@@ -15,11 +15,6 @@ const headers = [
     { text: 'Start Time', key: 'startTime' },
     { text: 'End Time', key: 'endTime' },
     { text: 'Total Hour', key: 'totalHour' },
-    { text: 'REF', key: 'ref' },
-    { text: 'Docket', key: 'docket' },
-    { text: 'Job', key: 'job' },
-    { text: 'Load#', key: 'load' },
-    { text: 'PO', key: 'po' },
     { text: 'Description', key: 'description' },
     { text: 'Tolls', key: 'tolls' },
     { text: 'Rate', key: 'rate' },
@@ -50,7 +45,7 @@ const Invoice = ({ data: invoiceData }) => {
     const saveInvoiceHandler = () => {
         user && instance.post(`/invoices/edit/${id}`, { params: { user: user, data: invoice.deliveries } })
             .then((res) => {
-                router.push('/invoices');
+                res.status = 200 && router.push('/invoices');
             }).catch(error => {
                 console.log(error.message);
             });
@@ -209,136 +204,6 @@ const Invoice = ({ data: invoiceData }) => {
                                             <Typography variant="small" color="blue-gray" className="font-medium">
                                                 {row.status == 'completed' ? row.totalHour.toFixed(2) : '4'}
                                             </Typography>
-                                        </td>
-                                        <td className={classes}>
-                                            <input
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                type="text"
-                                                name="ref"
-                                                id={"ref" + index}
-                                                onChange={(e) => {
-                                                    const updatedRef = {
-                                                        ...invoice,
-                                                        deliveries: invoice.deliveries.map((delivery, id) => {
-                                                            if (id === index) {
-                                                                return {
-                                                                    ...delivery,
-                                                                    ref: e.target.value
-                                                                }
-                                                            } else {
-                                                                return delivery;
-                                                            }
-                                                        })
-                                                    }
-                                                    setInvoice(updatedRef);
-                                                }}
-                                                value={row.ref}
-                                                readOnly={row.status == 'completed' ? false : true}
-                                            />
-                                        </td>
-                                        <td className={classes}>
-                                            <input
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                type="text"
-                                                name="docket"
-                                                id={"docket" + index}
-                                                onChange={(e) => {
-                                                    const updatedDocket = {
-                                                        ...invoice,
-                                                        deliveries: invoice.deliveries.map((delivery, id) => {
-                                                            if (id === index) {
-                                                                return {
-                                                                    ...delivery,
-                                                                    docket: e.target.value
-                                                                }
-                                                            } else {
-                                                                return delivery;
-                                                            }
-                                                        })
-                                                    }
-                                                    setInvoice(updatedDocket);
-                                                }}
-                                                value={row.docket}
-                                                readOnly={row.status == 'completed' ? false : true}
-                                            />
-                                        </td>
-                                        <td className={classes}>
-                                            <input
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                type="text"
-                                                name="job"
-                                                id={"job" + index}
-                                                onChange={(e) => {
-                                                    const updatedJob = {
-                                                        ...invoice,
-                                                        deliveries: invoice.deliveries.map((delivery, id) => {
-                                                            if (id === index) {
-                                                                return {
-                                                                    ...delivery,
-                                                                    job: e.target.value
-                                                                }
-                                                            } else {
-                                                                return delivery;
-                                                            }
-                                                        })
-                                                    }
-                                                    setInvoice(updatedJob);
-                                                }}
-                                                value={row.job}
-                                                readOnly={row.status == 'completed' ? false : true}
-                                            />
-                                        </td>
-                                        <td className={classes}>
-                                            <input
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                type="text"
-                                                name="load"
-                                                id={"load" + index}
-                                                onChange={(e) => {
-                                                    const updatedLoad = {
-                                                        ...invoice,
-                                                        deliveries: invoice.deliveries.map((delivery, id) => {
-                                                            if (id === index) {
-                                                                return {
-                                                                    ...delivery,
-                                                                    load: e.target.value
-                                                                }
-                                                            } else {
-                                                                return delivery;
-                                                            }
-                                                        })
-                                                    }
-                                                    setInvoice(updatedLoad);
-                                                }}
-                                                value={row.load}
-                                                readOnly={row.status == 'completed' ? false : true}
-                                            />
-                                        </td>
-                                        <td className={classes}>
-                                            <input
-                                                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
-                                                type="text"
-                                                name="PO"
-                                                id={"PO" + index}
-                                                onChange={(e) => {
-                                                    const updatedPO = {
-                                                        ...invoice,
-                                                        deliveries: invoice.deliveries.map((delivery, id) => {
-                                                            if (id === index) {
-                                                                return {
-                                                                    ...delivery,
-                                                                    PO: e.target.value
-                                                                }
-                                                            } else {
-                                                                return delivery;
-                                                            }
-                                                        })
-                                                    }
-                                                    setInvoice(updatedPO);
-                                                }}
-                                                value={row.PO}
-                                                readOnly={row.status == 'completed' ? false : true}
-                                            />
                                         </td>
                                         <td className={classes}>
                                             <textarea

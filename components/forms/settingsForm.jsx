@@ -46,7 +46,7 @@ const SettingsForm = (props) => {
 
     const addressValidateHandler = () => {
         const existingScript = document.getElementById('googleMaps');
-        if (existingScript && api) {
+        if (scriptLoaded && existingScript && api) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
@@ -61,7 +61,7 @@ const SettingsForm = (props) => {
 
     const addressValidateHandler1 = (address) => {
         const existingScript = document.getElementById('googleMaps');
-        if (existingScript && api) {
+        if (scriptLoaded && existingScript && api) {
             // The Google Maps API is now loaded and ready to use
             const geocoder = new google.maps.Geocoder();
             geocoder.geocode({ address }, (results, status) => {
@@ -76,7 +76,7 @@ const SettingsForm = (props) => {
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value, componentRestrictions: { country: 'au' } }, (predictions, status) => {
+        scriptLoaded && service.getPlacePredictions({ input: value, componentRestrictions: { country: 'au' } }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
             }

@@ -22,7 +22,7 @@ const SingleCustomerForm = (props) => {
     const [api, setApi] = useState('');
     const router = useRouter();
     const [scriptLoaded, setScriptLoaded] = useState(false);
-    const [tableData, setTableData] = useState(JSON.parse(data.job));
+    const [tableData, setTableData] = useState(data.job ? JSON.parse(data.job) : []);
 
     useEffect(() => {
         user && instance.get(`/settings/googleapi/${user}`)
@@ -77,7 +77,7 @@ const SingleCustomerForm = (props) => {
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value }, (predictions, status) => {
+        scriptLoaded && service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
             }
@@ -86,7 +86,7 @@ const SingleCustomerForm = (props) => {
 
     const handleAddressAutoComplete1 = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value }, (predictions, status) => {
+        scriptLoaded && service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions1(predictions);
             }
@@ -102,7 +102,7 @@ const SingleCustomerForm = (props) => {
     const handlePredictionClick1 = async (e, index, prediction) => {
         const address = prediction.description;
         const { lat, lng } = await getGeocodingData(address);
-        setTableData(tableData.map((r, i) => i === index ? { ...r, name: address, lat: lat, lng: lng } : r));
+        setTableData(tableData.map((r, i) => i === index ? { ...r, address: address, lat: lat, lng: lng } : r));
         setPredictions1([]);
     };
 

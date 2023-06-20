@@ -95,7 +95,7 @@ const CustomerCreate = () => {
 
     const handleAddressAutoComplete = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value }, (predictions, status) => {
+        scriptLoaded && service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions(predictions);
             }
@@ -104,7 +104,7 @@ const CustomerCreate = () => {
 
     const handleAddressAutoComplete1 = (value) => {
         const service = new google.maps.places.AutocompleteService();
-        service.getPlacePredictions({ input: value }, (predictions, status) => {
+        scriptLoaded && service.getPlacePredictions({ input: value }, (predictions, status) => {
             if (status === google.maps.places.PlacesServiceStatus.OK) {
                 setPredictions1(predictions);
             }
