@@ -35,7 +35,7 @@ const generateInvoice = (invoice) => {
 
     const subTotal = () => {
         var value = 0;
-        invoice && invoice.deliveries.forEach((item) => {
+        invoice && invoice.deliveries && invoice.deliveries.forEach((item) => {
             if (item.status == 'completed') {
                 value += item.subTotal;
             } else {
@@ -238,8 +238,6 @@ const generateInvoice = (invoice) => {
                         ],
                         ...(invoice.deliveries
                             ? invoice.deliveries.map((row, index) => {
-                                const isLast = index === invoice.deliveries.length - 1;
-                                const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
                                 return [
                                     {
                                         text: moment(row.endTime).format('YYYY-MM-DD'),
@@ -259,7 +257,7 @@ const generateInvoice = (invoice) => {
                                             } else {
                                                 return word[0];
                                             }
-                                        }).filter(word => word !== '').join('').match(/.{1,25}/g).join('\n') : '',
+                                        }).filter(word => word !== '').join('').match(/.{1,36}/g).join('\n') : '',
                                         style: "tableRow",
                                         margin: [0, 5, 0, 5],
                                     },
@@ -421,10 +419,12 @@ const generateInvoice = (invoice) => {
                             {
                                 text: `1. By accepting and utilizing the payment invoice, the payee agrees to fulfill the payment obligation(s) outlined in the invoice within the specified due date.\n`,
                                 style: "subHeaderList",
+                                margin: [20, 10, 20, 10],
                             },
                             {
                                 text: `2. In the event of late payment, the payee shall be charged an additional interest of 5% per day on the outstanding amount until the payment is recieved in full. Please refer to `,
                                 style: "subHeaderList",
+                                margin: [20, 10, 20, 10],
                             },
                             {
                                 text: `Spinning Wheels Transport payment policy part(6) payments`,
@@ -435,18 +435,22 @@ const generateInvoice = (invoice) => {
                             {
                                 text: ` - clause 6.4\n`,
                                 style: "subHeaderList",
+                                margin: [20, 10, 20, 10],
                             },
                             {
                                 text: `3. Late payment charges will be calculated daily starting from the day immediately following the due date until the outstanding payment is settled in full.\n`,
                                 style: "subHeaderList",
+                                margin: [20, 10, 20, 10],
                             },
                             {
                                 text: `4. The payment invoice is non-transferable, and the payee shall not assign, transfer, or delegate their payment obligations to any third party without the explicit written consent of the invoice issuer.\n`,
                                 style: "subHeaderList",
+                                margin: [20, 10, 20, 10],
                             },
                             {
                                 text: `5. If the payment remains outstanding beyond the specified due date, Spinning Wheels Transport reserves the right to take appropriate legal action(s) or engage the services of a debt collection agency to recover the outstanding amount. All associated costs incurred in the process will be the payee’s responsibility.\n`,
                                 style: "subHeaderList",
+                                margin: [20, 10, 20, 10],
                             },
                         ]
                     }
@@ -455,8 +459,21 @@ const generateInvoice = (invoice) => {
             },
             ...(invoice.deliveries
                 ? invoice.deliveries.map((row, index) => {
-                    const isLast = index === invoice.deliveries.length - 1;
-                    const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 0";
+                    const time1 = JSON.parse(row.runsheet)[JSON.parse(row.runsheet).length - 1].arriveTime;
+                    const time2 = JSON.parse(row.runsheet)[0].startTime;
+                    const [hours1, minutes1] = time1.split(':').map(Number);
+                    const [hours2, minutes2] = time2.split(':').map(Number);
+
+                    const totalMinutes1 = hours1 * 60 + minutes1;
+                    const totalMinutes2 = hours2 * 60 + minutes2;
+
+                    const differenceInMinutes = totalMinutes1 - totalMinutes2;
+
+                    const hours = Math.floor(differenceInMinutes / 60);
+                    const minutes = differenceInMinutes % 60;
+
+                    const difference = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+
                     return [
                         {
                             text: '',
@@ -465,7 +482,7 @@ const generateInvoice = (invoice) => {
                         {
                             columns: [
                                 {
-                                    width: "72%",
+                                    width: "80%",
                                     stack: [
                                         {
                                             columns: [
@@ -522,12 +539,13 @@ const generateInvoice = (invoice) => {
                                                     width: "auto",
                                                     text: "CHAEGE TO: ",
                                                     style: "borderDot",
-                                                    margin: [5, 0, 5, 5]
+                                                    margin: [0, 0, 0, 5]
                                                 },
                                                 {
                                                     width: "auto",
                                                     text: invoice.customerName,
                                                     style: "borderDot",
+                                                    margin: [0, 0, 0, 0]
                                                 },
                                             ]
                                         }
@@ -536,7 +554,7 @@ const generateInvoice = (invoice) => {
                                 },
                                 {
                                     table: {
-                                        widths: ["55%", "45%"],
+                                        widths: ["50%", "50%"],
                                         body: [
                                             [
                                                 {
@@ -590,17 +608,17 @@ const generateInvoice = (invoice) => {
                                             ],
                                         ],
                                     },
-                                    width: "28%",
+                                    width: "20%",
                                 },
                             ],
                         },
                         {
                             columns: [
                                 {
-                                    width: "79.5%",
+                                    width: "79.9%",
                                     table: {
                                         headerRows: 1,
-                                        widths: ["25%", "30%", "45%"],
+                                        widths: ["23%", "57%", "20%"],
                                         body: [
                                             [
                                                 {
@@ -617,27 +635,20 @@ const generateInvoice = (invoice) => {
                                                 },
                                             ],
                                             ...(row.runsheet
-                                                ? JSON.parse(row.runsheet).map((item, index) => {
+                                                ? JSON.parse(row.runsheet).map((item, index1) => {
                                                     return [
                                                         {
-                                                            text: moment(item.endTime).format('YYYY-MM-DD'),
+                                                            text: item.company,
                                                             style: "tableRow",
                                                             margin: [0, 5, 0, 5],
                                                         },
                                                         {
-                                                            text: item.status == 'completed' ? item.ref : '',
+                                                            text: item.address,
                                                             style: "tableRow",
                                                             margin: [0, 5, 0, 5],
                                                         },
                                                         {
-                                                            text: item.status == 'completed' ? /*item.job + ' - LOAD ' + item.load + ' ' +*/ item.description.split(' ').map(word => {
-                                                                const suffixes = ['st', 'rd', 'nd', 'th'];
-                                                                if (suffixes.includes(word.toLowerCase().slice(-2))) {
-                                                                    return word.slice(0, -2);
-                                                                } else {
-                                                                    return word[0];
-                                                                }
-                                                            }).filter(word => word !== '').join('').match(/.{1,25}/g).join('\n') : '',
+                                                            text: `${Object.entries(JSON.parse(row.runsheet)[1].details).slice(index1, index1 + 1)[0][0]} : ${Object.entries(JSON.parse(row.runsheet)[1].details).slice(index1, index1 + 1)[0][1]}`,
                                                             style: "tableRow",
                                                             margin: [0, 5, 0, 5],
                                                         },
@@ -653,9 +664,28 @@ const generateInvoice = (invoice) => {
                                                         },
                                                     ],
                                                 ]),
+                                            ...(JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, index1) => {
+                                                return [
+                                                    {
+                                                        text: '',
+                                                        style: "tableRow",
+                                                        margin: [0, 5, 0, 5],
+                                                    },
+                                                    {
+                                                        text: '',
+                                                        style: "tableRow",
+                                                        margin: [0, 5, 0, 5],
+                                                    },
+                                                    {
+                                                        text: `${Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + index1, JSON.parse(row.runsheet).length + index1 + 1)[0][0]} : ${Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + index1, JSON.parse(row.runsheet).length + index1 + 1)[0][1]}`,
+                                                        style: "tableRow",
+                                                        margin: [0, 5, 0, 5],
+                                                    },
+                                                ];
+                                            })),
                                         ],
                                     },
-                                    margin: [0, 10, 15, 0],
+                                    margin: [0, 5, 5, 0],
                                 },
                                 {
                                     width: "20%",
@@ -678,12 +708,12 @@ const generateInvoice = (invoice) => {
                                                 ? JSON.parse(row.runsheet).map((item, index) => {
                                                     return [
                                                         {
-                                                            text: moment(item.endTime).format('YYYY-MM-DD'),
+                                                            text: item.arriveTime,
                                                             style: "tableRow",
                                                             margin: [0, 5, 0, 5],
                                                         },
                                                         {
-                                                            text: item.status == 'completed' ? item.ref : '',
+                                                            text: item.startTime,
                                                             style: "tableRow",
                                                             margin: [0, 5, 0, 5],
                                                         },
@@ -692,13 +722,179 @@ const generateInvoice = (invoice) => {
                                                 : [
                                                     [
                                                         {
-                                                            text: "No Invoices to show…",
+                                                            text: "",
                                                             style: "tableRow",
-                                                            colSpan: 10,
+                                                            colSpan: 2,
                                                             margin: [0, 5, 0, 5],
                                                         },
                                                     ],
                                                 ]),
+                                            ...(JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map(() => {
+                                                return [
+                                                    {
+                                                        text: ' ',
+                                                        style: "tableRow",
+                                                        margin: [0, 5, 0, 5],
+                                                        padding: [60, 60, 60, 60]
+                                                    },
+                                                    {
+                                                        text: ' ',
+                                                        style: "tableRow",
+                                                        margin: [0, 5, 0, 5],
+                                                        padding: [60, 60, 60, 60]
+                                                    },
+                                                ];
+                                            })),
+                                        ],
+                                    },
+                                    margin: [0, 5, 0, 0],
+                                }
+                            ]
+                        },
+                        {
+                            columns: [
+                                {
+                                    width: "79.9%",
+                                    stack: [
+                                        {
+                                            text: [
+                                                {
+                                                    text: "BREAKS-\n(Please ensure all RTA & Lunch breaks are taken as required)",
+                                                    style: "borderDot",
+                                                }
+                                            ],
+                                            margin: [0, 15, 15, 15],
+                                        },
+                                        {
+                                            table: {
+                                                widths: ["14.3%", "4.7%", "14.3%", "4.7%", "57.2%", "4.7%"],
+                                                headerRows: 1,
+                                                body: [
+                                                    [
+                                                        { text: 'PRE-TRIP INSPECTION', colSpan: 4, style: 'tableRow' },
+                                                        {},
+                                                        {},
+                                                        {},
+                                                        { text: 'CHECKS', colSpan: 2, style: 'tableRow' },
+                                                        {}
+                                                    ],
+                                                    [
+                                                        { text: 'AIR TANKS DRAINED', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'LIGHTS', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 24 HOURS', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                    ],
+                                                    [
+                                                        { text: 'ANY DAMAGE', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'OIL', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 48 HOURS', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                    ],
+                                                    [
+                                                        { text: 'BRAKES', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'WATER', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'I AM FIT FOR DUTY', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                    ],
+                                                    [
+                                                        { text: 'FUEL', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: "KM'S", style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'ARE YOU WEARING YOUR PPE?', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                    ],
+                                                    [
+                                                        { text: 'LIFTING GEAR', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'CRANE', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                        { text: 'DID YOU RECORD TOLLS?', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                    ],
+                                                    [
+                                                        { text: '', colSpan: 4, style: 'tableRow' },
+                                                        {},
+                                                        {},
+                                                        {},
+                                                        { text: 'DID YOU RECORD TOLLS?', style: 'tableRow' },
+                                                        { text: '', style: 'tableRow', alignment: 'center' },
+                                                    ],
+                                                ],
+                                            },
+                                        },
+                                        {
+                                            text: [
+                                                {
+                                                    text: "DRIVERS SIGNATURE: ",
+                                                    style: "borderDot",
+                                                    margin: [15, 15, 15, 15],
+                                                },
+                                                {
+                                                    text: "                                              ",
+                                                    width: '40%',
+                                                    style: "borderDot",
+                                                    margin: [15, 15, 15, 15],
+                                                },
+                                                {
+                                                    text: "Print Name: ",
+                                                    style: "borderDot",
+                                                    margin: [15, 15, 15, 15],
+                                                },
+                                                {
+                                                    text: `${row.driverName}`,
+                                                    width: '40%',
+                                                    style: "borderDot",
+                                                    margin: [15, 15, 15, 15],
+                                                }
+                                            ],
+                                            margin: [0, 20, 0, 0],
+                                        },
+                                    ],
+                                    margin: [0, 10, 5, 0],
+                                },
+                                {
+                                    width: "20%",
+                                    alignment: "right",
+                                    table: {
+                                        widths: ["50%", "50%"],
+                                        body: [
+                                            [
+                                                {
+                                                    text: "START TIME: ",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: JSON.parse(row.runsheet)[0].startTime,
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "END TIME: ",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: JSON.parse(row.runsheet)[JSON.parse(row.runsheet).length - 1].arriveTime,
+                                                    style: "tableFooter",
+                                                },
+                                            ],
+                                            [
+                                                {
+                                                    text: "TOTAL HOURS",
+                                                    style: "tableFooter",
+                                                },
+                                                {
+                                                    text: difference,
+                                                    style: "tableFooter",
+                                                },
+                                            ],
                                         ],
                                     },
                                     margin: [0, 10, 0, 0],
@@ -709,15 +905,12 @@ const generateInvoice = (invoice) => {
                 })
                 : [
                     {
-                        text: "No Invoices to show…",
+                        text: "No Invoices to Show",
                         style: "tableRow",
                         colSpan: 10,
                         margin: [0, 5, 0, 5],
                     },
                 ]),
-            {
-
-            },
         ],
         styles: {
             header: {
@@ -727,16 +920,16 @@ const generateInvoice = (invoice) => {
                 margin: [10, 10, 10, 10],
             },
             subHeader: {
-                fontSize: 8,
+                fontSize: 6,
                 color: "#000",
                 margin: [20, 10, 20, 10],
             },
             subHeaderList: {
-                fontSize: 8,
+                fontSize: 6,
                 color: "#000",
             },
             subHeaderListATag: {
-                fontSize: 8,
+                fontSize: 6,
                 color: "#000",
                 color: "#728fea",
                 transition: "0.3s",
@@ -760,33 +953,41 @@ const generateInvoice = (invoice) => {
                 textTransform: "uppercase",
             },
             tableHeader: {
-                fontSize: 8,
+                fontSize: 6,
                 bold: true,
                 color: "#000",
                 fillColor: "#f2f2f2",
                 margin: [5, 5, 5, 5],
                 alignment: 'center',
+                valign: 'middle',
+                noWrap: true
             },
             tableRow: {
-                fontSize: 8,
+                fontSize: 6,
                 color: "#000",
                 margin: [5, 5, 5, 5],
                 alignment: 'center',
+                valign: 'middle',
+                noWrap: true
             },
             tableFooter: {
-                fontSize: 8,
+                fontSize: 6,
                 bold: true,
                 color: "#000",
                 margin: [5, 5, 5, 5],
                 alignment: 'center',
+                valign: 'middle',
+                noWrap: true
             },
             tableFooterBold: {
-                fontSize: 8,
+                fontSize: 6,
                 bold: true,
                 color: "#000",
                 fillColor: "#f2f2f2",
                 margin: [5, 5, 5, 5],
                 alignment: 'center',
+                valign: 'middle',
+                noWrap: true
             },
         },
     }
@@ -916,7 +1117,7 @@ const Invoice = () => {
                                             <tr key={"delivery" + index}>
                                                 <td className={classes}>
                                                     <Typography variant="small" color="blue-gray" className="font-medium">
-                                                        {moment(row.endTime).format('YYYY-MM-DD')}
+                                                        {row.endTime ? moment(row.endTime).format('YYYY-MM-DD') : ''}
                                                     </Typography>
                                                 </td>
                                                 <td className={classes}>
@@ -943,7 +1144,7 @@ const Invoice = () => {
                                                 </td>
                                                 <td className={classes}>
                                                     <Typography variant="small" color="blue-gray" className="font-medium">
-                                                        {row.tolls.toFixed(2)}
+                                                        {row.tolls ? row.tolls.toFixed(2) : ''}
                                                     </Typography>
                                                 </td>
                                                 <td className={classes}>
@@ -953,12 +1154,12 @@ const Invoice = () => {
                                                 </td>
                                                 <td className={classes}>
                                                     <Typography variant="small" color="blue-gray" className="font-medium">
-                                                        {row.hourlyRate}
+                                                        {row.hourlyRate ? row.hourlyRate : ''}
                                                     </Typography>
                                                 </td>
                                                 <td className={classes}>
                                                     <Typography variant="small" color="blue-gray" className="font-medium">
-                                                        {row.fuelLevy.toFixed(2)}
+                                                        {row.fuelLevy ? row.fuelLevy.toFixed(2) : ''}
                                                     </Typography>
                                                 </td>
                                                 <td className={classes}>

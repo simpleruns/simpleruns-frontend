@@ -45,13 +45,13 @@ const Sidebar = (props) => {
 	return (
 		<Card className={`fixed h-full px-3 pb-4 overflow-y-scroll bg-transparent simple-scroller bg-white rounded-none dark:!bg-navy-800 ${sidebarOpen ? "!min-w-[18rem]" : "!min-w-[6rem]"}`}>
 			<Link href="/"
-				className={`flex items-center justify-center py-1.5 mb-2.5 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
+				className={`flex items-center justify-center py-1.5 my-7 rounded-lg ${sidebarOpen ? "" : "flex-col"}`}>
 				<img
 					src={logo.src}
 					width={200}
 					height={200}
 					style={{ width: 'auto' }}
-					className={sidebarOpen ? 'h-[200px]' : 'h-[80px]'} alt="Simpleruns Logo"
+					className={sidebarOpen ? 'h-[160px]' : 'h-[80px]'} alt="Simpleruns Logo"
 				/>
 				{/* <Typography variant="h5" className={`self-center text-lg font-semibold whitespace-nowrap dark:text-white text-blue-800 transition ${sidebarOpen ? "" : "!text-xs"}`}>
 					Simpleruns
