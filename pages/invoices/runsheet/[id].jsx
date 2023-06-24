@@ -12,6 +12,13 @@ const SingleRunsheetEdit = () => {
     const router = useRouter();
     const { id, start, end, order } = router.query;
 
+    // useEffect(() => {
+    //     if (user && !user.approved) {
+    //         alert('Sorry, you are not approved. Contact to JamesDaniel@gmail.com');
+    //         router.push('/');
+    //     }
+    // }, [user]);
+
     useEffect(() => {
         (user && id && start && end && order) && instance.get(`/invoices/single/${id}?start=${start}&end=${end}&user=${user}`)
             .then((res) => {

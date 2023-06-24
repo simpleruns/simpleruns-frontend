@@ -103,13 +103,13 @@ const DriverCreate = () => {
             if (avatar == null)
                 alert("You didn'nt uploaded driver user image.");
             else if (licensePhoto == null || !licensePhoto.length)
-                alert("You didn't uploaded driver license photo.");
+                alert("You didn't upload driver license photo.");
             else if ((insuranceFile == null || !insuranceFile.length) && values.role === 'subcontractor')
-                alert("You didn't uploaded insurance doc.");
+                alert("You didn't upload insurance doc.");
             else if ((workCompensationFile == null || !workCompensationFile.length) && values.role === 'subcontractor')
-                alert("You didn't uploaded workers compensation doc.");
+                alert("You didn't upload workers compensation doc.");
             else if ((truckRegistrationFile == null || !truckRegistrationFile.length) && values.role === 'subcontractor')
-                alert("You didn't uploaded gools in transit doc.");
+                alert("You didn't upload gools in transit doc.");
             else {
                 avatar && formData.append('avatar', avatar, avatar.name);
                 licensePhoto && licensePhoto.map((item, i) => {
@@ -163,8 +163,11 @@ const DriverCreate = () => {
                 'content-Type': 'multipart/form-data'
             }
         })
-            .then(() => {
-                router.push('/drivers')
+            .then((res) => {
+                if (res.data == 'The email is already in use.')
+                    alert('The email is already in use.')
+                else
+                    router.push('/drivers')
             }).catch(error => {
                 console.log(error.message);
             });
@@ -420,7 +423,7 @@ const DriverCreate = () => {
                             ) : null}
                         </div>
                         <div className="w-full">
-                            <label htmlFor="expirationDate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expire Date</label>
+                            <label htmlFor="expirationDate" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Expiry Date</label>
                             <div className="relative">
                                 <Datepicker
                                     key="expireDate"

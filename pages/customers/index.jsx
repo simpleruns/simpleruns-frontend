@@ -150,7 +150,7 @@ export default function Customers() {
     }
 
     useEffect(() => {
-        var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
+        var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&page=${page}`;
         user && instance.get(`/admin/customers${url}`, { params: { user: user } })
             .then((res) => {
                 setCustomerData(res.data.customers);
@@ -337,7 +337,7 @@ export default function Customers() {
                 </CardBody>
                 <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 dark:border-navy-700 p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                        Page {page} of {totalPage}
+                        Page {page} of {totalPage > 1 ? totalPage : 1}
                     </Typography>
                     <div className="flex gap-2">
                         <Button variant="outlined" color="blue-gray" size="sm" className="p-0" disabled={`${page == 1 ? 'disabled' : ''}`} onClick={prevHandler}>

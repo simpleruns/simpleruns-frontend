@@ -550,7 +550,7 @@ const generateInvoice = (invoice) => {
                                             ]
                                         }
                                     ],
-                                    margin: [0, 15, 0, 0]
+                                    margin: [0, 10, 0, 0]
                                 },
                                 {
                                     table: {
@@ -767,7 +767,7 @@ const generateInvoice = (invoice) => {
                                         },
                                         {
                                             table: {
-                                                widths: ["14.3%", "4.7%", "14.3%", "4.7%", "57.2%", "4.7%"],
+                                                widths: ["15.32%", "4%", "10%", "4%", "62.66%", "4%"],
                                                 headerRows: 1,
                                                 body: [
                                                     [
@@ -1002,6 +1002,13 @@ const Invoice = () => {
     const [invoice, setInvoice] = useState({});
     const router = useRouter();
     const { id, start, end } = router.query;
+
+    // useEffect(() => {
+    //     if (user && !user.approved) {
+    //         alert('Sorry, you are not approved. Contact to JamesDaniel@gmail.com');
+    //         router.push('/');
+    //     }
+    // }, [user]);
 
     useEffect(() => {
         (user && id && start && end) && instance.get(`/invoices/single/${id}?start=${start}&end=${end}&user=${user}`)
@@ -1252,305 +1259,307 @@ const Invoice = () => {
 
             {
                 invoice.deliveries ? invoice.deliveries.map((row, index) => {
-                    const time1 = JSON.parse(row.runsheet)[JSON.parse(row.runsheet).length - 1].arriveTime;
-                    const time2 = JSON.parse(row.runsheet)[0].startTime;
-                    const [hours1, minutes1] = time1.split(':').map(Number);
-                    const [hours2, minutes2] = time2.split(':').map(Number);
+                    if (row.runsheet) {
+                        const time1 = JSON.parse(row.runsheet)[JSON.parse(row.runsheet).length - 1].arriveTime;
+                        const time2 = JSON.parse(row.runsheet)[0].startTime;
+                        const [hours1, minutes1] = time1.split(':').map(Number);
+                        const [hours2, minutes2] = time2.split(':').map(Number);
 
-                    const totalMinutes1 = hours1 * 60 + minutes1;
-                    const totalMinutes2 = hours2 * 60 + minutes2;
+                        const totalMinutes1 = hours1 * 60 + minutes1;
+                        const totalMinutes2 = hours2 * 60 + minutes2;
 
-                    const differenceInMinutes = totalMinutes1 - totalMinutes2;
+                        const differenceInMinutes = totalMinutes1 - totalMinutes2;
 
-                    const hours = Math.floor(differenceInMinutes / 60);
-                    const minutes = differenceInMinutes % 60;
+                        const hours = Math.floor(differenceInMinutes / 60);
+                        const minutes = differenceInMinutes % 60;
 
-                    const difference = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
+                        const difference = `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}`;
 
-                    return (
-                        <div key={"delivery" + index} className='font-sans text-gray-900 font-medium p-4 pt-20 pb-20 bg-white rounded-md mt-5'>
-                            <div className='grid grid-cols-5 gap-2'>
-                                <div className='col-span-5 md:col-span-3 xl:col-span-4 flex flex-col justify-end mb-4 md:mb-0'>
-                                    <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6'>
-                                        <div className='col-span-2 xl:col-span-1'>
-                                            <img className="h-[3rem] mt-[3rem] mb-0 xl:my-[3rem] object-contain" id="imageid" crossOrigin="anonymous" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
-                                        </div>
-
-                                        <div className='col-span-2'>
-                                            <div className='flex items-center flex-wrap justify-between mb-4'>
-                                                <h3 className='text-lg font-bold leading-6 text-dark mr-4'>ABN: {invoice.abn}</h3>
-
-                                                <h2 className='text-3xl font-bold leading-8 text-dark mr-4'>RUN SHEET NO: <span className='text-red-600 text-4xl font-medium'>{index + 1}</span></h2>
+                        return (
+                            <div key={"delivery" + index} className='font-sans text-gray-900 font-medium p-4 pt-20 pb-20 bg-white rounded-md mt-5'>
+                                <div className='grid grid-cols-5 gap-2'>
+                                    <div className='col-span-5 md:col-span-3 xl:col-span-4 flex flex-col justify-end mb-4 md:mb-0'>
+                                        <div className='grid grid-cols-2 lg:grid-cols-3 gap-4 mb-6'>
+                                            <div className='col-span-2 xl:col-span-1'>
+                                                <img className="h-[3rem] mt-[3rem] mb-0 xl:my-[3rem] object-contain" id="imageid" crossOrigin="anonymous" src={invoice.logo ? invoice.logo.url : invoiceImage.src} alt='logo' height={100} width="auto" />
                                             </div>
 
-                                            <h3 className='text-xl leading-6 text-dark mr-4 max-w-[250px]'>{invoice.adminAddress}</h3>
+                                            <div className='col-span-2'>
+                                                <div className='flex items-center flex-wrap justify-between mb-4'>
+                                                    <h3 className='text-lg font-bold leading-6 text-dark mr-4'>ABN: {invoice.abn}</h3>
 
-                                            <h3 className='text-xl leading-6 text-dark mr-4'><span className='font-bold'>Phone: </span>{invoice.adminPhone}</h3>
+                                                    <h2 className='text-3xl font-bold leading-8 text-dark mr-4'>RUN SHEET NO: <span className='text-red-600 text-4xl font-medium'>{index + 1}</span></h2>
+                                                </div>
 
-                                            <h3 className='text-xl leading-6 text-dark mr-4'><span className='font-bold'>Website: </span>
-                                                <Link href={'https://' + invoice.adminWebSite} target='_blank'>
-                                                    {invoice.adminWebSite}
-                                                </Link>
-                                            </h3>
+                                                <h3 className='text-xl leading-6 text-dark mr-4 max-w-[250px]'>{invoice.adminAddress}</h3>
+
+                                                <h3 className='text-xl leading-6 text-dark mr-4'><span className='font-bold'>Phone: </span>{invoice.adminPhone}</h3>
+
+                                                <h3 className='text-xl leading-6 text-dark mr-4'><span className='font-bold'>Website: </span>
+                                                    <Link href={'https://' + invoice.adminWebSite} target='_blank'>
+                                                        {invoice.adminWebSite}
+                                                    </Link>
+                                                </h3>
+                                            </div>
+                                        </div>
+
+                                        <h3 className='text-xl leading-6 text-dark mr-4 mb-2'>
+                                            <span className='font-bold'>CHARGE TO: </span>
+                                            <span className='border-b-2 border-dashed border-gray-600 uppercase'>{invoice.customerName}</span>
+                                        </h3>
+                                    </div>
+
+                                    <div className='col-span-5 md:col-span-2 xl:col-span-1 flex items-end'>
+                                        <table className='table-auto text-left w-full'>
+                                            <tbody>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DATE:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{moment(row.endTime).format('DD/MM/YYYY')}</td>
+                                                </tr>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DAY:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{moment(row.endTime).format('ddd')}</td>
+                                                </tr>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRAILER REGO:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.trailerID}</td>
+                                                </tr>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DRIVER:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.driverName}</td>
+                                                </tr>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRUCK REGO:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.truckID}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div className='grid grid-cols-5 gap-2 mt-4'>
+                                    <div className='col-span-3 xl:col-span-4 overflow-x-scroll custom-scroller'>
+                                        <table className='table-auto text-center min-w-max w-full text-xs'>
+                                            <thead className='bg-gray-900 text-white max-h-[4rem] h-[4rem]'>
+                                                <tr>
+                                                    <th className='p-3 w-[25%]'>COMPANY NAME</th>
+                                                    <th className='p-3 w-[30%]'>ADDRESS</th>
+                                                    <th className='p-3 w-[45%]'>DETAILS</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    JSON.parse(row.runsheet).map((item, id) => {
+                                                        return (
+                                                            <tr key={item._id + ' ' + id}>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
+                                                                    {item.company}
+                                                                </td>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
+                                                                    {item.address}
+                                                                </td>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
+                                                                    {
+                                                                        Object.entries(JSON.parse(row.runsheet)[1].details).slice(id, id + 1)[0][0]
+                                                                    } : {
+                                                                        Object.entries(JSON.parse(row.runsheet)[1].details).slice(id, id + 1)[0][1]
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        )
+
+                                                    })
+                                                }
+                                                {
+                                                    JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, id) => {
+                                                        return (
+                                                            <tr key={'tempdata' + ' ' + id}>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
+                                                                    {
+                                                                        Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + id, JSON.parse(row.runsheet).length + id + 1)[0][0]
+                                                                    } : {
+                                                                        Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + id, JSON.parse(row.runsheet).length + id + 1)[0][1]
+                                                                    }
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div className='col-span-2 xl:col-span-1 overflow-x-scroll custom-scroller'>
+                                        <table className='table-auto text-center w-full min-w-max text-xs'>
+                                            <thead className='bg-gray-900 text-white h-[4rem]'>
+                                                <tr>
+                                                    <th className='p-3'>ARRIVE</th>
+                                                    <th className='p-3'>DEPART</th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+                                                {
+                                                    JSON.parse(row.runsheet).map((item, id) => {
+                                                        return (
+                                                            <tr key={item._id + ' ' + id}>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
+                                                                    {item.arriveTime}
+                                                                </td>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
+                                                                    {item.startTime}
+                                                                </td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                                {
+                                                    JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, id) => {
+                                                        return (
+                                                            <tr key={'tempdata' + ' ' + id}>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
+                                                            </tr>
+                                                        )
+                                                    })
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <div className='grid grid-cols-5 gap-2 mt-4'>
+                                    <div className='col-span-5 md:col-span-3 xl:col-span-4 mb-4 md:mb-0'>
+                                        {/* <h3 className='text-xl leading-6 font-bold text-dark mb-2'>SPECIAL INSTRUCTIONS DELAYS (Given Reasons)</h3>
+    
+                                        <table className='table-auto w-full mb-4'>
+                                            <tbody>
+                                                <tr className='border-dark border-dotted border-b-2'>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
+                                                </tr>
+                                                <tr className='border-dark border-dotted border-b-2'>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
+                                                </tr>
+                                                <tr className='border-dark border-dotted border-b-2'>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
+                                                </tr>
+                                            </tbody>
+                                        </table> */}
+
+                                        <h3 className='text-xl leading-6 font-bold text-dark mb-2'>BREAKS-</h3>
+                                        <h3 className='text-xl leading-6 text-dark mb-3'>(Please ensure all RTA & Lunch breaks are taken as required)</h3>
+
+                                        <div className='overflow-x-scroll custom-scroller'>
+                                            <table className='table-auto min-w-max w-full text-xs'>
+                                                <thead>
+                                                    <tr>
+                                                        <th className='text-center border-dark border-solid border-2 p-3 w-40' colSpan={4}>PRE-TRIP INSPECTION</th>
+                                                        <th className='text-center border-dark border-solid border-2 p-3 w-60' colSpan={2}>CHECKS</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr>
+                                                        <td className='border-dark border-solid border-2 p-3'>AIR TANKS DRAINED</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>LIGHTS</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 24 HOURS</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='border-dark border-solid border-2 p-3'>ANY DAMAGE</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>OIL</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 48 HOURS</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='border-dark border-solid border-2 p-3'>BRAKES</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>WATER</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>I AM FIT FOR DUTY</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='border-dark border-solid border-2 p-3'>FUEL</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>KM&apos;S</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>ARE YOU WEARING YOUR PPE?</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='border-dark border-solid border-2 p-3'>LIFTING GEAR</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>CRANE</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>DID YOU RECORD TOLLS?</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td className='border-dark border-solid border-2 p-3' colSpan={4}></td>
+                                                        <td className='border-dark border-solid border-2 p-3'>DID YOU GET A NAME & SIGNATURE</td>
+                                                        <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                    </tr>
+                                                </tbody>
+                                                {/* <tfoot>
+                                                    <tr>
+                                                        <td className="bg-gray-900 text-white text-center p-3 w-full" colSpan={6}>I HAVE CARRIED OUT DAILY & WEEKLY VEHICLE CHECK</td>
+                                                    </tr>
+                                                </tfoot> */}
+                                            </table>
+                                        </div>
+
+                                        <div className='overflow-x-scroll custom-scroller'>
+                                            <table className='table-auto min-w-max w-full mt-4'>
+                                                <tbody>
+                                                    <tr className=''>
+                                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 w-[180px]'>Drivers Signature:</td>
+                                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 border-b-2 border-dashed border-gray-600 w-[60%-180px] min-w-[200px]'></td>
+                                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 w-[115px]'>Print Name:</td>
+                                                        <td className='text-xl font-bold leading-none h-[3rem] py-3 border-b-2 border-dashed border-gray-600 w-[40%-115px] min-w-[200px]'>{row.driverName}</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
                                         </div>
                                     </div>
 
-                                    <h3 className='text-xl leading-6 text-dark mr-4 mb-2'>
-                                        <span className='font-bold'>CHARGE TO: </span>
-                                        <span className='border-b-2 border-dashed border-gray-600 uppercase'>{invoice.customerName}</span>
-                                    </h3>
-                                </div>
-
-                                <div className='col-span-5 md:col-span-2 xl:col-span-1 flex items-end'>
-                                    <table className='table-auto text-left w-full'>
-                                        <tbody>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DATE:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{moment(row.endTime).format('DD/MM/YYYY')}</td>
-                                            </tr>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DAY:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{moment(row.endTime).format('ddd')}</td>
-                                            </tr>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRAILER REGO:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.trailerID}</td>
-                                            </tr>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>DRIVER:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.driverName}</td>
-                                            </tr>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TRUCK REGO:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{row.truckID}</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div className='grid grid-cols-5 gap-2 mt-4'>
-                                <div className='col-span-3 xl:col-span-4 overflow-x-scroll custom-scroller'>
-                                    <table className='table-auto text-center min-w-max w-full text-xs'>
-                                        <thead className='bg-gray-900 text-white max-h-[4rem] h-[4rem]'>
-                                            <tr>
-                                                <th className='p-3 w-[25%]'>COMPANY NAME</th>
-                                                <th className='p-3 w-[30%]'>ADDRESS</th>
-                                                <th className='p-3 w-[45%]'>DETAILS</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            {
-                                                JSON.parse(row.runsheet).map((item, id) => {
-                                                    return (
-                                                        <tr key={item._id + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
-                                                                {item.company}
-                                                            </td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
-                                                                {item.address}
-                                                            </td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
-                                                                {
-                                                                    Object.entries(JSON.parse(row.runsheet)[1].details).slice(id, id + 1)[0][0]
-                                                                } : {
-                                                                    Object.entries(JSON.parse(row.runsheet)[1].details).slice(id, id + 1)[0][1]
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    )
-
-                                                })
-                                            }
-                                            {
-                                                JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, id) => {
-                                                    return (
-                                                        <tr key={'tempdata' + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
-                                                                {
-                                                                    Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + id, JSON.parse(row.runsheet).length + id + 1)[0][0]
-                                                                } : {
-                                                                    Object.entries(JSON.parse(row.runsheet)[1].details).slice(JSON.parse(row.runsheet).length + id, JSON.parse(row.runsheet).length + id + 1)[0][1]
-                                                                }
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-
-                                <div className='col-span-2 xl:col-span-1 overflow-x-scroll custom-scroller'>
-                                    <table className='table-auto text-center w-full min-w-max text-xs'>
-                                        <thead className='bg-gray-900 text-white h-[4rem]'>
-                                            <tr>
-                                                <th className='p-3'>ARRIVE</th>
-                                                <th className='p-3'>DEPART</th>
-                                            </tr>
-                                        </thead>
-
-                                        <tbody>
-                                            {
-                                                JSON.parse(row.runsheet).map((item, id) => {
-                                                    return (
-                                                        <tr key={item._id + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
-                                                                {item.arriveTime}
-                                                            </td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'>
-                                                                {item.startTime}
-                                                            </td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                            {
-                                                JSON.parse(row.runsheet).length < 5 && new Array(5 - JSON.parse(row.runsheet).length).fill(0).map((item, id) => {
-                                                    return (
-                                                        <tr key={'tempdata' + ' ' + id}>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
-                                                            <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] border-dark border-solid border-2 transition-opacity py-4 px-2'></td>
-                                                        </tr>
-                                                    )
-                                                })
-                                            }
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-
-                            <div className='grid grid-cols-5 gap-2 mt-4'>
-                                <div className='col-span-5 md:col-span-3 xl:col-span-4 mb-4 md:mb-0'>
-                                    {/* <h3 className='text-xl leading-6 font-bold text-dark mb-2'>SPECIAL INSTRUCTIONS DELAYS (Given Reasons)</h3>
-
-                                    <table className='table-auto w-full mb-4'>
-                                        <tbody>
-                                            <tr className='border-dark border-dotted border-b-2'>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
-                                            </tr>
-                                            <tr className='border-dark border-dotted border-b-2'>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
-                                            </tr>
-                                            <tr className='border-dark border-dotted border-b-2'>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 h-[3rem] transition-opacity py-3'></td>
-                                            </tr>
-                                        </tbody>
-                                    </table> */}
-
-                                    <h3 className='text-xl leading-6 font-bold text-dark mb-2'>BREAKS-</h3>
-                                    <h3 className='text-xl leading-6 text-dark mb-3'>(Please ensure all RTA & Lunch breaks are taken as required)</h3>
-
-                                    <div className='overflow-x-scroll custom-scroller'>
-                                        <table className='table-auto min-w-max w-full text-xs'>
-                                            <thead>
-                                                <tr>
-                                                    <th className='text-center border-dark border-solid border-2 p-3 w-40' colSpan={4}>PRE-TRIP INSPECTION</th>
-                                                    <th className='text-center border-dark border-solid border-2 p-3 w-60' colSpan={2}>CHECKS</th>
-                                                </tr>
-                                            </thead>
+                                    <div className='col-span-5 md:col-span-2 xl:col-span-1 overflow-x-scroll custom-scroller'>
+                                        <table className='table-auto text-left w-full min-w-max mb-4'>
                                             <tbody>
-                                                <tr>
-                                                    <td className='border-dark border-solid border-2 p-3'>AIR TANKS DRAINED</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>LIGHTS</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 24 HOURS</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>START TIME:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{JSON.parse(row.runsheet)[0].startTime}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td className='border-dark border-solid border-2 p-3'>ANY DAMAGE</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>OIL</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>I HAVE HAD THE REQUIRED REST & SUFFICIENT SLEEP IN THE LAST 48 HOURS</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>END TIME:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{JSON.parse(row.runsheet)[JSON.parse(row.runsheet).length - 1].arriveTime}</td>
                                                 </tr>
-                                                <tr>
-                                                    <td className='border-dark border-solid border-2 p-3'>BRAKES</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>WATER</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>I AM FIT FOR DUTY</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='border-dark border-solid border-2 p-3'>FUEL</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>KM&apos;S</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>ARE YOU WEARING YOUR PPE?</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='border-dark border-solid border-2 p-3'>LIFTING GEAR</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>CRANE</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>DID YOU RECORD TOLLS?</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                </tr>
-                                                <tr>
-                                                    <td className='border-dark border-solid border-2 p-3' colSpan={4}></td>
-                                                    <td className='border-dark border-solid border-2 p-3'>DID YOU GET A NAME & SIGNATURE</td>
-                                                    <td className='border-dark border-solid border-2 p-3 w-14'><RxCheck className='text-lg ml-auto mr-auto' /></td>
-                                                </tr>
-                                            </tbody>
-                                            {/* <tfoot>
-                                                <tr>
-                                                    <td className="bg-gray-900 text-white text-center p-3 w-full" colSpan={6}>I HAVE CARRIED OUT DAILY & WEEKLY VEHICLE CHECK</td>
-                                                </tr>
-                                            </tfoot> */}
-                                        </table>
-                                    </div>
-
-                                    <div className='overflow-x-scroll custom-scroller'>
-                                        <table className='table-auto min-w-max w-full mt-4'>
-                                            <tbody>
-                                                <tr className=''>
-                                                    <td className='text-xl font-bold leading-none h-[3rem] py-3 w-[180px]'>Drivers Signature:</td>
-                                                    <td className='text-xl font-bold leading-none h-[3rem] py-3 border-b-2 border-dashed border-gray-600 w-[60%-180px] min-w-[200px]'></td>
-                                                    <td className='text-xl font-bold leading-none h-[3rem] py-3 w-[115px]'>Print Name:</td>
-                                                    <td className='text-xl font-bold leading-none h-[3rem] py-3 border-b-2 border-dashed border-gray-600 w-[40%-115px] min-w-[200px]'>{row.driverName}</td>
+                                                <tr className='border-dark border-solid border-2'>
+                                                    <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TOTAL HOURS:</td>
+                                                    <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>
+                                                        {difference}
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                         </table>
                                     </div>
                                 </div>
 
-                                <div className='col-span-5 md:col-span-2 xl:col-span-1 overflow-x-scroll custom-scroller'>
-                                    <table className='table-auto text-left w-full min-w-max mb-4'>
-                                        <tbody>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>START TIME:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{JSON.parse(row.runsheet)[0].startTime}</td>
-                                            </tr>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>END TIME:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>{JSON.parse(row.runsheet)[JSON.parse(row.runsheet).length - 1].arriveTime}</td>
-                                            </tr>
-                                            <tr className='border-dark border-solid border-2'>
-                                                <td className='text-sm font-semibold leading-none opacity-100 hover:opacity-90 transition-opacity py-4 pl-2'>TOTAL HOURS:</td>
-                                                <td className='text-sm leading-none opacity-100 hover:opacity-90 transition-opacity py-4 px-2'>
-                                                    {difference}
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                <div className="flex items-center mt-10">
+                                    <Link href={`/invoices/runsheet/${id}?start=${start}&end=${end}&order=${index}`} className='mr-4'>
+                                        <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
+                                    </Link>
+                                    <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
                                 </div>
                             </div>
-
-                            <div className="flex items-center mt-10">
-                                <Link href={`/invoices/runsheet/${id}?start=${start}&end=${end}&order=${index}`} className='mr-4'>
-                                    <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center opacity-90">Edit</button>
-                                </Link>
-                                <button className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center flex" onClick={() => downloadInvoice()}>Download <ArrowDownIcon strokeWidth={2} className="h-4 w-4 ml-2" /></button>
-                            </div>
-                        </div>
-                    )
+                        )
+                    }
                 }) : ''
             }
         </>

@@ -71,7 +71,10 @@ const SettingsForm = (props) => {
     const saveEditedSettings = async (data) => {
         instance.put(`/settings/user/profile/${user}`, data)
             .then((res) => {
-                res.status == 200 && router.push('/');
+                if (res.data == 'The email is already in use.')
+                    alert('The email is already in use.')
+                else
+                    router.push('/');
             }).catch(error => {
                 console.log(error.message);
             });

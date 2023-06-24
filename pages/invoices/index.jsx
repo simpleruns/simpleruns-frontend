@@ -67,6 +67,13 @@ export default function Invoices() {
     const [startDay, setStartDay] = useState(new Date());
     const [endDay, setEndDay] = useState(new Date());
 
+    // useEffect(() => {
+    //     if (user && !user.approved) {
+    //         alert('Sorry, you are not approved. Contact to JamesDaniel@gmail.com');
+    //         router.push('/');
+    //     }
+    // }, [user]);
+
     const handleSort = (key) => {
         if (key === sortKey) {
             setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');

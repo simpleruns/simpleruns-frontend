@@ -49,7 +49,7 @@ const headers = [
     { text: 'Role', key: 'role' },
     { text: 'License Number', key: 'licenseNumber' },
     { text: 'Card Number', key: 'cardNumber' },
-    { text: 'Expire Date', key: 'expireDate' },
+    { text: 'Expiry Date', key: 'expireDate' },
     { text: 'License Class', key: 'licenseClass' },
     { text: "License State", key: 'licenseState' },
     { text: "License Photo", key: 'licensePhoto' },
@@ -158,7 +158,7 @@ export default function Drivers() {
     }
 
     useEffect(() => {
-        var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&&page=${page}`;
+        var url = approve === 'all' ? `?page=${page}` : `?status=${approve}&page=${page}`;
         user && instance.get(`/admin/drivers${url}`, { params: { user: user } })
             .then((res) => {
                 setDriverData(res.data.drivers);
@@ -411,7 +411,7 @@ export default function Drivers() {
                 </CardBody>
                 <CardFooter className="flex items-center justify-between border-t border-blue-gray-50 dark:border-navy-700 p-4">
                     <Typography variant="small" color="blue-gray" className="font-normal">
-                        Page {page} of {totalPage}
+                        Page {page} of {totalPage > 1 ? totalPage : 1}
                     </Typography>
                     <div className="flex gap-2">
                         <Button variant="outlined" color="blue-gray" size="sm" disabled={`${page == 1 ? 'disabled' : ''}`} className="p-0" onClick={prevHandler}>
@@ -484,7 +484,7 @@ export default function Drivers() {
                             <div className="absolute inset-0 bg-gray-500 dark:bg-[#000000] opacity-75"></div>
                         </div>
 
-                        <div className="m-10 absolute top-1/2 -translate-y-1/2">
+                        <div className="m-10 absolute top-1/2 -translate-y-1/2 left-0 right-0">
                             <div key={sortedData[showID]._id} className="bg-white relative grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 px-4 py-10">
                                 <div className="p-2 flex items-center">
                                     <div

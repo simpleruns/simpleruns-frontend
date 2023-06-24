@@ -192,7 +192,10 @@ const SingleCustomerForm = (props) => {
             }
         })
             .then((res) => {
-                res.status == 200 && router.push('/customers');
+                if (res.data == 'The email is already in use.')
+                    alert('The email is already in use.')
+                else
+                    router.push('/customers')
             }).catch(error => {
                 console.log(error.message);
             });

@@ -62,3 +62,39 @@ input:not(:focus)+.prediction {
     opacity: 0;
     visibility: hidden;
 }
+
+/* loading animation */
+.loading {
+    position: relative;
+    width: 14em;
+    height: 14em;
+    background: white;
+    border-radius: 50%;
+    box-shadow: inset 0.5em -0.5em crimson;
+    animation: spin 2s linear infinite;
+}
+
+.loading::before,
+.loading::after {
+    position: absolute;
+    content: "";
+    width: 100%;
+    height: 100%;
+    background: inherit;
+    border-radius: inherit;
+    box-shadow: inherit;
+}
+
+.loading::before {
+    filter: blur(5px);
+}
+
+.loading::after {
+    filter: blur(10px);
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(1turn);
+    }
+}

@@ -190,8 +190,11 @@ const CustomerCreate = () => {
                 'content-Type': 'multipart/form-data'
             }
         })
-            .then(() => {
-                router.push('/customers')
+            .then((res) => {
+                if (res.data == 'The email is already in use.')
+                    alert('The email is already in use.')
+                else
+                    router.push('/customers')
             }).catch(error => {
                 console.log(error.message);
             });

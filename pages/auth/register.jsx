@@ -27,7 +27,12 @@ const Register = () => {
 
     function onSubmit(data) {
         instance.post('/users', data)
-            .then((response) => { (response.status == 200) && router.push('/auth/login'); })
+            .then((res) => {
+                if (res.data == 'The email is already in use.')
+                    alert('The email is already in use.')
+                else
+                    router.push('/auth/login');
+            })
             .catch((err) => { console.log(err); });
     }
 
