@@ -137,7 +137,7 @@ const Invoice = ({ data: invoiceData }) => {
                                     <tr key={"delivery" + index}>
                                         <td className={classes}>
                                             <Typography variant="small" color="blue-gray" className="font-medium capitalize">
-                                                {row.status}
+                                                {row.status == 'completed' ? row.status : 'closed'}
                                             </Typography>
                                         </td>
                                         <td className={classes}>
