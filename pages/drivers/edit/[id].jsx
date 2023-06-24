@@ -15,7 +15,7 @@ const SingleDriverEdit = () => {
             .then((res) => {
                 setData({
                     avatar: res.data.avatar,
-                    licensePhoto: res.data.licensePhoto,
+                    licencePhoto: res.data.licencePhoto,
                     firstname: res.data.firstname,
                     lastname: res.data.lastname,
                     email: res.data.email,
@@ -23,11 +23,11 @@ const SingleDriverEdit = () => {
                     birthDate: res.data.birthDate,
                     role: res.data.role,
                     password: res.data.password,
-                    licenseNumber: res.data.licenseNumber,
+                    licenceNumber: res.data.licenceNumber,
                     cardNumber: res.data.cardNumber,
                     expireDate: res.data.expireDate,
-                    licenseClass: res.data.licenseClass,
-                    licenseState: res.data.licenseState,
+                    licenceClass: res.data.licenceClass,
+                    licenceState: res.data.licenceState,
                     insuranceFile: res.data.insuranceFile,
                     workCompensationFile: res.data.workCompensationFile,
                     truckRegistrationFile: res.data.truckRegistrationFile,

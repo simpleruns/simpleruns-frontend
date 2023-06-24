@@ -38,7 +38,7 @@ const DriverCreate = () => {
     const [checked, setChecked] = useState(true);
     const [birthDate, setBirthDate] = useState('1990-01-01');
     const [expireDate, setExpireDate] = useState('2050-01-01');
-    const [licensePhoto, setLicensePhoto] = useState(null);
+    const [licencePhoto, setLicencePhoto] = useState(null);
     const [insuranceFile, setInsuranceFile] = useState(null);
     const [workCompensationFile, setWorkCompensationFile] = useState(null);
     const [truckRegistrationFile, setTruckRegistrationFile] = useState(null);
@@ -61,10 +61,10 @@ const DriverCreate = () => {
             role: "",
             password: "",
             confirm: "",
-            licenseNumber: "",
+            licenceNumber: "",
             cardNumber: "",
-            licenseClass: "",
-            licenseState: "",
+            licenceClass: "",
+            licenceState: "",
             year: "",
             numberPlate: "",
             VIN: "",
@@ -82,13 +82,13 @@ const DriverCreate = () => {
             confirm: Yup.string().
                 oneOf([Yup.ref('password'), null], 'Passwords does not match')
                 .required('Password is required'),
-            licenseNumber: Yup.string()
-                .required('Driver license number is required'),
+            licenceNumber: Yup.string()
+                .required('Driver licence number is required'),
             cardNumber: Yup.string()
                 .required('Driver card number is required'),
-            licenseClass: Yup.string().required('Please select an class'),
-            licenseState: Yup.string()
-                .required('Driver license state is required'),
+            licenceClass: Yup.string().required('Please select an class'),
+            licenceState: Yup.string()
+                .required('Driver licence state is required'),
             year: Yup.number()
                 .min(1900, 'Year must be greater than or equal to 1900')
                 .max(new Date().getFullYear(), 'Year must be less than or equal to the current year')
@@ -102,8 +102,8 @@ const DriverCreate = () => {
             const formData = new FormData();
             if (avatar == null)
                 alert("You didn'nt uploaded driver user image.");
-            else if (licensePhoto == null || !licensePhoto.length)
-                alert("You didn't upload driver license photo.");
+            else if (licencePhoto == null || !licencePhoto.length)
+                alert("You didn't upload driver licence photo.");
             else if ((insuranceFile == null || !insuranceFile.length) && values.role === 'subcontractor')
                 alert("You didn't upload insurance doc.");
             else if ((workCompensationFile == null || !workCompensationFile.length) && values.role === 'subcontractor')
@@ -112,8 +112,8 @@ const DriverCreate = () => {
                 alert("You didn't upload gools in transit doc.");
             else {
                 avatar && formData.append('avatar', avatar, avatar.name);
-                licensePhoto && licensePhoto.map((item, i) => {
-                    formData.append('licensePhoto', item, item.name);
+                licencePhoto && licencePhoto.map((item, i) => {
+                    formData.append('licencePhoto', item, item.name);
                 });
                 insuranceFile && insuranceFile.map((item, i) => {
                     formData.append('insuranceFile', item, item.name);
@@ -131,11 +131,11 @@ const DriverCreate = () => {
                 formData.append('birthDate', birthDate);
                 formData.append('role', values.role);
                 formData.append('password', values.password);
-                formData.append('licenseNumber', values.licenseNumber);
+                formData.append('licenceNumber', values.licenceNumber);
                 formData.append('cardNumber', values.cardNumber);
                 formData.append('expireDate', expireDate);
-                formData.append('licenseClass', values.licenseClass);
-                formData.append('licenseState', values.licenseState);
+                formData.append('licenceClass', values.licenceClass);
+                formData.append('licenceState', values.licenceState);
                 formData.append('year', values.year);
                 formData.append('numberPlate', values.numberPlate);
                 formData.append('VIN', values.VIN);
@@ -188,8 +188,8 @@ const DriverCreate = () => {
         reader.readAsDataURL(file);
     };
 
-    const handleDrop = (licensePhoto) => {
-        setLicensePhoto(licensePhoto);
+    const handleDrop = (licencePhoto) => {
+        setLicencePhoto(licencePhoto);
     };
 
     const handleInsuranceFile = (File) => {
@@ -386,23 +386,23 @@ const DriverCreate = () => {
                             ) : null}
                         </div>
 
-                        <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">License Info</h2>
+                        <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">Licence Info</h2>
 
                         <div className="w-full">
-                            <label htmlFor="licenseNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Number</label>
+                            <label htmlFor="licenceNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence Number</label>
                             <input
                                 className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                                 type="text"
-                                name="licenseNumber"
-                                id="licenseNumber"
-                                value={formik.values.licenseNumber}
-                                placeholder={formik.values.licenseNumber}
+                                name="licenceNumber"
+                                id="licenceNumber"
+                                value={formik.values.licenceNumber}
+                                placeholder={formik.values.licenceNumber}
                                 onChange={formik.handleChange}
                                 onBlur={formik.handleBlur}
                                 required
                             />
-                            {formik.touched.licenseNumber && formik.errors.licenseNumber ? (
-                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseNumber}</div>
+                            {formik.touched.licenceNumber && formik.errors.licenceNumber ? (
+                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenceNumber}</div>
                             ) : null}
                         </div>
                         <div className="w-full">
@@ -435,10 +435,10 @@ const DriverCreate = () => {
                             </div>
                         </div>
                         <div className="w-full">
-                            <label htmlFor="licenseClass" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Class</label>
+                            <label htmlFor="licenceClass" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence Class</label>
 
-                            <select id="licenseClass" name="licenseClass" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseClass} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
-                                <option value="">Choose a license Class</option>
+                            <select id="licenceClass" name="licenceClass" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenceClass} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
+                                <option value="">Choose a licence Class</option>
                                 <option value="R">R Motorcycle</option>
                                 <option value="C">C Car.</option>
                                 <option value="LR">LR Light Rigid.</option>
@@ -447,14 +447,14 @@ const DriverCreate = () => {
                                 <option value="HC">HC Heavy Combination.</option>
                                 <option value="MC">MC Multi Combination.</option>
                             </select>
-                            {formik.touched.licenseClass && formik.errors.licenseClass ? (
-                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseClass}</div>
+                            {formik.touched.licenceClass && formik.errors.licenceClass ? (
+                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenceClass}</div>
                             ) : null}
                         </div>
                         <div className="w-full">
-                            <label htmlFor="licenseState" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License State</label>
-                            <select id="licenseState" name="licenseState" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseState} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
-                                <option value="">Choose a license State</option>
+                            <label htmlFor="licenceState" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence State</label>
+                            <select id="licenceState" name="licenceState" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenceState} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
+                                <option value="">Choose a licence State</option>
                                 <option value="NSW">New South Wales</option>
                                 <option value="VT">Victoria</option>
                                 <option value="QL">Queensland</option>
@@ -464,14 +464,14 @@ const DriverCreate = () => {
                                 <option value="NT">Northern Territory</option>
                                 <option value="ACT">Australia Capital Territory</option>
                             </select>
-                            {formik.touched.licenseState && formik.errors.licenseState ? (
-                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseState}</div>
+                            {formik.touched.licenceState && formik.errors.licenceState ? (
+                                <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenceState}</div>
                             ) : null}
                         </div>
 
                         <div className="sm:col-span-2">
-                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Photo</label>
-                            <Dropzone onDrop={handleDrop} id={licensePhoto} setLicensePhotoHandler={handleDrop} />
+                            <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence Photo</label>
+                            <Dropzone onDrop={handleDrop} id={licencePhoto} setLicencePhotoHandler={handleDrop} />
                         </div>
 
                         <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">Vehicle Info</h2>
@@ -642,17 +642,17 @@ const DriverCreate = () => {
                                 <>
                                     <div className="sm:col-span-2">
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Insurance (Vehicle)</label>
-                                        <DropzoneForFile onDrop={handleInsuranceFile} id={insuranceFile} setLicensePhotoHandler={handleInsuranceFile} />
+                                        <DropzoneForFile onDrop={handleInsuranceFile} id={insuranceFile} setLicencePhotoHandler={handleInsuranceFile} />
                                     </div>
 
                                     <div className="sm:col-span-2">
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Workers Compensation</label>
-                                        <DropzoneForFile onDrop={handleWorkCompensationFile} id={workCompensationFile} setLicensePhotoHandler={handleWorkCompensationFile} />
+                                        <DropzoneForFile onDrop={handleWorkCompensationFile} id={workCompensationFile} setLicencePhotoHandler={handleWorkCompensationFile} />
                                     </div>
 
                                     <div className="sm:col-span-2">
                                         <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Goods in Transit</label>
-                                        <DropzoneForFile onDrop={handleTruckRegistrationFile} id={truckRegistrationFile} setLicensePhotoHandler={handleTruckRegistrationFile} />
+                                        <DropzoneForFile onDrop={handleTruckRegistrationFile} id={truckRegistrationFile} setLicencePhotoHandler={handleTruckRegistrationFile} />
                                     </div>
                                 </> : <></>
                         }

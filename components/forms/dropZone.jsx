@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { SlPlus } from 'react-icons/sl';
 
-const Dropzone = ({ onDrop, selectedFiles, id, setLicensePhotoHandler }) => {
+const Dropzone = ({ onDrop, selectedFiles, id, setLicencePhotoHandler }) => {
     const [files, setFiles] = useState(selectedFiles || []);
 
     useEffect(() => {
-        setLicensePhotoHandler(files);
+        setLicencePhotoHandler(files);
     }, [files]);
 
     const validator = (file) => {

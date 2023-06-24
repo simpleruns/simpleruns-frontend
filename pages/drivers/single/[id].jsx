@@ -20,7 +20,7 @@ const SingleDriverDetail = () => {
             .then((res) => {
                 setData({
                     avatar: res.data.avatar,
-                    licensePhoto: res.data.licensePhoto,
+                    licencePhoto: res.data.licencePhoto,
                     firstname: res.data.firstname,
                     lastname: res.data.lastname,
                     email: res.data.email,
@@ -28,12 +28,12 @@ const SingleDriverDetail = () => {
                     birthDate: res.data.birthDate,
                     role: res.data.role,
                     password: res.data.password,
-                    licenseNumber: res.data.licenseNumber,
+                    licenceNumber: res.data.licenceNumber,
                     cardNumber: res.data.cardNumber,
                     publishedDate: res.data.publishedDate,
                     expireDate: res.data.expireDate,
-                    licenseClass: res.data.licenseClass,
-                    licenseState: res.data.licenseState,
+                    licenceClass: res.data.licenceClass,
+                    licenceState: res.data.licenceState,
                     insuranceFile: res.data.insuranceFile,
                     workCompensationFile: res.data.workCompensationFile,
                     truckRegistrationFile: res.data.truckRegistrationFile,
@@ -90,7 +90,7 @@ const SingleDriverDetail = () => {
                                 <InfoBoxCard title="Role" content={data.role} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="License Number" content={data.licenseNumber} />
+                                <InfoBoxCard title="Licence Number" content={data.licenceNumber} />
                             </div>
                             <div className="w-full">
                                 <InfoBoxCard title="Card Number" content={data.cardNumber} />
@@ -102,19 +102,19 @@ const SingleDriverDetail = () => {
                                 <InfoBoxCard title="Expiration Date" content={data.expireDate} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="License Class" content={data.licenseClass} />
+                                <InfoBoxCard title="Licence Class" content={data.licenceClass} />
                             </div>
                             <div className="w-full">
-                                <InfoBoxCard title="License State" content={data.licenseState} />
+                                <InfoBoxCard title="Licence State" content={data.licenceState} />
                             </div>
 
                             <div className="sm:col-span-2">
                                 <div className="p-6 bg-white border border-gray-200 rounded-lg shadow dark:bg-navy-800 dark:border-navy-700">
-                                    <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">License Photo</Typography>
+                                    <Typography variant="h5" className="mb-2 text-lg font-bold tracking-tight text-gray-900 dark:text-white">Licence Photo</Typography>
                                     <div className="flex item-center flex-wrap">
                                         {
-                                            data.licensePhoto.map((item, index) => (
-                                                <img key={"Driver License Image " + index} className={`inline-block mb-4 w-[calc(33%-10px)] object-cover ${data.licensePhoto.length == index + 1 ? '' : 'mr-4'}`} width={130} height={130} src={item.url} alt="Driver License Image" />
+                                            data.licencePhoto.map((item, index) => (
+                                                <img key={"Driver Licence Image " + index} className={`inline-block mb-4 w-[calc(33%-10px)] object-cover ${data.licencePhoto.length == index + 1 ? '' : 'mr-4'}`} width={130} height={130} src={item.url} alt="Driver Licence Image" />
                                             ))
                                         }
                                     </div>

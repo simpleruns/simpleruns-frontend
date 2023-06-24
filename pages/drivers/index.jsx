@@ -47,12 +47,12 @@ const headers = [
     { text: 'Phone', key: 'phone' },
     { text: 'Date of Birth', key: 'birthDate' },
     { text: 'Role', key: 'role' },
-    { text: 'License Number', key: 'licenseNumber' },
+    { text: 'Licence Number', key: 'licenceNumber' },
     { text: 'Card Number', key: 'cardNumber' },
     { text: 'Expiry Date', key: 'expireDate' },
-    { text: 'License Class', key: 'licenseClass' },
-    { text: "License State", key: 'licenseState' },
-    { text: "License Photo", key: 'licensePhoto' },
+    { text: 'Licence Class', key: 'licenceClass' },
+    { text: "Licence State", key: 'licenceState' },
+    { text: "Licence Photo", key: 'licencePhoto' },
     { text: 'Year', key: 'year' },
     { text: 'Number Plate', key: 'numberPlate' },
     { text: 'VIN', key: 'VIN' },
@@ -292,7 +292,7 @@ export default function Drivers() {
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.licenseNumber}
+                                                    {row.licenceNumber}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
@@ -307,19 +307,19 @@ export default function Drivers() {
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.licenseClass}
+                                                    {row.licenceClass}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <Typography variant="small" color="blue-gray" className="font-normal">
-                                                    {row.licenseState}
+                                                    {row.licenceState}
                                                 </Typography>
                                             </td>
                                             <td className={classes}>
                                                 <div className="flex items-center gap-3">
                                                     {
-                                                        row.licensePhoto.map((item, index1) => {
-                                                            return <Avatar src={item.url} alt="image" size="sm" key={"license Photo " + index + '/' + index1} />
+                                                        row.licencePhoto.map((item, index1) => {
+                                                            return <Avatar src={item.url} alt="image" size="sm" key={"licence Photo " + index + '/' + index1} />
                                                         })
                                                     }
                                                 </div>
@@ -590,11 +590,11 @@ export default function Drivers() {
                                             color="blue-gray"
                                             className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
                                         >
-                                            License Number
+                                            Licence Number
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].licenseNumber}
+                                        {sortedData[showID].licenceNumber}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center">
@@ -637,11 +637,11 @@ export default function Drivers() {
                                             color="blue-gray"
                                             className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
                                         >
-                                            License State
+                                            Licence State
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].licenseState}
+                                        {sortedData[showID].licenceState}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center">
@@ -653,11 +653,11 @@ export default function Drivers() {
                                             color="blue-gray"
                                             className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
                                         >
-                                            License Class
+                                            Licence Class
                                         </Typography>
                                     </div>
                                     <Typography variant="small" color="blue-gray" className="font-normal">
-                                        {sortedData[showID].licenseClass}
+                                        {sortedData[showID].licenceClass}
                                     </Typography>
                                 </div>
                                 <div className="p-2 flex items-center">
@@ -669,13 +669,13 @@ export default function Drivers() {
                                             color="blue-gray"
                                             className="flex items-center justify-between gap-2 font-normal leading-none opacity-70 hover:opacity-90 transition-opacity"
                                         >
-                                            License Photo
+                                            Licence Photo
                                         </Typography>
                                     </div>
                                     <div className="flex items-center gap-3">
                                         {
-                                            sortedData[showID].licensePhoto.map((item, index) => {
-                                                return <Avatar src={item.url} alt="image" size="sm" key={"license Photo Modal " + index} />
+                                            sortedData[showID].licencePhoto.map((item, index) => {
+                                                return <Avatar src={item.url} alt="image" size="sm" key={"licence Photo Modal " + index} />
                                             })
                                         }
                                     </div>

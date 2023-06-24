@@ -44,8 +44,8 @@ const SingleDriverForm = (props) => {
     const [imageDataUrl, setImageDataUrl] = useState(data.avatar.url);
     const [birthDate, setBirthDate] = useState(data.birthDate || '1990-01-01');
     const [expireDate, setExpireDate] = useState(data.expireDate || '1990-01-01');
-    const [licensePhoto, setLicensePhoto] = useState(null);
-    const [licensePhotoURL, setLicensePhotoURL] = useState(data.licensePhoto);
+    const [licencePhoto, setLicencePhoto] = useState(null);
+    const [licencePhotoURL, setLicencePhotoURL] = useState(data.licencePhoto);
     const [insuranceFile, setInsuranceFile] = useState(null);
     const [insuranceFileURL, setInsuranceFileURL] = useState(data.insuranceFile);
     const [workCompensationFile, setWorkCompensationFile] = useState(null);
@@ -64,7 +64,7 @@ const SingleDriverForm = (props) => {
     const expireDateOptions = { ...options, defaultDate: new Date(expireDate) };
 
     useEffect(() => {
-        handleFileSelect(licensePhotoURL, 1);
+        handleFileSelect(licencePhotoURL, 1);
         handleFileSelect(insuranceFileURL, 2);
         handleFileSelect(workCompensationFileURL, 3);
         handleFileSelect(truckRegistrationFileURL, 4);
@@ -76,12 +76,12 @@ const SingleDriverForm = (props) => {
         var filesList = [];
         for (let i = 0; i < data.length; i++) {
             const blob = await loadFile(data[i].url);
-            const newFile = new File([blob], `${index == 1 ? 'License Photo' : index == 2 ? 'Insurance File' : index == 3 ? 'Worker Compensation' : index == 4 ? 'Truck Registration' : 'Other'} ` + (i + 1), { type: data[i].type });
+            const newFile = new File([blob], `${index == 1 ? 'Licence Photo' : index == 2 ? 'Insurance File' : index == 3 ? 'Worker Compensation' : index == 4 ? 'Truck Registration' : 'Other'} ` + (i + 1), { type: data[i].type });
             filesList[i] = newFile;
             console.log(filesList)
         }
 
-        index == 1 ? setLicensePhoto(filesList) : index == 2 ? setInsuranceFile(filesList) : index == 3 ? setWorkCompensationFile(filesList) : index == 4 ? setTruckRegistrationFile(filesList) : '';
+        index == 1 ? setLicencePhoto(filesList) : index == 2 ? setInsuranceFile(filesList) : index == 3 ? setWorkCompensationFile(filesList) : index == 4 ? setTruckRegistrationFile(filesList) : '';
     }
 
     async function handleAvatarSelect(data) {
@@ -105,10 +105,10 @@ const SingleDriverForm = (props) => {
             role: data.role,
             password: data.password,
             confirm: data.password,
-            licenseNumber: data.licenseNumber,
+            licenceNumber: data.licenceNumber,
             cardNumber: data.cardNumber,
-            licenseClass: data.licenseClass,
-            licenseState: data.licenseState,
+            licenceClass: data.licenceClass,
+            licenceState: data.licenceState,
             year: data.year,
             numberPlate: data.numberPlate,
             VIN: data.VIN,
@@ -125,13 +125,13 @@ const SingleDriverForm = (props) => {
             confirm: Yup.string().
                 oneOf([Yup.ref('password'), null], 'Passwords does not match')
                 .required('Password is required'),
-            licenseNumber: Yup.string()
-                .required('Driver license number is required'),
+            licenceNumber: Yup.string()
+                .required('Driver licence number is required'),
             cardNumber: Yup.string()
                 .required('Driver card number is required'),
-            licenseClass: Yup.string().required('Please select an class'),
-            licenseState: Yup.string()
-                .required('Driver license state is required'),
+            licenceClass: Yup.string().required('Please select an class'),
+            licenceState: Yup.string()
+                .required('Driver licence state is required'),
             year: Yup.number()
                 .min(1900, 'Year must be greater than or equal to 1900')
                 .max(new Date().getFullYear(), 'Year must be less than or equal to the current year')
@@ -145,8 +145,8 @@ const SingleDriverForm = (props) => {
             const formData = new FormData();
             if (avatar == null)
                 alert("You didn'nt uploaded driver user image.");
-            else if (licensePhoto == null || !licensePhoto.length)
-                alert("You didn't upload driver license photo.");
+            else if (licencePhoto == null || !licencePhoto.length)
+                alert("You didn't upload driver licence photo.");
             else if ((insuranceFile == null || !insuranceFile.length) && values.role === 'subcontractor')
                 alert("You didn't upload insurance doc.");
             else if ((workCompensationFile == null || !workCompensationFile.length) && values.role === 'subcontractor')
@@ -156,8 +156,8 @@ const SingleDriverForm = (props) => {
             else {
                 try {
                     formData.append('avatar', avatar, avatar.name);
-                    licensePhoto && licensePhoto.map((item, i) => {
-                        formData.append('licensePhoto', item, item.name);
+                    licencePhoto && licencePhoto.map((item, i) => {
+                        formData.append('licencePhoto', item, item.name);
                     });
                     insuranceFile && insuranceFile.map((item, i) => {
                         formData.append('insuranceFile', item, item.name);
@@ -175,11 +175,11 @@ const SingleDriverForm = (props) => {
                     formData.append('birthDate', birthDate);
                     formData.append('role', values.role);
                     formData.append('password', values.password);
-                    formData.append('licenseNumber', values.licenseNumber);
+                    formData.append('licenceNumber', values.licenceNumber);
                     formData.append('cardNumber', values.cardNumber);
                     formData.append('expireDate', expireDate);
-                    formData.append('licenseClass', values.licenseClass);
-                    formData.append('licenseState', values.licenseState);
+                    formData.append('licenceClass', values.licenceClass);
+                    formData.append('licenceState', values.licenceState);
                     formData.append('year', values.year);
                     formData.append('numberPlate', values.numberPlate);
                     formData.append('VIN', values.VIN);
@@ -220,8 +220,8 @@ const SingleDriverForm = (props) => {
         formik.values.confirm = '123456';
     };
 
-    const handleDrop = (licensePhoto) => {
-        setLicensePhoto(licensePhoto);
+    const handleDrop = (licencePhoto) => {
+        setLicencePhoto(licencePhoto);
     };
 
     const handleInsuranceFile = (File) => {
@@ -433,23 +433,23 @@ const SingleDriverForm = (props) => {
                     ) : null}
                 </div>
 
-                <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">License Info</h2>
+                <h2 className="sm:col-span-2 mt-6 mb-4 text-xl font-bold text-gray-900 dark:text-white">Licence Info</h2>
 
                 <div className="w-full">
-                    <label htmlFor="licenseNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Number</label>
+                    <label htmlFor="licenceNumber" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence Number</label>
                     <input
                         className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-500"
                         type="text"
-                        name="licenseNumber"
-                        id="licenseNumber"
-                        value={formik.values.licenseNumber}
-                        placeholder={formik.values.licenseNumber}
+                        name="licenceNumber"
+                        id="licenceNumber"
+                        value={formik.values.licenceNumber}
+                        placeholder={formik.values.licenceNumber}
                         onChange={formik.handleChange}
                         onBlur={formik.handleBlur}
                         required
                     />
-                    {formik.touched.licenseNumber && formik.errors.licenseNumber ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseNumber}</div>
+                    {formik.touched.licenceNumber && formik.errors.licenceNumber ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenceNumber}</div>
                     ) : null}
                 </div>
                 <div className="w-full">
@@ -480,10 +480,10 @@ const SingleDriverForm = (props) => {
                     </div>
                 </div>
                 <div className="w-full">
-                    <label htmlFor="licenseClass" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Class</label>
+                    <label htmlFor="licenceClass" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence Class</label>
 
-                    <select id="licenseClass" name="licenseClass" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseClass} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
-                        <option value="">Choose a license Class</option>
+                    <select id="licenceClass" name="licenceClass" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenceClass} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
+                        <option value="">Choose a licence Class</option>
                         <option value="R">R Motorcycle</option>
                         <option value="C">C Car.</option>
                         <option value="LR">LR Light Rigid.</option>
@@ -492,14 +492,14 @@ const SingleDriverForm = (props) => {
                         <option value="HC">HC Heavy Combination.</option>
                         <option value="MC">MC Multi Combination.</option>
                     </select>
-                    {formik.touched.licenseClass && formik.errors.licenseClass ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseClass}</div>
+                    {formik.touched.licenceClass && formik.errors.licenceClass ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenceClass}</div>
                     ) : null}
                 </div>
                 <div className="w-full">
-                    <label htmlFor="licenseState" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License State</label>
-                    <select id="licenseState" name="licenseState" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenseState} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
-                        <option value="">Choose a license State</option>
+                    <label htmlFor="licenceState" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence State</label>
+                    <select id="licenceState" name="licenceState" className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-navy-900 dark:border-navy-900 dark:placeholder-gray-400 dark:text-white dark:focus:ring-primary-500 dark:focus:border-primary-50" value={formik.values.licenceState} onChange={formik.handleChange} onBlur={formik.handleBlur} required>
+                        <option value="">Choose a licence State</option>
                         <option value="NSW">New South Wales</option>
                         <option value="VT">Victoria</option>
                         <option value="QL">Queensland</option>
@@ -509,15 +509,15 @@ const SingleDriverForm = (props) => {
                         <option value="NT">Northern Territory</option>
                         <option value="ACT">Australia Capital Territory</option>
                     </select>
-                    {formik.touched.licenseState && formik.errors.licenseState ? (
-                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenseState}</div>
+                    {formik.touched.licenceState && formik.errors.licenceState ? (
+                        <div className="text-red-500 text-xs mt-1 ml-1.5 font-medium">{formik.errors.licenceState}</div>
                     ) : null}
                 </div>
 
                 <div className="sm:col-span-2">
-                    <label htmlFor="licesePhoto" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">License Photo</label>
+                    <label htmlFor="licesePhoto" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Licence Photo</label>
                     {
-                        licensePhoto ? <Dropzone onDrop={handleDrop} id="licensePhoto" selectedFiles={licensePhoto} setLicensePhotoHandler={handleDrop} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
+                        licencePhoto ? <Dropzone onDrop={handleDrop} id="licencePhoto" selectedFiles={licencePhoto} setLicencePhotoHandler={handleDrop} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
                     }
                 </div>
 
@@ -689,21 +689,21 @@ const SingleDriverForm = (props) => {
                             <div className="sm:col-span-2">
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Insurance (Vehicle)</label>
                                 {
-                                    insuranceFile ? <DropzoneForFile onDrop={handleInsuranceFile} id="insuranceFile" selectedFiles={insuranceFile} setLicensePhotoHandler={handleInsuranceFile} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
+                                    insuranceFile ? <DropzoneForFile onDrop={handleInsuranceFile} id="insuranceFile" selectedFiles={insuranceFile} setLicencePhotoHandler={handleInsuranceFile} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
                                 }
                             </div>
 
                             <div className="sm:col-span-2">
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Workers Compensation</label>
                                 {
-                                    workCompensationFile ? <DropzoneForFile onDrop={handleWorkCompensationFile} id="workCompensationFile" selectedFiles={workCompensationFile} setLicensePhotoHandler={handleWorkCompensationFile} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
+                                    workCompensationFile ? <DropzoneForFile onDrop={handleWorkCompensationFile} id="workCompensationFile" selectedFiles={workCompensationFile} setLicencePhotoHandler={handleWorkCompensationFile} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
                                 }
                             </div>
 
                             <div className="sm:col-span-2">
                                 <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Upload Goods in Transit</label>
                                 {
-                                    truckRegistrationFile ? <DropzoneForFile onDrop={handleTruckRegistrationFile} id="truckRegistrationFile" selectedFiles={truckRegistrationFile} setLicensePhotoHandler={handleTruckRegistrationFile} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
+                                    truckRegistrationFile ? <DropzoneForFile onDrop={handleTruckRegistrationFile} id="truckRegistrationFile" selectedFiles={truckRegistrationFile} setLicencePhotoHandler={handleTruckRegistrationFile} /> : <div className="text-xs text-navy-800 dark:text-white">Loading...</div>
                                 }
                             </div>
                         </> : <></>
@@ -719,7 +719,7 @@ const SingleDriverForm = (props) => {
                 </div>
             </div>
 
-            <button type="submit" className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" disabled={licensePhoto ? false : true}>Save</button>
+            <button type="submit" className="text-white bg-gradient-to-r transition from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2" disabled={licencePhoto ? false : true}>Save</button>
 
             <Link href="/drivers">
                 <button type="button" className="text-white bg-gradient-to-r from-blue-500 via-blue-600 to-blue-700 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-blue-300 dark:focus:ring-blue-800 font-medium rounded-lg text-sm px-5 py-2.5 text-center mr-2 mb-2 opacity-90">Back</button>
