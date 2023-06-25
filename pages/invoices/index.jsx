@@ -180,7 +180,7 @@ export default function Invoices() {
                     </thead>
                     <tbody>
                         {
-                            sortedData ? sortedData.map((row, index) => {
+                            (sortedData && sortedData.length) ? sortedData.map((row, index) => {
                                 const isLast = index === sortedData.length - 1;
                                 const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 dark:border-navy-700";
 
@@ -193,7 +193,7 @@ export default function Invoices() {
                                         </td>
                                         <td className={classes}>
                                             <div className="flex items-center gap-3">
-                                                <Avatar src={row.photo.url} alt="image" size="sm" />
+                                                <Avatar src={row.photo && row.photo.url} alt="image" size="sm" />
                                             </div>
                                         </td>
                                         <td className={classes}>

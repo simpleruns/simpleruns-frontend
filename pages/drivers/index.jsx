@@ -254,7 +254,7 @@ export default function Drivers() {
                         </thead>
                         <tbody>
                             {
-                                sortedData.length ? sortedData.map((row, index) => {
+                                (sortedData && sortedData.length) ? sortedData.map((row, index) => {
                                     const isLast = index === sortedData.length - 1;
                                     const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 dark:border-navy-700";
 
@@ -262,7 +262,7 @@ export default function Drivers() {
                                         <tr key={row._id}>
                                             <td className={classes}>
                                                 <div className="flex items-center gap-3">
-                                                    <Avatar src={row.avatar.url} alt="image" size="sm" />
+                                                    <Avatar src={row.avatar && row.avatar.url} alt="image" size="sm" />
                                                 </div>
                                             </td>
                                             <td className={classes}>
@@ -319,7 +319,7 @@ export default function Drivers() {
                                                 <div className="flex items-center gap-3">
                                                     {
                                                         row.licencePhoto.map((item, index1) => {
-                                                            return <Avatar src={item.url} alt="image" size="sm" key={"licence Photo " + index + '/' + index1} />
+                                                            return <Avatar src={item && item.url} alt="image" size="sm" key={"licence Photo " + index + '/' + index1} />
                                                         })
                                                     }
                                                 </div>
@@ -358,7 +358,7 @@ export default function Drivers() {
                                                 <Typography variant="h4" title="insurances" color="blue-gray" className="font-normal flex">
                                                     {
                                                         row.insuranceFile.map((item, index) => {
-                                                            return <Link href={item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
+                                                            return <Link href={item && item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
                                                         })
                                                     }
                                                 </Typography>
@@ -367,7 +367,7 @@ export default function Drivers() {
                                                 <Typography variant="h4" title="workers compensation" color="blue-gray" className="font-normal flex">
                                                     {
                                                         row.workCompensationFile.map((item, index) => {
-                                                            return <Link href={item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
+                                                            return <Link href={item && item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
                                                         })
                                                     }
                                                 </Typography>
@@ -376,7 +376,7 @@ export default function Drivers() {
                                                 <Typography variant="h4" title="truck registration" color="blue-gray" className="font-normal flex">
                                                     {
                                                         row.truckRegistrationFile.map((item, index) => {
-                                                            return <Link href={item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
+                                                            return <Link href={item && item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
                                                         })
                                                     }
                                                 </Typography>
@@ -499,7 +499,7 @@ export default function Drivers() {
                                         </Typography>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <Avatar src={sortedData[showID].avatar.url} alt="image" size="sm" />
+                                        <Avatar src={sortedData[showID].avatar && sortedData[showID].avatar.url} alt="image" size="sm" />
                                     </div>
                                 </div>
                                 <div className="p-2 flex items-center">
@@ -675,7 +675,7 @@ export default function Drivers() {
                                     <div className="flex items-center gap-3">
                                         {
                                             sortedData[showID].licencePhoto.map((item, index) => {
-                                                return <Avatar src={item.url} alt="image" size="sm" key={"licence Photo Modal " + index} />
+                                                return <Avatar src={item && item.url} alt="image" size="sm" key={"licence Photo Modal " + index} />
                                             })
                                         }
                                     </div>
@@ -791,7 +791,7 @@ export default function Drivers() {
                                     <Typography variant="h4" title="insurances" color="blue-gray" className="font-normal flex">
                                         {
                                             sortedData[showID].insuranceFile.map((item, index) => {
-                                                return <Link href={item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
+                                                return <Link href={item && item.url} target="_blank" key={"insuranceLink" + index} className="mr-2"><SlDocs /></Link>
                                             })
                                         }
                                     </Typography>
@@ -811,7 +811,7 @@ export default function Drivers() {
                                     <Typography variant="h4" title="workers compensation" color="blue-gray" className="font-normal flex">
                                         {
                                             sortedData[showID].workCompensationFile.map((item, index) => {
-                                                return <Link href={item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
+                                                return <Link href={item && item.url} target="_blank" key={"workCompensationLink" + index} className="mr-2"><SlDocs /></Link>
                                             })
                                         }
                                     </Typography>
@@ -831,7 +831,7 @@ export default function Drivers() {
                                     <Typography variant="h4" title="truck registration" color="blue-gray" className="font-normal flex">
                                         {
                                             sortedData[showID].truckRegistrationFile.map((item, index) => {
-                                                return <Link href={item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
+                                                return <Link href={item && item.url} target="_blank" key={"truckRegistration" + index} className="mr-2"><SlDocs /></Link>
                                             })
                                         }
                                     </Typography>

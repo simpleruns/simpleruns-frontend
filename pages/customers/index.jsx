@@ -246,7 +246,7 @@ export default function Customers() {
                         </thead>
                         <tbody>
                             {
-                                sortedData.length ? sortedData.map((row, index) => {
+                                (sortedData && sortedData.length) ? sortedData.map((row, index) => {
                                     const isLast = index === sortedData.length - 1;
                                     const classes = isLast ? "p-4" : "p-4 border-b border-blue-gray-50 dark:border-navy-700";
 
@@ -254,7 +254,7 @@ export default function Customers() {
                                         <tr key={row._id}>
                                             <td className={classes}>
                                                 <div className="flex items-center gap-3">
-                                                    <Avatar src={row.photo.url} alt="image" size="sm" />
+                                                    <Avatar src={row.photo && row.photo.url} alt="image" size="sm" />
                                                 </div>
                                             </td>
                                             <td className={classes}>
@@ -426,7 +426,7 @@ export default function Customers() {
                                         </Typography>
                                     </div>
                                     <div className="flex items-center gap-3">
-                                        <Avatar src={sortedData[showID].photo.url} alt="image" size="sm" />
+                                        <Avatar src={sortedData[showID].photo && sortedData[showID].photo.url} alt="image" size="sm" />
                                     </div>
                                 </div>
                                 <div className="p-2 flex items-center">
